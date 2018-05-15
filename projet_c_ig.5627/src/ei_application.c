@@ -1,7 +1,8 @@
 #include "ei_application.h"
 
 void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
-
+    hw_init();
+    hw_create_window(main_window_size, fullScreen)
 }
 
 void ei_app_free() {
@@ -21,9 +22,9 @@ void ei_app_quit_request() {
 }
 
 ei_widget_t* ei_app_root_widget() {
-    return NULL;
+
 }
 
 ei_surface_t ei_app_root_surface() {
-    return NULL;
+
 }

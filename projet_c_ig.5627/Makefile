@@ -5,6 +5,7 @@ CC		= gcc
 OBJDIR		= ./objs
 TESTS		= ./tests
 INCLUDES	= ./include
+SOURCES     = ./src
 INCFLAGS	:= -I${INCLUDES}
 #OPTFLAGS	:= -Os -DNDEBUG
 OPTFLAGS	:= -g
@@ -36,7 +37,7 @@ else
 	
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
-	LINK		= ${CC}
+	LINK		= ${CC} -no-pie
 	LIBEI		= ${OBJDIR}/libei.a
 #	ARCH	        = 32
 	ARCH	        = 64
@@ -70,6 +71,11 @@ all : ${TARGETS}
 
 ########## Test-programs
 
+# Compilation des sources
+
+$(OBJDIR)/%.o: ${SOURCES}/%.c
+	${CC} ${CCFLAGS} ${INCFLAGS} -c -o $@ $<
+
 # minimal
 
 minimal : ${OBJDIR}/minimal.o ${LIBEIBASE}
@@ -80,8 +86,8 @@ ${OBJDIR}/minimal.o : ${TESTS}/minimal.c
 
 # frame
 
-frame : ${OBJDIR}/frame.o ${LIBEIBASE} ${LIBEI}
-	${LINK} -o frame ${OBJDIR}/frame.o ${LIBEI} ${LIBS}
+frame : ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${LIBEIBASE} ${LIBEI}
+	${LINK} -o frame ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${LIBEI} ${LIBS}
 
 ${OBJDIR}/frame.o : ${TESTS}/frame.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/frame.c -o ${OBJDIR}/frame.o
