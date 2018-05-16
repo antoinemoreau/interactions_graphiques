@@ -2,6 +2,9 @@
 
 void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
     hw_init();
+
+    ei_frame_register_class();
+
     hw_create_window(main_window_size, fullscreen);
 }
 

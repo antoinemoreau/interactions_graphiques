@@ -2,7 +2,7 @@
 #include "ei_types.h"
 
 void* ei_frameclass_allocfunc_t () {
-    return calloc(sizeof(ei_frame_t, 1)
+    return calloc(sizeof(ei_frame_t, 1));
 }
 
 void ei_frameclass_releasefunc_t (struct ei_frame_t* frame) {
