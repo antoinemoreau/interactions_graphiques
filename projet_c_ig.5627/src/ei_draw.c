@@ -12,7 +12,7 @@ void ei_fill	(ei_surface_t		surface,
                  retour_ligne = taille.width*4;
                  ei_size_t taille = clipper->size;
                  ei_point_t debut = clipper->top_left;
-                 premier_p = (premier_p + debut.y*taille.height + taille.width)*4;
+                 premier_p = premier_p + (debut.y*taille.height + debut.x)*4;
                  pixels = taille.width * taille.height;
                }
                else
@@ -21,17 +21,15 @@ void ei_fill	(ei_surface_t		surface,
                  pixels = taille.width*taille.height;
                  retour_ligne =0;
                }
-
-              for (size_t y = debut.y; y < taille.height; y++) {
-                for (size_t x = debut.x; x < taille.width; x++) {
-                  uint8_t* pixel = premier_p + x*4;
-                  *pixel = couleur;
-                }
-                premier_p += premier_p + retour_ligne;
-              }
-
-
+               for (size_t y = 0; y < taille.height; y++) {
+								 for (size_t x = 0; x < taille.width; x++) {
+									 uint8_t* pixel = premier_p + x*4;
+									 *pixel = couleur;
+								 }
+                 premier_p +=  premier_p + retour_ligne;
+               }
                hw_surface_unlock(surface);
+							 hw_surface_update_rects(surface,clipper);
 
 }
 /*
