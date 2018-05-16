@@ -37,7 +37,7 @@ else
 	
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
-	LINK		= ${CC} -no-pie
+	LINK		= ${CC}
 	LIBEI		= ${OBJDIR}/libei.a
 #	ARCH	        = 32
 	ARCH	        = 64
