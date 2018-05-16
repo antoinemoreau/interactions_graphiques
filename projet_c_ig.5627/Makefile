@@ -13,7 +13,7 @@ CCFLAGS		:= -c ${OPTFLAGS} -Wall -std=c99
 
 # The list of objects to include in the library
 
-LIBEIOBJS	:= 	
+LIBEIOBJS	:=
 
 
 
@@ -22,7 +22,7 @@ LIBEIOBJS	:=
 ifeq (${PLATFORM},Darwin)
 
 	# Building for Mac OS X
-	
+
 	PLATDIR		= _osx
 	INCFLAGS	:= ${INCFLAGS} -I/opt/local/include -I/opt/local/include/SDL
 	LINK		= ${CC}
@@ -34,7 +34,7 @@ else
 	ifeq (${PLATFORM},Linux)
 
 	# Building for Linux
-	
+
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
 	LINK		= ${CC}
@@ -47,7 +47,7 @@ else
 	else
 
 	# Building for Windows
-	
+
 	PLATDIR		= _win
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include -I/usr/include/SDL -I/usr/local/include/SDL
 	LINK		= ${CC} -mwindows -mno-cygwin
