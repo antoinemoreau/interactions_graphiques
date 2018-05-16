@@ -2,7 +2,7 @@
 
 void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
     hw_init();
-    hw_create_window(main_window_size, fullScreen)
+    hw_create_window(main_window_size, fullscreen);
 }
 
 void ei_app_free() {
