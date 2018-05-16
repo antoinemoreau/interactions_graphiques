@@ -5,13 +5,17 @@
 #include "ei_draw.h"
 #include "ei_frame.h"
 
-struct ei_frameclass_t frame;
+#define FRAME_CLASS
 
-frame.allocfunc = &ei_frameclass_allocfunc_t;
-frame.releasefunc = &ei_frameclass_releasefunc_t;
-frame.drawfunc = &ei_frameclass_drawfunc_t;
-frame.setdefaultsfunc = &ei_frameclass_setdefaultsfunc_t;
-frame.geomnotifyfunc = &ei_widgetclass_geomnotifyfunc_t;
+struct ei_widgetclass_t frame_widget = {
+    FRAME_CLASS,
+    &ei_frameclass_allocfunc_t,
+    &ei_frameclass_releasefunc_t,
+    &ei_frameclass_drawfunc_t,
+    &ei_frameclass_setdefaultsfunc_t,
+    &ei_widgetclass_geomnotifyfunc_t,
+    NULL
+}
 
 void* ei_frameclass_allocfunc_t ();
 
