@@ -10,10 +10,14 @@ INCFLAGS	:= -I${INCLUDES}
 #OPTFLAGS	:= -Os -DNDEBUG
 OPTFLAGS	:= -g
 CCFLAGS		:= -c ${OPTFLAGS} -Wall -std=c99
-
+SRC = ./src
 # The list of objects to include in the library
 
-LIBEIOBJS	:=
+LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
+						 ${OBJDIR}/ei_frameclass.o \
+						 ${OBJDIR}/ei_geometrymanager.o \
+						 ${OBJDIR}/ei_widget.o \
+						 ${OBJDIR}/ei_widgetclass.o \
 
 
 
@@ -37,7 +41,7 @@ else
 
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
-	LINK		= ${CC} -no-pie
+	LINK		= ${CC}
 	LIBEI		= ${OBJDIR}/libei.a
 #	ARCH	        = 32
 	ARCH	        = 64
@@ -86,8 +90,12 @@ ${OBJDIR}/minimal.o : ${TESTS}/minimal.c
 
 # frame
 
-frame : ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${OBJDIR}/ei_frameclass.o ${LIBEIBASE} ${LIBEI}
-	${LINK} -o frame ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${OBJDIR}/ei_frameclass.o ${LIBEI} ${LIBS}
+#frame : ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${OBJDIR}/ei_frameclass.o ${OBJDIR}/ei_widgetclass.o ${LIBEIBASE} ${LIBEI}
+#	${LINK} -o frame ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${OBJDIR}/ei_frameclass.o ${OBJDIR}/ei_widgetclass.o ${LIBEI} ${LIBS}
+
+frame : ${OBJDIR}/frame.o ${LIBEIBASE} ${LIBEI}
+	${LINK} -o frame ${OBJDIR}/frame.o ${LIBEI} ${LIBS}
+
 
 ${OBJDIR}/frame.o : ${TESTS}/frame.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/frame.c -o ${OBJDIR}/frame.o
@@ -144,6 +152,21 @@ ${OBJDIR}/minesweeper.o : ${TESTS}/minesweeper.c
 
 ${LIBEI} : ${LIBEIOBJS}
 	ar rcs ${LIBEI} ${LIBEIOBJS}
+
+${OBJDIR}/ei_application.o: ${SRC}/ei_application.c ${INCLUDES}/ei_application.h
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_application.c -o ${OBJDIR}/ei_application.o
+
+${OBJDIR}/ei_frameclass.o: ${SRC}/ei_frameclass.c ${INCLUDES}/ei_frameclass.h
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_frameclass.c -o ${OBJDIR}/ei_frameclass.o
+
+${OBJDIR}/ei_geometrymanager.o: ${SRC}/ei_geometrymanager.c ${INCLUDES}/ei_geometrymanager.h
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_geometrymanager.c -o ${OBJDIR}/ei_geometrymanager.o
+
+${OBJDIR}/ei_widget.o: ${SRC}/ei_widget.c ${INCLUDES}/ei_widget.h
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_widget.c -o ${OBJDIR}/ei_widget.o
+
+${OBJDIR}/ei_widgetclass.o: ${SRC}/ei_widgetclass.c ${INCLUDES}/ei_widgetclass.h
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_widgetclass.c -o ${OBJDIR}/ei_widgetclass.o
 
 
 

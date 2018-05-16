@@ -1,5 +1,7 @@
 #include "ei_widgetclass.h"
 #include "ei_frameclass.h"
+#include <stdlib.h>
+#include <string.h>
 
 
 /*On crée un pointeur widgetclass_list qui nous permet de savoir quelle(s)
@@ -9,15 +11,14 @@ static ei_widgetclass_t* widgetclass_list = NULL;
 
 static ei_widgetclass_t* create_frame_widget(){
   ei_widgetclass_t *frame_widget = malloc(sizeof(ei_widgetclass_t));
-  *frame_widget = {
-    "frameclass",
-    &ei_frameclass_allocfunc_t,
-    &ei_frameclass_releasefunc_t,
-    &ei_frameclass_drawfunc_t,
-    &ei_frameclass_setdefaultsfunc_t,
-    &ei_widgetclass_geomnotifyfunc_t,
-    NULL
-  };
+  strncpy(frame_widget->name, "frameclass", 20);
+  frame_widget->allocfunc = ei_frameclass_allocfunc;
+  frame_widget->releasefunc = ei_frameclass_releasefunc;
+  frame_widget->drawfunc = ei_frameclass_drawfunc;
+  frame_widget->setdefaultsfunc = ei_frameclass_setdefaultsfunc;
+  frame_widget->geomnotifyfunc = ei_widgetclass_geomnotifyfunc;
+  frame_widget->next = NULL;
+  return frame_widget;
 }
 
 
