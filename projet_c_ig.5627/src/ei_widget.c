@@ -1,4 +1,5 @@
 #include "ei_widget.h"
+#include "ei_frame.h"
 #include <stdlib.h>
 
 ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
@@ -11,14 +12,12 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 		//id et color a modifier pour gestion des evenements
 		widget->pick_id = 1;
-		*(widget->pick_color) = ei_default_background_color;
+		widget->pick_color = &ei_default_background_color;
 
 		//affectation du widget parent
 		widget->parent = parent;
 		widget->children_head = NULL;
 		widget->children_tail = NULL;
-
-		//a modifier lorsqu'on aura plusieurs widgets
 		widget->next_sibling = NULL;
 
 		//a modifier
@@ -30,17 +29,69 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 	return NULL;
 }
 
-void			ei_frame_configure		(ei_widget_t*		widget,
-							 ei_size_t*		requested_size,
-							 const ei_color_t*	color,
-							 int*			border_width,
-							 ei_relief_t*		relief,
-							 char**			text,
-							 ei_font_t*		text_font,
-							 ei_color_t*		text_color,
-							 ei_anchor_t*		text_anchor,
-							 ei_surface_t*		img,
-							 ei_rect_t**		img_rect,
-							 ei_anchor_t*		img_anchor) {
+void		ei_frame_configure		(ei_widget_t*		widget,
+						ei_size_t*		requested_size,
+						const ei_color_t*	color,
+						int*			border_width,
+						ei_relief_t*		relief,
+						char**			text,
+						ei_font_t*		text_font,
+						ei_color_t*		text_color,
+						ei_anchor_t*		text_anchor,
+						ei_surface_t*		img,
+						ei_rect_t**		img_rect,
+						ei_anchor_t*		img_anchor) {
+	if (requested_size != NULL)
+		widget->requested_size = *requested_size;
+	else {
+		widget->requested_size.height = 0;
+		widget->requested_size.width = 0;
+	}
+	ei_frame_t* frame = (ei_frame_t*)widget;
 
+	if (color != NULL)
+		frame->color = color; 
+	else if (frame->color == NULL)
+		frame->color = &ei_default_background_color;
+
+	if (border_width != NULL)
+		frame->border_width = border_width;
+	else if (frame->border_width == NULL)
+		*(frame->border_width) = 0;
+
+	if (relief != NULL)
+		frame->relief = relief;
+	else if (frame->relief == NULL)
+		frame->relief = ei_relief_none;
+
+	if (text != NULL)
+		frame->text = text;
+
+	if (text_font != NULL)
+		frame->text_font = text_font;
+	else if (frame->text_font == NULL)
+		frame->text_font = ei_default_font;
+
+	if (text_color != NULL)
+		frame->text_color = text_color;
+	else if (frame->text_color == NULL)
+		frame->text_color = &ei_font_default_color;
+
+	if (text_anchor != NULL)
+		frame->text_anchor = text_anchor;
+	else if (frame->text_anchor == NULL)
+		frame->text_anchor = ei_anc_center;
+
+	if (img != NULL)
+		frame->img = img;
+	
+	if (img_rect != NULL)
+		frame->img_rect = img_rect;
+
+	if (img_anchor != NULL)
+		frame->img_anchor = img_anchor;
+	else if (frame->img_anchor == NULL)
+		frame->img_anchor = ei_anc_center;
+
+	widget = (ei_widget_t*)frame;
 }
