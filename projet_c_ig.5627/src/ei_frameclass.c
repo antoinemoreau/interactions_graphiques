@@ -8,8 +8,9 @@ void* ei_frame_allocfunc () {
         return calloc(sizeof(ei_frame_t), 1);
 }
 
-void ei_frame_releasefunc (ei_frame_t* frame) {
 
+void ei_frame_releasefunc (struct ei_frame_t* frame) {
+        free(frame);
 }
 
 void ei_frame_drawfunc      (ei_frame_t*	frame,
@@ -34,6 +35,6 @@ void ei_frame_setdefaultsfunc (ei_frame_t* frame) {
     frame->img_anchor = ei_anc_center;
 }
 
-void ei_frame_geomnotifyfunc (ei_frame_t* frame, ei_rect_t rect) {
-
+void ei_frame_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect) {
+        
 }

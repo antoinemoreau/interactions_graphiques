@@ -92,6 +92,13 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 		frame->img_anchor = img_anchor;
 	else if (frame->img_anchor == NULL)
 		frame->img_anchor = ei_anc_center;
+}
 
-	widget = (ei_widget_t*)frame;
+
+void ei_widget_destroy (ei_widget_t* widget) {
+
+}
+
+ei_widget_t* ei_widget_pick (ei_point_t* where) {
+
 }
