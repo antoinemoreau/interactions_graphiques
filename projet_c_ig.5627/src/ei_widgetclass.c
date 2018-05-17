@@ -21,6 +21,15 @@ static ei_widgetclass_t* create_frame_widget(){
   return frame_widget;
 }
 
+ei_widgetclass_t* ei_widgetclass_from_name (ei_widget_class_t name){
+        for ( ei_widgetclass_t* current = widgetclass_list; current != NULL; current = current->next ) {
+                if (strcmp(ei_widgetclass_stringname(ei_current->name), ei_widgetclass_stringname(name)) == 0){
+                        return current;
+                }
+        }
+        return NULL;
+}
+
 
 void			ei_frame_register_class 	() {
   if (widgetclass_list == NULL) {
