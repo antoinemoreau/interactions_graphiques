@@ -21,9 +21,9 @@ static ei_widgetclass_t* create_frame_widget(){
   return frame_widget;
 }
 
-ei_widgetclass_t* ei_widgetclass_from_name (ei_widget_class_t name){
+ei_widgetclass_t* ei_widgetclass_from_name (ei_widgetclass_name_t name){
         for ( ei_widgetclass_t* current = widgetclass_list; current != NULL; current = current->next ) {
-                if (strcmp(ei_widgetclass_stringname(ei_current->name), ei_widgetclass_stringname(name)) == 0){
+                if (strcmp(ei_widgetclass_stringname(current->name), ei_widgetclass_stringname(name)) == 0){
                         return current;
                 }
         }
@@ -59,6 +59,6 @@ void			ei_toplevel_register_class 	() {
 
 
 void ei_widgetclass_register(ei_widgetclass_t* widgetclass){
-  widgetclass->next = widgetclass_list;
-  widgetclass_list = widgetclass;
+        widgetclass->next = widgetclass_list;
+        widgetclass_list = widgetclass;
 }
