@@ -8,7 +8,7 @@ void* ei_frame_allocfunc () {
 }
 
 void ei_frame_releasefunc (struct ei_frame_t* frame) {
-
+        free(frame);
 }
 
 void ei_frame_drawfunc (struct ei_frame_t*	frame,
@@ -35,6 +35,6 @@ void ei_frame_setdefaultsfunc (struct ei_frame_t* frame) {
 
 }
 
-void ei_frame_geomnotifyfunc (struct ei_frame_t* frame, ei_rect_t rect) {
-
+void ei_frame_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect) {
+        
 }
