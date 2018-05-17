@@ -18,7 +18,6 @@ LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
 						 ${OBJDIR}/ei_geometrymanager.o \
 						 ${OBJDIR}/ei_widget.o \
 						 ${OBJDIR}/ei_widgetclass.o \
-						 ${OBJDIR}/ei_frame.o \
 
 
 
@@ -169,8 +168,6 @@ ${OBJDIR}/ei_widget.o: ${SRC}/ei_widget.c ${INCLUDES}/ei_widget.h
 ${OBJDIR}/ei_widgetclass.o: ${SRC}/ei_widgetclass.c ${INCLUDES}/ei_widgetclass.h
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_widgetclass.c -o ${OBJDIR}/ei_widgetclass.o
 
-${OBJDIR}/ei_frame.o: ${SRC}/ei_frame.c ${INCLUDES}/ei_frame.h
-	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_frame.c -o ${OBJDIR}/ei_frame.o
 
 
 

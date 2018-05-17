@@ -7,7 +7,7 @@ void* ei_frameclass_allocfunc () {
     return calloc(sizeof(ei_frame_t), 1);
 }
 
-void ei_frameclass_releasefunc (struct ei_widget_t* frame) {
+void ei_frameclass_releasefunc (struct ei_frame_t* frame) {
 
 }
 
@@ -15,7 +15,7 @@ void ei_frameclass_drawfunc (struct ei_frame_t*	frame,
 							 ei_surface_t		surface,
 							 ei_surface_t		pick_surface,
 							 ei_rect_t*		clipper) {
-                                                                 
+
 }
 
 void ei_frameclass_setdefaultsfunc (struct ei_frame_t* frame) {
@@ -23,7 +23,7 @@ void ei_frameclass_setdefaultsfunc (struct ei_frame_t* frame) {
     (frame->requested_size)->width = 0;
     (frame->requested_size)->height = 0;
     *(frame->color) = ei_default_background_color;
-    frame->border_œwidth = 0;
+    frame->border_width = 0;
     frame->relief = ei_relief_none;
     frame->text = NULL;
     frame->text_font = ei_default_font;

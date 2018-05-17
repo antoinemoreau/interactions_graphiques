@@ -16,7 +16,7 @@ static ei_widgetclass_t* create_frame_widget(){
   frame_widget->releasefunc = (ei_widgetclass_releasefunc_t) &ei_frameclass_releasefunc;
   frame_widget->drawfunc = (ei_widgetclass_drawfunc_t) &ei_frameclass_drawfunc;
   frame_widget->setdefaultsfunc = (ei_widgetclass_setdefaultsfunc_t) &ei_frameclass_setdefaultsfunc;
-  frame_widget->geomnotifyfunc = (ei_widgetclass_geomnotifyfunc_t) &ei_widgetclass_geomnotifyfunc;
+  frame_widget->geomnotifyfunc = (ei_widgetclass_geomnotifyfunc_t) &ei_frameclass_geomnotifyfunc;
   frame_widget->next = NULL;
   return frame_widget;
 }
@@ -30,7 +30,7 @@ void			ei_frame_register_class 	() {
   else{
     ei_widgetclass_t* current = widgetclass_list;
     while (current != NULL) {
-      if ( strcmp(ei_widgetclass_stringname(current->name)), "frameclass" ) {
+      if ( strcmp(ei_widgetclass_stringname(current->name), "frameclass") ) {
         return;
       }
       current = current->next;
