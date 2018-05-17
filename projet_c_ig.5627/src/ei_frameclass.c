@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 void* ei_frame_allocfunc () {
-    return calloc(sizeof(ei_frame_t), 1);
+        return calloc(sizeof(ei_frame_t), 1);
 }
 
 void ei_frame_releasefunc (struct ei_frame_t* frame) {

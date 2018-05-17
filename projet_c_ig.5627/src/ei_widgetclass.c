@@ -58,6 +58,6 @@ void			ei_toplevel_register_class 	() {
 
 
 void ei_widgetclass_register(ei_widgetclass_t* widgetclass){
-  widgetclass->next = widgetclass_list;
-  widgetclass_list = widgetclass;
+        widgetclass->next = widgetclass_list;
+        widgetclass_list = widgetclass;
 }
