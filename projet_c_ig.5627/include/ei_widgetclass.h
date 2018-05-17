@@ -2,7 +2,7 @@
  *  @file	widgetclass.h
  *  @brief	Definition and registration of widget classes.
  *
- *  \author 
+ *  \author
  *  Created by François Bérard on 02.12.11.
  *  Copyright 2011 Ensimag. All rights reserved.
  *
