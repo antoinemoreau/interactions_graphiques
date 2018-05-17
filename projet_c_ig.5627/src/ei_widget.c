@@ -2,7 +2,11 @@
 
 ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 							 ei_widget_t*		parent) {
-		return parent;
+	ei_widgetclass_t* widgetclass = ei_widgetclass_from_name(class_name);
+	//On vérifie si la classe de ce widget existe
+	if (widgetclass) {
+		ei_widget_t* widget = *(widgetclass->allocfunc);
+	}
 }
 
 void			ei_frame_configure		(ei_widget_t*		widget,

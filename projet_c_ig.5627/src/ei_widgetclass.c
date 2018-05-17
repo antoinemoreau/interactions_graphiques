@@ -30,7 +30,7 @@ void			ei_frame_register_class 	() {
   else{
     ei_widgetclass_t* current = widgetclass_list;
     while (current != NULL) {
-      if ( strcmp(ei_widgetclass_stringname(current->name), "frameclass") ) {
+      if ( strcmp(ei_widgetclass_stringname(current->name), "frame") ) {
         return;
       }
       current = current->next;
