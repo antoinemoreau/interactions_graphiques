@@ -14,9 +14,6 @@ void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
 
         root->requested_size = *main_window_size;
 
-        ei_color_t color = {0xff, 0xff, 0xff, 0xff};
-        ((ei_frame_t*)root)->color = &color;
-
         window = hw_create_window(main_window_size, fullscreen);
 }
 
@@ -26,18 +23,13 @@ void ei_app_free() {
 
 void ei_app_run() {
         //A.2 tentative de app run qui utilise les drawfunction des widgets
-        /*
-        ei_widget_t* current = root->children_head;
+        ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
-        while (current != NULL) {
-                ei_widget_t* current_child = current->children_head;
-                while (current_child) {
-                        current_child->wclass->drawfunction();
-                        current_child->next_sibling;
-                }
-                current = current->next
-        }
-        */
+
+        hw_surface_lock(root_surface);
+        root->wclass->drawfunc(root,root_surface,NULL,NULL);
+        hw_surface_unlock(root_surface);
+        hw_surface_update_rects(root_surface,NULL);
         getchar();
 }
 
@@ -54,5 +46,5 @@ ei_widget_t* ei_app_root_widget() {
 }
 
 ei_surface_t ei_app_root_surface() {
-        return NULL;
+        return window;
 }
