@@ -24,11 +24,8 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 }
 
 void ei_frame_setdefaultsfunc (ei_widget_t* widget) {
-        //fprintf(stdout, "coucou : %s\n", widget->wclass->name);
         ei_frame_t* frame = (ei_frame_t*) widget;
-
         frame->widget = *widget;
-
         frame->color = &ei_default_background_color;
         frame->border_width = 0;
         frame->relief = ei_relief_none;
