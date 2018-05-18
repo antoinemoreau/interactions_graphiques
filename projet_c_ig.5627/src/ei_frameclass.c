@@ -19,22 +19,22 @@ void ei_frame_drawfunc (struct ei_frame_t*	frame,
 }
 
 void ei_frame_setdefaultsfunc (struct ei_frame_t* frame) {
-    frame->widget = (ei_widget_t*)frame;
-    (frame->requested_size)->width = 0;
-    (frame->requested_size)->height = 0;
-    *(frame->color) = ei_default_background_color;
-    frame->border_width = 0;
-    frame->relief = ei_relief_none;
-    frame->text = NULL;
-    frame->text_font = ei_default_font;
-    *(frame->text_color) = ei_font_default_color;
-    *(frame->text_anchor) = ei_anc_center;
-    frame->img = NULL;
-    frame->img_rect = NULL;
-    *(frame->img_anchor) = ei_anc_center;
+        frame->widget = (ei_frame_t*)frame;
+        (frame->requested_size)->width = 0;
+        (frame->requested_size)->height = 0;
+        *(frame->color) = ei_default_background_color;
+        frame->border_width = 0;
+        frame->relief = ei_relief_none;
+        frame->text = NULL;
+        frame->text_font = ei_default_font;
+        *(frame->text_color) = ei_font_default_color;
+        *(frame->text_anchor) = ei_anc_center;
+        frame->img = NULL;
+        frame->img_rect = NULL;
+        *(frame->img_anchor) = ei_anc_center;
 
 }
 
-void ei_frame_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect) {
-        
+void ei_frame_geomnotifyfunc (struct ei_frame_t* widget, ei_rect_t rect) {
+
 }
