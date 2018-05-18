@@ -36,6 +36,7 @@ void ei_place (ei_widget_t* widget,
 	 //S'il n'y a pas de paramètre geom, on en crée et on remplie ensuite
 	if (widget->geom_params == NULL){
 		placer = calloc(1, sizeof(ei_placer_t));
+		placer.manager = *placer_manager;
 		widget->geom_params = placer;
 	}
 

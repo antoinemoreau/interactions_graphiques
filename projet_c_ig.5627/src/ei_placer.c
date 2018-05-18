@@ -11,7 +11,7 @@ void compute_spot(ei_widget_t* widget, ei_widget_t* parent){
 }
 
 
-void ei_placer_runfunc(struct ei_widget_t* widget){
+void ei_placer_runfunc(ei_widget_t* widget){
         ei_widget_t* parent = widget->parent;
         for (ei_widget_t* current = parent->children_head; current != NULL; current=current->next_sibling){
                 compute_spot(current, parent);
