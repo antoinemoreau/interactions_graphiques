@@ -17,6 +17,15 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 		//affectation du widget parent
 		widget->parent = parent;
+		if(parent){
+			if (parent->children_head == NULL) {
+				parent->children_head = widget;
+				parent->children_tail = widget;
+			} else {
+				parent->children_tail->next_sibling = widget;
+				parent->children_tail = widget;
+			}
+		}
 		widget->children_head = NULL;
 		widget->children_tail = NULL;
 		widget->next_sibling = NULL;

@@ -19,8 +19,21 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_rect_t*		clipper) {
 
         ei_frame_t* frame = (ei_frame_t*) widget;
+        ei_point_t top_clipper = {150,150};
+        ei_size_t size_clipper = {200,200};
+        ei_rect_t clipper_fils = {top_clipper,size_clipper};
         ei_fill(surface,frame->color,clipper);
-        //ei_fill(pick_surface,frame->widget->pick_color,clipper);
+        if (pick_surface) {
+                hw_surface_lock(pick_surface);
+                ei_fill(pick_surface,frame->widget.pick_color,clipper);
+                hw_surface_unlock(pick_surface);
+        }
+        ei_widget_t* current_child = frame->widget.children_head;
+
+        while (current_child){
+                current_child->wclass->drawfunc(current_child, surface, pick_surface, &clipper_fils);
+                current_child = current_child->next_sibling;
+        }
 }
 
 void ei_frame_setdefaultsfunc (ei_widget_t* widget) {
