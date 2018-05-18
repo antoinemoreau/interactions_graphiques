@@ -32,6 +32,13 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 		//a modifier
 		widget->geom_params = NULL;
+		widget->content_rect = NULL;
+		widget->requested_size.width = 0;
+		widget->requested_size.height = 0;
+		widget->screen_location.top_left.x = 0;
+		widget->screen_location.top_left.y = 0;
+		widget->screen_location.size.width = 0;
+		widget->screen_location.size.height = 0;
 
 		widgetclass->setdefaultsfunc(widget);
 		return widget;
