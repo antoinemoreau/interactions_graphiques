@@ -1,5 +1,6 @@
 #include "ei_widget.h"
 #include "ei_frame.h"
+#include "ei_geometrymanager.h"
 #include <stdlib.h>
 #include <stdio.h>
 
