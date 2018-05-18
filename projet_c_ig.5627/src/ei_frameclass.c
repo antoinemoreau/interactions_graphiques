@@ -20,7 +20,10 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 
         ei_frame_t* frame = (ei_frame_t*) widget;
         ei_fill(surface,frame->color,clipper);
-        //ei_fill(pick_surface,frame->widget->pick_color,clipper);
+        if (pick_surface) {
+                ei_fill(pick_surface,frame->widget->pick_color,clipper);
+        }
+        ei_widget_t* current_child = frame->widget->
 }
 
 void ei_frame_setdefaultsfunc (ei_widget_t* widget) {
