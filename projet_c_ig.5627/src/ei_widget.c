@@ -66,9 +66,9 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 		frame->color = &ei_default_background_color;
 
 	if (border_width != NULL)
-		frame->border_width = border_width;
-	//else if (frame->border_width == NULL)
-		//*(frame->border_width) = 0;
+		frame->border_width = *border_width;
+	else if (!frame->border_width)
+		frame->border_width = 0;
 
 	if (relief != NULL)
 		frame->relief = *relief;
