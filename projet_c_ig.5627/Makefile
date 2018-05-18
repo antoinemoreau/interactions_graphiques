@@ -11,7 +11,7 @@ INCFLAGS	:= -I${INCLUDES}
 OPTFLAGS	:= -g
 CCFLAGS		:= -c ${OPTFLAGS} -Wall -std=c99
 SRC = ./src
-
+#erreur est ici bande de connard ligne 15
 CCVER := $(shell gcc --version | grep -e '^gcc' | sed -r -e 's/^.*([[:digit:]])\..*$/\1/p')
 VFLAGS :=
 ifneq "${CCVER}" "4"

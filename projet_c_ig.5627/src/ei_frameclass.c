@@ -19,8 +19,8 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_rect_t*		clipper) {
 
         ei_frame_t* frame = (ei_frame_t*) widget;
-        ei_point_t top_clipper = {150,150};
-        ei_size_t size_clipper = {200,200};
+        ei_point_t top_clipper = {150,200};
+        ei_size_t size_clipper = {300,200};
         ei_rect_t clipper_fils = {top_clipper,size_clipper};
         ei_fill(surface,frame->color,clipper);
         if (pick_surface) {
