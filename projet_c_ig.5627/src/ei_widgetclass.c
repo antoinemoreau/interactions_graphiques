@@ -9,8 +9,8 @@ classe(s) de widget(s) existe(nt)
 */
 static ei_widgetclass_t* widgetclass_list = NULL;
 
-static ei_widgetclass_t* create_frame_widget (){
-        ei_widgetclass_t* frame_widget = malloc(sizeof(ei_widgetclass_t));
+static ei_widgetclass_t* create_frame_widget(){
+        ei_widgetclass_t *frame_widget = malloc(sizeof(ei_widgetclass_t));
         strncpy(frame_widget->name, "frame", 20);
         frame_widget->allocfunc = (ei_widgetclass_allocfunc_t) &ei_frame_allocfunc;
         frame_widget->releasefunc = (ei_widgetclass_releasefunc_t) &ei_frame_releasefunc;
