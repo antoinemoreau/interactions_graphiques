@@ -2,6 +2,7 @@
 #include "ei_placer.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 static ei_geometrymanager_t* geometrymanager_list = NULL;
 
@@ -36,13 +37,11 @@ void ei_place (ei_widget_t* widget,
 	 //S'il n'y a pas de paramètre geom, on en crée et on remplie ensuite
 	if (widget->geom_params == NULL){
 		placer = calloc(1, sizeof(ei_placer_t));
-		placer.manager = *placer_manager;
+		placer->manager = *placer_manager;
 		widget->geom_params = placer;
 	}
+	widget->geom_params->manager = placer_manager;
 
-	if (widget->geom_params->manager == NULL){
-		widget->geom_params->manager = placer_manager;
-	}
 	//On cast pour forcer les valeurs
 	placer = (ei_placer_t*) (widget->geom_params);
 	if (strcmp(widget->geom_params->manager->name, "placer") != 0 ){
@@ -112,6 +111,7 @@ void ei_place (ei_widget_t* widget,
 	else{
 		placer->rel_height = 0.0;
 	}
+
 	ei_placer_runfunc(widget);
 }
 

@@ -1,13 +1,19 @@
 #include "ei_placer.h"
 #include <stdlib.h>
+#include <stdio.h>
+
 void compute_spot(ei_widget_t* widget, ei_widget_t* parent){
         ei_placer_t* placer_parent = (ei_placer_t*) parent->geom_params;
         ei_placer_t* placer_widget = (ei_placer_t*) widget->geom_params;
 
-        widget->screen_location.top_left.x = placer_parent->x + placer_widget->x;
-        widget->screen_location.top_left.y = placer_parent->y + placer_widget->y;
-        widget->screen_location.size = widget->requested_size;
-
+        if (placer_parent == NULL){
+                fprintf(stdout, "Coucou : %p\n", parent->screen_location);
+        }
+        else{
+                widget->screen_location.top_left.x = placer_parent->x + placer_widget->x;
+                widget->screen_location.top_left.y = placer_parent->y + placer_widget->y;
+                widget->screen_location.size = widget->requested_size;
+        }
 }
 
 
