@@ -22,10 +22,13 @@ endif
 # The list of objects to include in the library
 
 LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
-			${OBJDIR}/ei_frameclass.o \
-			${OBJDIR}/ei_geometrymanager.o \
-			${OBJDIR}/ei_widget.o \
-			${OBJDIR}/ei_widgetclass.o \
+		   ${OBJDIR}/ei_frameclass.o \
+		   ${OBJDIR}/ei_geometrymanager.o \
+		   ${OBJDIR}/ei_widget.o \
+		   ${OBJDIR}/ei_widgetclass.o \
+		   ${OBJDIR}/ei_geometrymanager.o \
+		   ${OBJDIR}/ei_placer.o \
+
 
 
 
@@ -161,20 +164,27 @@ ${OBJDIR}/minesweeper.o : ${TESTS}/minesweeper.c
 ${LIBEI} : ${LIBEIOBJS}
 	ar rcs ${LIBEI} ${LIBEIOBJS}
 
-${OBJDIR}/ei_application.o: ${SRC}/ei_application.c ${INCLUDES}/ei_application.h
+${OBJDIR}/ei_application.o: ${SRC}/ei_application.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_application.c -o ${OBJDIR}/ei_application.o
 
 ${OBJDIR}/ei_frameclass.o: ${SRC}/ei_frameclass.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_frameclass.c -o ${OBJDIR}/ei_frameclass.o
 
-${OBJDIR}/ei_geometrymanager.o: ${SRC}/ei_geometrymanager.c ${INCLUDES}/ei_geometrymanager.h
+${OBJDIR}/ei_geometrymanager.o: ${SRC}/ei_geometrymanager.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_geometrymanager.c -o ${OBJDIR}/ei_geometrymanager.o
 
-${OBJDIR}/ei_widget.o: ${SRC}/ei_widget.c ${INCLUDES}/ei_widget.h
+${OBJDIR}/ei_widget.o: ${SRC}/ei_widget.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_widget.c -o ${OBJDIR}/ei_widget.o
 
-${OBJDIR}/ei_widgetclass.o: ${SRC}/ei_widgetclass.c ${INCLUDES}/ei_widgetclass.h
+${OBJDIR}/ei_widgetclass.o: ${SRC}/ei_widgetclass.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_widgetclass.c -o ${OBJDIR}/ei_widgetclass.o
+
+${OBJDIR}/ei_geometrymanager.o: ${SRC}/ei_geometrymanager.c ${INCLUDES}/*
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_geometrymanager.c -o ${OBJDIR}/ei_geometrymanager.o
+
+${OBJDIR}/ei_placer.o: ${SRC}/ei_placer.c ${INCLUDES}/*
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_placer.c -o ${OBJDIR}/ei_placer.o
+
 
 
 
