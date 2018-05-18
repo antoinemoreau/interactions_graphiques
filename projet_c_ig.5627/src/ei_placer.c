@@ -6,6 +6,8 @@ void compute_spot(ei_widget_t* widget, ei_widget_t* parent){
 
         widget->screen_location.top_left.x = placer_parent->x + placer_widget->x;
         widget->screen_location.top_left.y = placer_parent->y + placer_widget->y;
+        widget->screen_location.size = widget->requested_size;
+
 }
 
 
