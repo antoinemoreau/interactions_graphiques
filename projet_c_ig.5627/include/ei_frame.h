@@ -9,7 +9,7 @@
 typedef struct ei_frame_t {
 	ei_widget_t*		widget;
 	ei_color_t*		color;
-	int*			border_width;
+	int			border_width;
 	ei_relief_t		relief;
 	char**			text;
 	ei_font_t*		text_font;
