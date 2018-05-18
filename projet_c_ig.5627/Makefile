@@ -179,9 +179,6 @@ ${OBJDIR}/ei_widget.o: ${SRC}/ei_widget.c ${INCLUDES}/*
 ${OBJDIR}/ei_widgetclass.o: ${SRC}/ei_widgetclass.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_widgetclass.c -o ${OBJDIR}/ei_widgetclass.o
 
-${OBJDIR}/ei_geometrymanager.o: ${SRC}/ei_geometrymanager.c ${INCLUDES}/*
-	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_geometrymanager.c -o ${OBJDIR}/ei_geometrymanager.o
-
 ${OBJDIR}/ei_placer.o: ${SRC}/ei_placer.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_placer.c -o ${OBJDIR}/ei_placer.o
 
