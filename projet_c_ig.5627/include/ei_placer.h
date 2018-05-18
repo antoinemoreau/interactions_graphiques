@@ -5,8 +5,8 @@
 #include "ei_widget.h"
 #include "ei_geometrymanager.h"
 
-typedef struct ei_placer_param_t {
-	ei_geometrymanager_t*         manager;
+typedef struct ei_placer_t {
+	ei_geometrymanager_t          manager;
         ei_anchor_t                   anchor;
         int                           x;
         int                           y;
@@ -16,9 +16,7 @@ typedef struct ei_placer_param_t {
         float                         rel_y;
         float                         rel_width;
         float                         rel_height;
-} ei_placer_param_t;
-
-
+} ei_placer_t;
 
 void ei_placer_runfunc(struct ei_widget_t* widget);
 

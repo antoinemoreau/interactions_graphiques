@@ -27,87 +27,86 @@ void ei_place (ei_widget_t* widget,
 		 float*			rel_width,
 		 float*			rel_height) {
 
-	 ei_placer_param_t* placer_param = NULL;
+	 ei_placer_t* placer = NULL;
 	 ei_geometrymanager_t* placer_manager = create_placer_manager();
 
 	 //S'il n'y a pas de paramètre geom, on en crée et on remplie ensuite
 	if (widget->geom_params == NULL){
-		placer_param = calloc(sizeof(ei_placer_param_t), 1);
-		widget->geom_params = placer_param;
+		placer = calloc(sizeof(ei_placer_t), 1);
+		widget->geom_params = placer;
 	}
 
 	if (widget->geom_params->manager == NULL){
 		widget->geom_params->manager = placer_manager;
 	}
 	//On cast pour forcer les valeurs
-	placer_param = (ei_placer_param_t*) (widget->geom_params);
+	placer = (ei_placer_t*) (widget->geom_params);
 	if (strcmp(widget->geom_params->manager->name, "placer") != 0 ){
 		widget->geom_params->manager = placer_manager;
-		ei_register_placer_manager();
 	}
 	if (anchor != NULL){
-		placer_param->anchor = *anchor;
+		placer->anchor = *anchor;
 	}
 	else{
-		placer_param->anchor = ei_anc_northwest;
+		placer->anchor = ei_anc_northwest;
 	}
 	if (x != NULL){
-		placer_param->x = *x;
+		placer->x = *x;
 	}
 	else{
-		placer_param->x = 0;
+		placer->x = 0;
 	}
 	if (y != NULL){
-		placer_param->y = *y;
+		placer->y = *y;
 	}
 	else{
-		placer_param->y = 0;
+		placer->y = 0;
 	}
 	if (width != NULL){
-		placer_param->width = *width;
+		placer->width = *width;
 	}
 	else{	//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
 		if (rel_width == NULL){
-			placer_param->width = (widget->requested_size).width;
+			placer->width = (widget->requested_size).width;
 		}
 		else{
-			placer_param->width = 0;
+			placer->width = 0;
 		}
 	}
 	if (height != NULL){
-		placer_param->height = *height;
+		placer->height = *height;
 	}
 	else{	//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
 		if (rel_width == NULL){
-			placer_param->height = (widget->requested_size).height;
+			placer->height = (widget->requested_size).height;
 		}
 		else{
-			placer_param->height = 0;
+			placer->height = 0;
 		}
 	}
 	if (rel_x != NULL){
-		placer_param->rel_x = *rel_x;
+		placer->rel_x = *rel_x;
 	}
 	else{
-		placer_param->rel_x = 0.0;
+		placer->rel_x = 0.0;
 	}
 	if (rel_y != NULL){
-		placer_param->rel_y = *rel_y;
+		placer->rel_y = *rel_y;
 	}
 	else{
-		placer_param->rel_y = 0.0;
+		placer->rel_y = 0.0;
 	}
 	if (rel_width != NULL){
-		placer_param->rel_width = *rel_width;
+		placer->rel_width = *rel_width;
 	}
 	else{
-		placer_param->rel_width = 0.0;
+		placer->rel_width = 0.0;
 	}
 	if (rel_height != NULL){
-		placer_param->rel_height = *rel_height;
+		placer->rel_height = *rel_height;
 	}
 	else{
-		placer_param->rel_height = 0.0;
+		placer->rel_height = 0.0;
 	}
 }
 
