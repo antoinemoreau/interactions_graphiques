@@ -68,8 +68,9 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 						ei_surface_t*		img,
 						ei_rect_t**		img_rect,
 						ei_anchor_t*		img_anchor) {
-	if (requested_size != NULL)
+	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
+	}
 	else {
 		widget->requested_size.height = 0;
 		widget->requested_size.width = 0;

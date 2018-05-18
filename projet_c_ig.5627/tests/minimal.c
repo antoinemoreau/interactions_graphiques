@@ -45,7 +45,6 @@ int ei_main(int argc, char** argv)
 	ei_draw_polygon(main_window, points, transp_blue, NULL);
 	hw_surface_unlock(main_window);
 	hw_surface_update_rects(main_window, NULL);
-	
 	#ifdef __APPLE__
 		// On osx, the window opens empty and does not perform the first redraw.
 		//	Force a redraw after 0.5s
