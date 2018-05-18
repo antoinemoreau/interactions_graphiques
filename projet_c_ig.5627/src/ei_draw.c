@@ -7,7 +7,7 @@ void ei_draw_text(ei_surface_t		surface,
 						 const ei_color_t	color,
 						 const ei_rect_t*	clipper){
 //la surface doit avoir été lock
-uint8_t* first_p = hw_surface_get_buffer(surface); //on recupere l'adresse memoire du premier pixel de la surface lock
+/*uint8_t* first_p = hw_surface_get_buffer(surface); //on recupere l'adresse memoire du premier pixel de la surface lock
 ei_surface_t surface_texte = hw_text_create_surface(text, font, color);
 hw_surface_lock(surface_texte);
 ei_bool_t alpha = hw_surface_has_alpha(surface);
@@ -16,7 +16,7 @@ if (ei_copy_surface()) {
 	return 1;
 } else {
 }
-
+*/
 
 
 
