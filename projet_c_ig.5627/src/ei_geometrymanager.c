@@ -16,6 +16,9 @@ void ei_place (ei_widget_t* widget,
 		 float*			rel_width,
 		 float*			rel_height) {
 
+	ei_size_t requested_size = widget->requested_size;
+	ei_geometrymanager_t* geom_manager = widget->geom_params->manager;
+
 }
 
 static ei_geometrymanager_t* create_placer_manager(){
