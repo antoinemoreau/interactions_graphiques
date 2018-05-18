@@ -5,9 +5,12 @@
 
 static ei_geometrymanager_t* geometrymanager_list = NULL;
 
-
+/*
+On crée un geometrymanager de type placer en lui affectant
+le nom et les fonctions associées à cette classe
+*/
 static ei_geometrymanager_t* create_placer_manager(){
-	ei_geometrymanager_t* geometrymanager = calloc(sizeof(ei_geometrymanager_t), 1);
+	ei_geometrymanager_t* geometrymanager = calloc(1, sizeof(ei_geometrymanager_t));
 	strncpy(geometrymanager->name, "placer", 20);
 	geometrymanager->runfunc = (ei_geometrymanager_runfunc_t) &ei_placer_runfunc;
 	geometrymanager->releasefunc = (ei_geometrymanager_releasefunc_t) &ei_placer_releasefunc;
@@ -32,7 +35,7 @@ void ei_place (ei_widget_t* widget,
 
 	 //S'il n'y a pas de paramètre geom, on en crée et on remplie ensuite
 	if (widget->geom_params == NULL){
-		placer = calloc(sizeof(ei_placer_t), 1);
+		placer = calloc(1, sizeof(ei_placer_t));
 		widget->geom_params = placer;
 	}
 
@@ -108,6 +111,7 @@ void ei_place (ei_widget_t* widget,
 	else{
 		placer->rel_height = 0.0;
 	}
+	ei_placer_runfunc(widget);
 }
 
 
