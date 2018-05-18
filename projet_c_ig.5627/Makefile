@@ -11,6 +11,14 @@ INCFLAGS	:= -I${INCLUDES}
 OPTFLAGS	:= -g
 CCFLAGS		:= -c ${OPTFLAGS} -Wall -std=c99
 SRC = ./src
+
+CCVER := $(shell gcc --version | grep -e '^gcc' | sed -r -e 's/^.*([[:digit:]])\..*$/\1/p')
+VFLAGS :=
+ifneq "${CCVER}" "4"
+	  VFLAGS := -no-pie
+endif
+
+
 # The list of objects to include in the library
 
 LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
@@ -44,7 +52,7 @@ else
 
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
-	LINK		= ${CC} -no-pie
+	LINK		= ${CC} ${VFLAGS}
 	LIBEI		= ${OBJDIR}/libei.a
 #	ARCH	        = 32
 	ARCH	        = 64
