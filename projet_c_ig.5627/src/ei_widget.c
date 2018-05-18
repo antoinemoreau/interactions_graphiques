@@ -61,7 +61,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	ei_frame_t* frame = (ei_frame_t*)widget;
 
 	if (color != NULL)
-		frame->color = color; 
+		frame->color = color;
 	else if (frame->color == NULL)
 		frame->color = &ei_default_background_color;
 
@@ -95,7 +95,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 
 	if (img != NULL)
 		frame->img = img;
-	
+
 	if (img_rect != NULL)
 		frame->img_rect = img_rect;
 

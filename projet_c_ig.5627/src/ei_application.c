@@ -23,11 +23,12 @@ void ei_app_free() {
 
 void ei_app_run() {
         //A.2 tentative de app run qui utilise les drawfunction des widgets
+
         ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
 
         hw_surface_lock(root_surface);
-        root->wclass->drawfunc(root,root_surface,NULL,NULL);
+        root->wclass->drawfunc(root,root_surface,root_surface,NULL);
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface,NULL);
         getchar();

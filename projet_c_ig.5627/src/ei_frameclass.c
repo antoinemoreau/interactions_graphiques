@@ -17,14 +17,14 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_surface_t		surface,
 							 ei_surface_t		pick_surface,
 							 ei_rect_t*		clipper) {
+
         ei_frame_t* frame = (ei_frame_t*) widget;
         ei_fill(surface,frame->color,clipper);
-        ei_fill(pick_surface,frame->wcalss->pick_color,clipper);
+        //ei_fill(pick_surface,frame->widget->pick_color,clipper);
 }
 
 void ei_frame_setdefaultsfunc (ei_widget_t* widget) {
         ei_frame_t* frame = (ei_frame_t*) widget;
-        frame->widget = widget;
         frame->color = &ei_default_background_color;
         frame->border_width = 0;
         frame->relief = ei_relief_none;
