@@ -26,15 +26,16 @@ void ei_app_free() {
 
 void ei_app_run() {
         //A.2 tentative de app run qui utilise les drawfunction des widgets
-        /*ei_widget_t* current = root->children_head;
+        ei_widget_t* current = root->children_head;
+        ei_surface_t root_surface = ei_app_root_surface();
         while (current != NULL) {
                 ei_widget_t* current_child = current->children_head;
                 while (current_child) {
-                        current_child->wclass->
+                        current_child->wclass->drawfunction();
                         current_child->next_sibling;
                 }
                 current = current->
-        }*/
+        }
         getchar();
 }
 

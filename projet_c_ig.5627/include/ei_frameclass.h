@@ -7,15 +7,12 @@
 
 void* ei_frame_allocfunc ();
 
-void ei_frame_releasefunc (struct ei_frame_t* frame);
+void ei_frame_releasefunc (struct ei_widget_t* frame);
 
-void ei_frame_drawfunc (struct ei_frame_t*	frame,
-							 ei_surface_t		surface,
-							 ei_surface_t		pick_surface,
-							 ei_rect_t*		clipper);
+void ei_frame_drawfunc (struct ei_widget_t* frame, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper);
 
-void ei_frame_setdefaultsfunc (struct ei_frame_t* frame);
+void ei_frame_setdefaultsfunc (struct ei_widget_t* frame);
 
-void ei_frame_geomnotifyfunc (struct ei_frame_t* frame, ei_rect_t rect);
+void ei_frame_geomnotifyfunc (struct ei_widget_t* frame, ei_rect_t rect);
 
 #endif
