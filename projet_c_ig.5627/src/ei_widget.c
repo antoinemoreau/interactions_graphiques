@@ -60,8 +60,8 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 		*(frame->border_width) = 0;
 
 	if (relief != NULL)
-		frame->relief = relief;
-	else if (frame->relief == NULL)
+		frame->relief = *relief;
+	else if (!frame->relief)
 		frame->relief = ei_relief_none;
 
 	if (text != NULL)
@@ -78,8 +78,8 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 		frame->text_color = &ei_font_default_color;
 
 	if (text_anchor != NULL)
-		frame->text_anchor = text_anchor;
-	else if (frame->text_anchor == NULL)
+		frame->text_anchor = *text_anchor;
+	else if (!frame->text_anchor)
 		frame->text_anchor = ei_anc_center;
 
 	if (img != NULL)
@@ -90,7 +90,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 
 	if (img_anchor != NULL)
 		frame->img_anchor = img_anchor;
-	else if (frame->img_anchor == NULL)
+	else if (!frame->img_anchor)
 		frame->img_anchor = ei_anc_center;
 }
 
