@@ -11,7 +11,9 @@ void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
         hw_init();
 
         ei_frame_register_class();
+        ei_button_register_class();
         ei_register_placer_manager();
+
         root = ei_widget_create("frame", NULL);
 
         root->requested_size = *main_window_size;
@@ -30,7 +32,6 @@ void ei_app_run() {
 
         ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
-
         hw_surface_lock(root_surface);
         root->wclass->drawfunc(root,root_surface,NULL,NULL);
         hw_surface_unlock(root_surface);

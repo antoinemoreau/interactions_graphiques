@@ -16,13 +16,13 @@
 int ei_main(int argc, char** argv)
 {
 	ei_size_t	screen_size		= {600, 600};
-	ei_color_t	root_bgcol		= {0x52, 0x7f, 0xb4, 0xff};
-
+	ei_color_t	root_bgcol		= {0x00, 0x00, 0xff, 0xff};
+	
 	ei_widget_t*	frame;
 	ei_size_t	frame_size		= {300,200};
 	int		frame_x			= 150;
 	int		frame_y			= 200;
-	ei_color_t	frame_color		= {0x88, 0x88, 0x88, 0xff};
+	ei_color_t	frame_color		= {0xff, 0xff, 0xff, 0xff};
 	ei_relief_t	frame_relief		= ei_relief_raised;
 	int		frame_border_width	= 6;
 
