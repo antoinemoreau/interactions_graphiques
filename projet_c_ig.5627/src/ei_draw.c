@@ -1,5 +1,6 @@
 #include "ei_draw.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void ei_draw_text(ei_surface_t		surface,
 						 const ei_point_t*	where,
