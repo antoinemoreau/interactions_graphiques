@@ -11,7 +11,7 @@ void* ei_frame_allocfunc () {
 
 
 void ei_frame_releasefunc (struct ei_widget_t* widget) {
-        free(widget);
+        //free(widget);
 }
 
 void ei_frame_drawfunc      (ei_widget_t*	widget,
@@ -55,8 +55,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_linked_point_t bot_poly_first = {bot_in,&bot_poly_right_in};
                 ei_rect_t unter = {low_first,size_unter};
                 if (frame->relief == ei_relief_none) {
-                        ei_color_t no_relief = {0xff,0xff,0xff,0xff};
-                        ei_fill(surface,&no_relief,clipper);
+                        ei_fill(surface,frame->color,clipper);
                 }else if (frame->relief == ei_relief_raised) {
                         ei_draw_polygon(surface,&top_poly_first,light_color,clipper);
                         ei_draw_polygon(surface,&bot_poly_first,dark_color,clipper);
@@ -75,7 +74,12 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_fill(pick_surface,frame->widget.pick_color,clipper);
                 hw_surface_unlock(pick_surface);
         }
-
+        if (frame->text) {
+                fprintf(stdout, "pouloulou\n");
+                ei_point_t aqui;
+                ei_anchor_spot(frame->text_anchor,&(frame->widget),&aqui);
+                ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),clipper);
+        }
         //gestion des enfants
         ei_widget_t* current_child = frame->widget.children_head;
         while (current_child){

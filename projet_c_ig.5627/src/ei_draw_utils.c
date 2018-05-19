@@ -1,4 +1,6 @@
 #include "ei_draw.h"
+#include "ei_widget.h"
+
 #include <stdio.h>
 
 void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){

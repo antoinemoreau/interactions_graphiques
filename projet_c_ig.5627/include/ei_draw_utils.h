@@ -1,4 +1,5 @@
 #include "ei_draw.h"
+#include "ei_widget.h"
 #include <stdio.h>
 
 /**
