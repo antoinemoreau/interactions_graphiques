@@ -7,7 +7,9 @@ void compute_spot(ei_widget_t* widget, ei_widget_t* parent){
         ei_placer_t* placer_widget = (ei_placer_t*) widget->geom_params;
 
         if (placer_parent == NULL){
-                fprintf(stdout, "Coucou : %p\n", parent->screen_location);
+                widget->screen_location.top_left.x = parent->screen_location.top_left.x + placer_widget->x;
+                widget->screen_location.top_left.y = parent->screen_location.top_left.y + placer_widget->y;
+
         }
         else{
                 widget->screen_location.top_left.x = placer_parent->x + placer_widget->x;
