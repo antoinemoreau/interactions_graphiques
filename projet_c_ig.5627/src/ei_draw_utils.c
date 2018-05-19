@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){
         int rouge = (int) initiale.red*variation ;
@@ -79,4 +80,17 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_
                 (*anchor_position).x = widget->screen_location.top_left.x;
                 (*anchor_position).y = widget->screen_location.top_left.y;
         }
+}
+
+ei_linked_point_t* arc(ei_point_t center, int rayon, int angle_depart, int angle_fin, int nb_points){
+        ei_point_t point = {center.x + rayon * cos(angle_depart), center.y + rayon * sin(angle_depart)}
+        ei_linked_point_t first_point = {point, NULL};
+        ei_linked_point_t current = first_point;
+        for (int i = 1; i < nb_points + 1; i++){
+                point.x = center.x + rayon * cos(angle_depart + i*(angle_fin - angle_depart)/8);
+                point.y = center.y + rayon * sin(angle_depart + i*(angle_fin - angle_depart)/8);
+                current->next = {point, NULL};
+                current = current->next;
+        }
+        return &first_point;
 }
