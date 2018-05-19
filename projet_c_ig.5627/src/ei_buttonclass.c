@@ -15,7 +15,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_surface_t		surface,
                                                 ei_surface_t		pick_surface,
                                                 ei_rect_t*		clipper) {
-
+        
 }
 
 void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {
