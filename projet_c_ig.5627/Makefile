@@ -36,7 +36,6 @@ LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
 
 
 
-
 # Platform specific definitions (OS X, Linux, Windows)
 
 ifeq (${PLATFORM},Darwin)

@@ -2,10 +2,7 @@
 #include <stdio.h>
 
 void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){
-
-        fprintf(stdout, "%d, %f\n", initiale.red,variation);
         int rouge = (int) initiale.red*variation ;
-        fprintf(stdout, "%d\n", rouge);
         int bleu = (int) initiale.blue*variation;
         int vert = (int) initiale.green*variation;
         if (rouge < 255) {
