@@ -10,9 +10,8 @@ void compute_spot(ei_widget_t* widget, ei_widget_t* parent){
                 /*
                 Si on est sur le widget root, on calcule simplement la position du widget fils
                 */
-                fprintf(stdout, "coucou : %s\n", widget->screen_location);
-                widget->screen_location.top_left.x = parent->screen_location.top_left.x + placer_widget->rel_x * placer_parent->width + placer_widget->x;
-                widget->screen_location.top_left.y = parent->screen_location.top_left.y + placer_widget->rel_y * placer_parent->height + placer_widget->y;
+                widget->screen_location.top_left.x = parent->screen_location.top_left.x + placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x;
+                widget->screen_location.top_left.y = parent->screen_location.top_left.y + placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y;
 
         }
         else{   /*On calcule la place d'un des pixels du widget dans le référentiel du placer_parent
