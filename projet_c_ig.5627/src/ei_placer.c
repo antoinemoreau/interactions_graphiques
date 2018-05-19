@@ -82,7 +82,7 @@ void ei_placer_releasefunc(struct ei_widget_t* widget){
                 supress_widget_from_parent(widget);
         }
         else{
-                for(ei_widget_t* current = widget->children_head; current =! NULL; current = current->next_sibling){
+                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
                         current->parent = NULL;
                 }
         }
