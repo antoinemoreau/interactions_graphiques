@@ -108,5 +108,7 @@ ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, int angle_depart, 
                 current = current->next;
         }
         ei_extreme_linked_points_t* extreme_points = calloc(1, sizeof(ei_extreme_linked_points_t));
+        extreme_points->head_point = first_point;
+        extreme_points->tail_point = previous;
         return extreme_points;
 }
