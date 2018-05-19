@@ -83,14 +83,28 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_
 }
 
 ei_linked_point_t* arc(ei_point_t center, int rayon, int angle_depart, int angle_fin, int nb_points){
-        ei_point_t point = {center.x + rayon * cos(angle_depart), center.y + rayon * sin(angle_depart)}
-        ei_linked_point_t first_point = {point, NULL};
-        ei_linked_point_t current = first_point;
-        for (int i = 1; i < nb_points + 1; i++){
-                point.x = center.x + rayon * cos(angle_depart + i*(angle_fin - angle_depart)/8);
-                point.y = center.y + rayon * sin(angle_depart + i*(angle_fin - angle_depart)/8);
-                current->next = {point, NULL};
+        /*
+        Retourne une chaine de points calculés pour formé un quart de cercle
+        compris entre angle_depart et angle_fin
+        */
+        ei_point_t point = {center.x + rayon * cos(angle_depart), center.y + rayon * sin(angle_depart)};
+        ei_linked_point_t* first_point = calloc(1, sizeof(ei_linked_point_t));
+        int angle;
+        first_point->point = point;
+        first_point->next = NULL;
+        ei_linked_point_t* previous = first_point;
+        ei_linked_point_t* current = NULL;
+
+        for (int i = 1; i <= nb_points + 1; i++){
+                angle = angle_depart + i*(angle_fin - angle_depart)/(nb_points + 1);
+                current = calloc(1, sizeof(ei_linked_point_t));
+                point.x = center.x + rayon * cos(angle);
+                point.y = center.y + rayon * sin(angle);
+                current->point = point;
+                current->next = NULL;
+                previous->next = current;
+                previous = current;
                 current = current->next;
         }
-        return &first_point;
+        return first_point;
 }
