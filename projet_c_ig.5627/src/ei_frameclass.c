@@ -89,6 +89,11 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 }
 
 ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points){
+        /*
+        Renvoie une chaine de points qui forme un rectangle avec des sommets arrondis
+        On a ajouté un parametre nb_points qui permet de jouer sur la precision de l'arrondi
+        */
+
         //On récupère les 4 points formant le rectangle
         ei_point_t top_left = {rectangle.top_left.x, rectangle.top_left.y};
         ei_point_t top_right = {rectangle.top_left.x + rectangle.size.width, rectangle.top_left.y};
