@@ -54,7 +54,7 @@ void ei_widget_destroy (ei_widget_t* widget) {
 }
 
 ei_widget_t* ei_widget_pick (ei_point_t* where) {
-
+	return NULL;
 }
 
 void		ei_frame_configure		(ei_widget_t*		widget,
