@@ -26,7 +26,6 @@ void ei_app_run() {
 
         ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
-
         hw_surface_lock(root_surface);
         root->wclass->drawfunc(root,root_surface,NULL,NULL);
         hw_surface_unlock(root_surface);

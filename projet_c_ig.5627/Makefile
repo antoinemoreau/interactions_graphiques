@@ -28,6 +28,8 @@ LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
 		   ${OBJDIR}/ei_widgetclass.o \
 		   ${OBJDIR}/ei_geometrymanager.o \
 		   ${OBJDIR}/ei_placer.o \
+		   ${OBJDIR}/ei_draw.o \
+
 
 
 
@@ -182,7 +184,8 @@ ${OBJDIR}/ei_widgetclass.o: ${SRC}/ei_widgetclass.c ${INCLUDES}/*
 ${OBJDIR}/ei_placer.o: ${SRC}/ei_placer.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_placer.c -o ${OBJDIR}/ei_placer.o
 
-
+${OBJDIR}/ei_draw.o: ${SRC}/ei_draw.c ${INCLUDES}/*
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_draw.c -o ${OBJDIR}/ei_draw.o
 
 
 

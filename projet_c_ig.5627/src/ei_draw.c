@@ -1,4 +1,5 @@
 #include "ei_draw.h"
+#include <stdio.h>
 
 void ei_draw_text(ei_surface_t		surface,
 						 const ei_point_t*	where,
@@ -8,30 +9,30 @@ void ei_draw_text(ei_surface_t		surface,
 						 const ei_rect_t*	clipper){
 //la surface doit avoir été lock
 ei_rect_t rect_surface = hw_surface_get_rect(surface);
-if (font) {
+ei_font_t font_text = font;
+if (font_text == NULL) {
 	//on recupere la surface du texte
-	ei_surface_t surface_texte = hw_text_create_surface(text, font, color);
-} else {
-	ei_surface_t surface_texte = hw_text_create_surface(text, ei_default_font, color);
+	font_text = ei_default_font;
 }
-//on lock la surface du text
+ei_surface_t surface_texte = hw_text_create_surface(text, font_text, color);
 hw_surface_lock(surface_texte);
+//on lock la surface du text
 //on recupere le rectangle de la surface de texte
 ei_rect_t rect_text = hw_surface_get_rect(surface_texte);
 //surface de destination
 //checking if the surface has an alpha parameter
 if (clipper) {
-	/* code */
+	fprintf(stdout, "g pa fé enkore\n");
 }
 ei_bool_t alpha = hw_surface_has_alpha(surface_texte);
 //copie de la surface du text  l'endroit voulu
 //on sort en erreur si les dimmensions  ne correspondent pas
-if (ei_copy_surface(surface,clipper,surface_texte,rect_text,alpha)) {
+ei_rect_t rect_dest = {*where,rect_text.size};
+if (ei_copy_surface(surface,&rect_dest,surface_texte,&rect_text,alpha)) {
 	fprintf(stderr, "Different ROI size\n");
 	exit(1);
 }
-ei_rect_t rect_dest = {*where,rect_text.size};
-ei_copy_surface();
+ei_copy_surface(surface,&rect_dest,surface_texte,&rect_text,alpha);
 hw_surface_unlock(surface_texte);
 hw_surface_free(surface_texte);
 }
