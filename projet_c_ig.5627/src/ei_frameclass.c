@@ -10,7 +10,7 @@ void* ei_frame_allocfunc () {
 
 
 void ei_frame_releasefunc (struct ei_widget_t* widget) {
-        //free(widget);
+        free(widget);
 }
 
 void ei_frame_drawfunc      (ei_widget_t*	widget,
