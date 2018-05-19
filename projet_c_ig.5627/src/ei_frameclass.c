@@ -10,7 +10,7 @@ void* ei_frame_allocfunc () {
 
 
 void ei_frame_releasefunc (struct ei_widget_t* widget) {
-        free(widget);
+        //free(widget);
 }
 
 void ei_frame_drawfunc      (ei_widget_t*	widget,
@@ -53,7 +53,6 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         //gestion des enfants
         ei_widget_t* current_child = frame->widget.children_head;
         while (current_child){
-                current_child->screen_location = clipper_fils;
                 current_child->wclass->drawfunc(current_child, surface, pick_surface,&(current_child->screen_location));
                 current_child = current_child->next_sibling;
         }

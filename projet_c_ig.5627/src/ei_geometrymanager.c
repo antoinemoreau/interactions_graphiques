@@ -6,11 +6,12 @@
 
 static ei_geometrymanager_t* geometrymanager_list = NULL;
 
-/*
-On crée un geometrymanager de type placer en lui affectant
-le nom et les fonctions associées à cette classe
-*/
+
 static ei_geometrymanager_t* create_placer_manager(){
+	/*
+	On crée un geometrymanager de type placer en lui affectant
+	le nom et les fonctions associées à cette classe
+	*/
 	ei_geometrymanager_t* geometrymanager = calloc(1, sizeof(ei_geometrymanager_t));
 	strncpy(geometrymanager->name, "placer", 20);
 	geometrymanager->runfunc = (ei_geometrymanager_runfunc_t) &ei_placer_runfunc;
@@ -32,13 +33,18 @@ void ei_place (ei_widget_t* widget,
 		 float*			rel_height) {
 
 	 ei_placer_t* placer = NULL;
-	 ei_geometrymanager_t* placer_manager = create_placer_manager();
 
-	 //S'il n'y a pas de paramètre geom, on en crée et on remplie ensuite
+	 ei_geometrymanager_t* placer_manager = ei_geometrymanager_from_name("placer");
+	 if (placer_manager == NULL){
+		 fprintf(stderr, "Placer manager doesn't exist in \"geometrymanager_list\" ");
+		 exit(1);
+	}
+
+	 //S'il n'y a pas de paramètre geom, on en crée et on affecte ensuite
 	if (widget->geom_params == NULL){
 		placer = calloc(1, sizeof(ei_placer_t));
-		placer->manager = *placer_manager;
-		widget->geom_params = placer;
+		placer->manager = placer_manager;
+		widget->geom_params = (ei_geometry_param_t*) placer;
 	}
 	widget->geom_params->manager = placer_manager;
 
@@ -133,7 +139,6 @@ void ei_geometrymanager_unmap(ei_widget_t* widget){
 }
 
 ei_geometrymanager_t* ei_geometrymanager_from_name(ei_geometrymanager_name_t name){
-	ei_geometrymanager_t* geometrymanager;
 	for (ei_geometrymanager_t* current = geometrymanager_list; current != NULL; current = current->next){
 		if (strcmp(current->name, name)==0){
 			return current;

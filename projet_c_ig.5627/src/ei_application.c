@@ -1,6 +1,7 @@
 #include "ei_application.h"
 #include "ei_widgetclass.h"
 #include "ei_frame.h"
+#include "ei_geometrymanager.h"
 #include <stdio.h>
 
 ei_widget_t *root;
@@ -10,9 +11,12 @@ void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
         hw_init();
 
         ei_frame_register_class();
+        ei_register_placer_manager();
         root = ei_widget_create("frame", NULL);
 
         root->requested_size = *main_window_size;
+        root->screen_location.size.width = main_window_size->width;
+        root->screen_location.size.height = main_window_size->height;
 
         window = hw_create_window(main_window_size, fullscreen);
 }
