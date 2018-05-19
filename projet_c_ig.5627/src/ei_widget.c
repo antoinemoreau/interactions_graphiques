@@ -1,5 +1,6 @@
 #include "ei_widget.h"
 #include "ei_frame.h"
+#include "ei_button.h"
 #include "ei_geometrymanager.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -138,7 +139,69 @@ void			ei_button_configure		(ei_widget_t*		widget,
 							 ei_anchor_t*		img_anchor,
 							 ei_callback_t*		callback,
 							 void**			user_param) {
+	if (requested_size != NULL){
+		widget->requested_size = *requested_size;
+	}
+	else {
+		widget->requested_size.height = 0;
+		widget->requested_size.width = 0;
+	}
+	ei_button_t* button = (ei_button_t*)widget;
 
+	if (color != NULL)
+		button->color = color;
+	else if (button->color == NULL)
+		button->color = &ei_default_background_color;
+
+	if (border_width != NULL)
+		button->border_width = *border_width;
+	else if (!button->border_width)
+		button->border_width = 0;
+
+	if (corner_radius != NULL)
+		button->corner_radius = *corner_radius;
+	else if (!button->corner_radius)
+		button->corner_radius = 0;
+
+	if (relief != NULL)
+		button->relief = *relief;
+	else if (!button->relief)
+		button->relief = ei_relief_none;
+
+	if (text != NULL)
+		button->text = text;
+
+	if (text_font != NULL)
+		button->text_font = text_font;
+	else if (button->text_font == NULL)
+		button->text_font = ei_default_font;
+
+	if (text_color != NULL)
+		button->text_color = text_color;
+	else if (button->text_color == NULL)
+		button->text_color = &ei_font_default_color;
+
+	if (text_anchor != NULL)
+		button->text_anchor = *text_anchor;
+	else if (!button->text_anchor)
+		button->text_anchor = ei_anc_center;
+
+	if (img != NULL)
+		button->img = img;
+
+	if (img_rect != NULL)
+		button->img_rect = img_rect;
+
+	if (img_anchor != NULL)
+		button->img_anchor = *img_anchor;
+	else if (!button->img_anchor)
+		button->img_anchor = ei_anc_center;
+
+	if (callback != NULL)
+		button->callback = callback;
+
+	if (user_param != NULL)
+		button->user_param = user_param;
 }
 
 void			ei_toplevel_configure		(ei_widget_t*		widget,
