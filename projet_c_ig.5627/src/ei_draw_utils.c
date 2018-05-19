@@ -1,6 +1,7 @@
 #include "ei_draw.h"
 #include "ei_widget.h"
 #include "ei_geometrymanager.h"
+#include "ei_draw_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -82,7 +83,7 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_
         }
 }
 
-ei_linked_point_t* arc(ei_point_t center, int rayon, int angle_depart, int angle_fin, int nb_points){
+ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, int angle_depart, int angle_fin, int nb_points){
         /*
         Retourne une chaine de points calculés pour formé un quart de cercle
         compris entre angle_depart et angle_fin
@@ -106,5 +107,6 @@ ei_linked_point_t* arc(ei_point_t center, int rayon, int angle_depart, int angle
                 previous = current;
                 current = current->next;
         }
-        return first_point;
+        ei_extreme_linked_points_t* extreme_points = calloc(1, sizeof(ei_extreme_linked_points_t));
+        return extreme_points;
 }

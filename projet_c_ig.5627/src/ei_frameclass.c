@@ -88,6 +88,30 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         }
 }
 
+ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points){
+        //On récupère les 4 points formant le rectangle
+        ei_point_t top_left = {rectangle.top_left.x, rectangle.top_left.y};
+        ei_point_t top_right = {rectangle.top_left.x + rectangle.size.width, rectangle.top_left.y};
+        ei_point_t bot_left = {rectangle.top_left.x, rectangle.top_left.y + rectangle.size.height};
+        ei_point_t bot_right = {rectangle.top_left.x + rectangle.size.width, rectangle.top_left.y + rectangle.size.height};
+        //On détermine les 4 centres autour desquels on formera les arcs de cercles
+        ei_point_t center_top_left = {top_left.x - rayon, top_left.y - rayon};
+        ei_point_t center_top_right = {top_right.x - rayon, top_right.y - rayon};
+        ei_point_t center_bot_left = {bot_left.x - rayon, bot_left.y - rayon};
+        ei_point_t center_bot_right = {bot_right.x - rayon, bot_right.y - rayon};
+        //On récupère les points formant les arcs de cercles de chaque coin du rectangle
+        ei_extreme_linked_points_t* extreme_points_top_right = arc(center_top_right, rayon, 0, 90, nb_points);
+        ei_extreme_linked_points_t* extreme_points_top_left = arc(center_top_left, rayon, 90, 180, nb_points);
+        ei_extreme_linked_points_t* extreme_points_bot_left = arc(center_bot_left, rayon, 180, 270, nb_points);
+        ei_extreme_linked_points_t* extreme_points_bot_right = arc(center_bot_right, rayon, 270, 360, nb_points);
+        //On relie tous les points dans l'ordre
+        extreme_points_top_left->tail_point->next = extreme_points_bot_left->head_point;
+        extreme_points_bot_left->tail_point->next = extreme_points_bot_right->head_point;
+        extreme_points_bot_right->tail_point->next = extreme_points_top_right->head_point;
+        //On retourne alors le premier point de la chaine formée
+        return extreme_points_top_left->head_point;
+}
+
 void ei_frame_setdefaultsfunc (ei_widget_t* widget) {
         ei_frame_t* frame = (ei_frame_t*) widget;
         frame->widget = *widget;
