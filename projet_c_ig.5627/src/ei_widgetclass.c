@@ -1,5 +1,6 @@
 #include "ei_widgetclass.h"
 #include "ei_frameclass.h"
+#include "ei_buttonclass.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -23,13 +24,13 @@ static ei_widgetclass_t* create_frame_widget(){
 
 static ei_widgetclass_t* create_button_widget(){
         ei_widgetclass_t *button_widget = calloc(1, sizeof(ei_widgetclass_t));
-        strncpy(frame_widget->name, "button", 20);
-        frame_widget->allocfunc = (ei_widgetclass_allocfunc_t) &ei_button_allocfunc;
-        frame_widget->releasefunc = (ei_widgetclass_releasefunc_t) &ei_button_releasefunc;
-        frame_widget->drawfunc = (ei_widgetclass_drawfunc_t) &ei_button_drawfunc;
-        frame_widget->setdefaultsfunc = (ei_widgetclass_setdefaultsfunc_t) &ei_button_setdefaultsfunc;
-        frame_widget->geomnotifyfunc = (ei_widgetclass_geomnotifyfunc_t) &ei_button_geomnotifyfunc;
-        frame_widget->next = NULL;
+        strncpy(button_widget->name, "button", 20);
+        button_widget->allocfunc = (ei_widgetclass_allocfunc_t) &ei_button_allocfunc;
+        button_widget->releasefunc = (ei_widgetclass_releasefunc_t) &ei_button_releasefunc;
+        button_widget->drawfunc = (ei_widgetclass_drawfunc_t) &ei_button_drawfunc;
+        button_widget->setdefaultsfunc = (ei_widgetclass_setdefaultsfunc_t) &ei_button_setdefaultsfunc;
+        button_widget->geomnotifyfunc = (ei_widgetclass_geomnotifyfunc_t) &ei_button_geomnotifyfunc;
+        button_widget->next = NULL;
         return button_widget;
 }
 
