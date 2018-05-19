@@ -38,6 +38,52 @@ void ei_placer_runfunc(ei_widget_t* widget){
         }
 }
 
-void ei_placer_releasefunc(struct ei_widget_t* widget){
+void supress_widget_from_parent(ei_widget_t* widget){
+        /*
+        Fonction pour faciliter la supression d'un widget dans la
+        liste des enfants de son placer_parent (appelée dans release)
 
+        Condition : la parent existe et le widget est dans la liste
+        */
+        ei_widget_t* parent = widget->parent;
+        ei_widget_t* current = parent->children_head;
+        ei_widget_t* previous = parent->children_head;
+        //On cherche le widget passé en argument et on enlève les pointeurs sur lui
+        while (current != NULL) {
+                if (current == widget){
+                        previous->next_sibling = current->next_sibling;
+                        if (current == parent->children_tail){
+                                parent->children_tail = previous;
+                        }
+                        return;
+                }
+                previous = current;
+                current = current->next_sibling;
+        }
+}
+
+void ei_placer_releasefunc(struct ei_widget_t* widget){
+        ei_widget_t* parent = widget->parent;
+        if (parent != NULL){
+                /*
+                On enlève les liens entre ce widget et ses enfants et son parent
+                */
+                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
+                        if (parent->children_tail != NULL){
+                                parent->children_tail->next_sibling = current;
+                                parent->children_tail = current;
+                        }
+                        else{
+                                parent->children_head = current;
+                                parent->children_tail = current;
+                                current->next_sibling = NULL;
+                        }
+                }
+                supress_widget_from_parent(widget);
+        }
+        else{
+                for(ei_widget_t* current = widget->children_head; current =! NULL; current = current->next_sibling){
+                        current->parent = NULL;
+                }
+        }
 }
