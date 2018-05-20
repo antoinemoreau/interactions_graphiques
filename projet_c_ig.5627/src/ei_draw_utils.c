@@ -93,12 +93,11 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
                 dest_size.height = 0;
         }
         else{
-                top_dest.x = coordonnee_minimum(right_rect->top_left.x, left_rect->top_left.x + left_rect->size.width);
-                top_dest.y = coordonnee_minimum(bot_rect->top_left.y, top_rect->top_left.y + top_rect->size.height);
+                top_dest.y = bot_rect->top_left.y;
+                top_dest.x = right_rect->top_left.x;
 
-                dest_size.width = coordonnee_maximum(right_rect->top_left.x, left_rect->top_left.x + left_rect->size.width) - top_dest.x;
-                dest_size.height = coordonnee_maximum(bot_rect->top_left.y, top_rect->top_left.y + top_rect->size.height) - top_dest.y;
-
+                dest_size.x = left_rect->top_left.x + left_rect->size.width - top_dest.x;
+                dest_size.y = top_rect->top_left.y + top_rect->size.height - top_dest.y;
         }
         dest->top_left = top_dest;
         dest->size = dest_size;
