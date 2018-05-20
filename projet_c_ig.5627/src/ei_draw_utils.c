@@ -29,50 +29,79 @@ void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){
         res->alpha = initiale.alpha;
 }
 
-void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_t* dest){
-        //point en haut à gauche du premier rectangle
-        ei_point_t first_top_left = {clipper->top_left.x, clipper->top_left.y};
-        //point en haut à droite du premier
-        ei_point_t first_top_right = {first_top_left.x + clipper->size.width, first_top_left.y};
-        //point en bas à gauche du premier
-        ei_point_t first_bot_left = {first_top_left.x, first_top_left.y + clipper->size.height};
-        //point en bas à droite du premier
-        ei_point_t first_bot_right = {first_top_right.x, first_bot_left.y};
-        //deuxieme
-        //point en haut à gauche du deuxieme
-        ei_point_t sec_top_left = {sec_rect->top_left.x, sec_rect->top_left.y};
-        //point en haut à droite du deuxieme
-        ei_point_t sec_top_right = {sec_top_left.x + sec_rect->size.width, sec_top_left.y};
-        //point en bas à gauche du deuxieme
-        ei_point_t sec_bot_left = {sec_top_left_x, sec_top_left.y + sec_rect->size.height};
-        //point en bas à droite du deuxieme
-        ei_point_t sec_bot_right = {sec_top_right.x, sec_bot_left.y};
-        //points du rectangle de destination
-        ei_point_t top_dest = {0,0};
-        ei_point_t bottom_point ={0,0};
-        ei_size_t dest_size = {0,0};
-
-        if (sec_top_left.x < first_top_left.x || sec_top_left.y < first_top_left.y) {
-                top_dest.x = first_top_left.x;
-                top_dest.y = first_top_left.y;
-        } else {
-                top_dest.x = sec_top_left.x;
-                top_dest.y = sec_top_left.y;
-                if (sec_bot_right.x < first_bot_right.x || sec_bot_right.y < first_bot_right.y) {
-                        // bottom_point.x = sec_bot_right.x;
-                        // bottom_point.y = sec_bot_right.y;
-                        // dest->top_left = top_dest;
-                        // dest_size.width = bottom_point.x - top_dest.x;
-                        // dest_size.height = bottom_point.y - top_dest.y;
-                        dest->size = sec_rect->size;
-                        return;
-                } else if () {
-                        /* code */
-                }
+static int coordonnee_minimum(int x1, int x2){
+        if (x1 <= x2){
+                return x1;
         }
+        else{
+                return x2;
+        }
+}
 
+static int coordonnee_maximum(int x1, int x2){
+        if (x1 <= x2){
+                return x2;
+        }
+        else{
+                return x1;
+        }
+}
 
+static ei_rect_t* rectangle_abs_min(ei_rect_t* clipper, ei_rect_t* sec_rect){
+        if (clipper->top_left.x <= sec_rect->top_left.x){
+                return clipper;
+        }
+        else{
+                return sec_rect;
+        }
+}
 
+static ei_rect_t* rectangle_ord_min(ei_rect_t* clipper, ei_rect_t* sec_rect){
+        if (clipper->top_left.y <= sec_rect->top_left.y){
+                return clipper;
+        }
+        else{
+                return sec_rect;
+        }
+}
+
+void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_t* dest){
+        ei_rect_t* left_rect = rectangle_abs_min(clipper, sec_rect);
+        ei_rect_t* right_rect = NULL;
+        ei_rect_t* top_rect = rectangle_ord_min(clipper, sec_rect);
+        ei_rect_t* bot_rect = NULL;
+        if (left_rect == clipper) {
+                right_rect = sec_rect;
+        }
+        else {
+                right_rect = clipper;
+        }
+        if (top_rect == clipper){
+                bot_rect = sec_rect;
+        }
+        else{
+                bot_rect = clipper;
+        }
+        //points du rectangle de destination
+        ei_point_t top_dest;
+        ei_size_t dest_size;
+
+        if ( (left_rect->top_left.x + left_rect->size.width <= right_rect->top_left.x) || top_rect->top_left.y + top_rect->size.height <= bot_rect->top_left.y){
+                top_dest.x = 0;
+                top_dest.y = 0;
+                dest_size.width = 0;
+                dest_size.height = 0;
+        }
+        else{
+                top_dest.x = coordonnee_minimum(right_rect->top_left.x, left_rect->top_left.x + left_rect->size.width);
+                top_dest.y = coordonnee_minimum(bot_rect->top_left.y, top_rect->top_left.y + top_rect->size.height);
+
+                dest_size.width = coordonnee_maximum(right_rect->top_left.x, left_rect->top_left.x + left_rect->size.width) - top_dest.x;
+                dest_size.height = coordonnee_maximum(bot_rect->top_left.y, top_rect->top_left.y + top_rect->size.height) - top_dest.y;
+
+        }
+        dest->top_left = top_dest;
+        dest->size = dest_size;
 }
 
 void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_position){

@@ -1,8 +1,9 @@
 #include "ei_buttonclass.h"
 #include "ei_types.h"
 #include "ei_button.h"
+#include "ei_draw_utils.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 void*           ei_button_allocfunc             () {
         return calloc(1, sizeof(ei_button_t));
 }
@@ -16,13 +17,13 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_surface_t		pick_surface,
                                                 ei_rect_t*		clipper) {
         ei_button_t* button = (ei_button_t*) widget;
- 
+
         if (button->relief == ei_relief_raised) {
                 // on draw les parties haute, basse, et l'intérieur du bouton
         }else if(button->relief == ei_relief_sunken){
                 // on draw les parties haute, basse, et l'intérieur du bouton avec couleurs inversees
         }
- 
+
         if (pick_surface) {
                 /*
                 hw_surface_lock(pick_surface);
