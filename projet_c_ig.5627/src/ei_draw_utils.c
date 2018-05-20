@@ -83,6 +83,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         }
         dest->top_left = top_dest;
         dest->size = dest_size;
+        fprintf(stdout, "x: %d y: %d widht: %d height: %d\n", dest->top_left.x, dest->top_left.y, dest->size.width, dest->size.height);
 }
 
 void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_position){
