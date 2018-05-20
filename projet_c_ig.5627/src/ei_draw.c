@@ -9,7 +9,7 @@ void ei_draw_text(ei_surface_t		surface,
 						 const ei_font_t	font,
 						 const ei_color_t	color,
 						 const ei_rect_t*	clipper){
-//la surface doit avoir été lock
+	//la surface doit avoir été lock
 	ei_rect_t rect_surface = hw_surface_get_rect(surface);
 	ei_font_t font_text = font;
 	if (font_text == NULL) {
@@ -24,6 +24,9 @@ void ei_draw_text(ei_surface_t		surface,
 	ei_rect_t rect_dest = {*where,rect_text.size};
 	if (clipper) {
 		ei_intersection_rectangle(clipper,&rect_text,&rect_dest);
+		rect_dest.top_left = *where;
+		rect_text.size.width = rect_dest.size.width;
+		rect_text.size.height = rect_dest.size.height;
 	}
 	//checking if the surface has an alpha parameter
 	ei_bool_t alpha = hw_surface_has_alpha(surface_texte);
@@ -32,7 +35,6 @@ void ei_draw_text(ei_surface_t		surface,
 		fprintf(stderr, "Different ROI size\n");
 		exit(1);
 	}
-
 	hw_surface_unlock(surface_texte);
 	hw_surface_free(surface_texte);
 }

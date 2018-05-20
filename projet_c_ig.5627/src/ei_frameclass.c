@@ -79,6 +79,11 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_point_t aqui;
                 ei_anchor_spot(frame->text_anchor,&(frame->widget),&aqui);
                 ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),clipper);
+        }else{
+                if(frame->img){
+                        ei_point_t aqui_image;
+                        ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
+                }
         }
         //gestion des enfants
         ei_widget_t* current_child = frame->widget.children_head;
