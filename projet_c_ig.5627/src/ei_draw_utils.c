@@ -29,6 +29,51 @@ void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){
         res->alpha = initiale.alpha;
 }
 
+void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_t* dest){
+        //point en haut à gauche du premier rectangle
+        ei_point_t first_top_left = {clipper->top_left.x, clipper->top_left.y};
+        //point en haut à droite du premier
+        ei_point_t first_top_right = {first_top_left.x + clipper->size.width, first_top_left.y};
+        //point en bas à gauche du premier
+        ei_point_t first_bot_left = {first_top_left.x, first_top_left.y + clipper->size.height};
+        //point en bas à droite du premier
+        ei_point_t first_bot_right = {first_top_right.x, first_bot_left.y};
+        //deuxieme
+        //point en haut à gauche du deuxieme
+        ei_point_t sec_top_left = {sec_rect->top_left.x, sec_rect->top_left.y};
+        //point en haut à droite du deuxieme
+        ei_point_t sec_top_right = {sec_top_left.x + sec_rect->size.width, sec_top_left.y};
+        //point en bas à gauche du deuxieme
+        ei_point_t sec_bot_left = {sec_top_left_x, sec_top_left.y + sec_rect->size.height};
+        //point en bas à droite du deuxieme
+        ei_point_t sec_bot_right = {sec_top_right.x, sec_bot_left.y};
+        //points du rectangle de destination
+        ei_point_t top_dest = {0,0};
+        ei_point_t bottom_point ={0,0};
+        ei_size_t dest_size = {0,0};
+
+        if (sec_top_left.x < first_top_left.x || sec_top_left.y < first_top_left.y) {
+                top_dest.x = first_top_left.x;
+                top_dest.y = first_top_left.y;
+        } else {
+                top_dest.x = sec_top_left.x;
+                top_dest.y = sec_top_left.y;
+                if (sec_bot_right.x < first_bot_right.x || sec_bot_right.y < first_bot_right.y) {
+                        // bottom_point.x = sec_bot_right.x;
+                        // bottom_point.y = sec_bot_right.y;
+                        // dest->top_left = top_dest;
+                        // dest_size.width = bottom_point.x - top_dest.x;
+                        // dest_size.height = bottom_point.y - top_dest.y;
+                        dest->size = sec_rect->size;
+                        return;
+                } else if () {
+                        /* code */
+                }
+        }
+
+
+
+}
 
 void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_position){
         /*
