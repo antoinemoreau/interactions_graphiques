@@ -20,7 +20,8 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_rect_t*		clipper) {
 
         ei_frame_t* frame = (ei_frame_t*) widget;
-        ei_rect_t unter = {clipper->top_left,clipper->size};
+
+        ei_rect_t unter = *clipper;
         if (frame->border_width >0) {
                 ei_size_t size_unter = {frame->widget.screen_location.size.width-2*frame->border_width,frame->widget.screen_location.size.height-2*frame->border_width};
                 ei_color_t light_color;
@@ -73,12 +74,18 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         }
         if (frame->text) {
                 ei_point_t aqui;
-                ei_anchor_spot(frame->text_anchor,&(frame->widget),&aqui);
+                ei_anchor_spot(ei_anc_west,&(frame->widget),&aqui);
                 ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),&unter);
         }else{
                 if(frame->img){
                         ei_point_t aqui_image;
                         ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
+                        hw_surface_lock(*(frame->img));
+                        ei_rect_t rect_dest = hw_surface_get_rect(surface);
+                	ei_bool_t alpha = hw_surface_has_alpha(surface);
+                        ei_copy_surface(surface,&rect_dest,*(frame->img),*(frame->img_rect),alpha);
+                	hw_surface_unlock(*(frame->img));
+                	hw_surface_free(*(frame->img));
                 }
         }
         //gestion des enfants
