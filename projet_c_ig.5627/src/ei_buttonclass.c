@@ -17,9 +17,10 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_surface_t		pick_surface,
                                                 ei_rect_t*		clipper) {
         ei_button_t* button = (ei_button_t*) widget;
-
+        const ei_color_t* color = button->color;
         if (button->relief == ei_relief_raised) {
                 // on draw les parties haute, basse, et l'intérieur du bouton
+                
         }else if(button->relief == ei_relief_sunken){
                 // on draw les parties haute, basse, et l'intérieur du bouton avec couleurs inversees
         }

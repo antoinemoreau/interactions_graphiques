@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void compute_spot(ei_widget_t* widget, ei_widget_t* parent){
+static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y){
         ei_placer_t* placer_parent = (ei_placer_t*) parent->geom_params;
         ei_placer_t* placer_widget = (ei_placer_t*) widget->geom_params;
 
@@ -10,8 +10,8 @@ void compute_spot(ei_widget_t* widget, ei_widget_t* parent){
                 /*
                 Si on est sur le widget root, on calcule simplement la position du widget fils
                 */
-                widget->screen_location.top_left.x = parent->screen_location.top_left.x + placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x;
-                widget->screen_location.top_left.y = parent->screen_location.top_left.y + placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y;
+                widget->screen_location.top_left.x = parent->screen_location.top_left.x + placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x - x;
+                widget->screen_location.top_left.y = parent->screen_location.top_left.y + placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y - y;
 
         }
         else{   /*On calcule la place d'un des pixels du widget dans le référentiel du placer_parent
@@ -34,11 +34,51 @@ void ei_placer_runfunc(ei_widget_t* widget){
         ei_widget_t* parent = widget->parent;
 
         for (ei_widget_t* current = parent->children_head; current != NULL; current=current->next_sibling){
-                compute_spot(current, parent);
+                ei_placer_t* placer = (ei_placer_t*) widget->geom_params;
+                int x, y;
+                ei_anchor_t anchor = placer->anchor;
+                switch (anchor) {
+                        case ei_anc_center:
+                                x = widget->content_rect->size.width/2;
+                                y = widget->content_rect->size.height/2;
+                                break;
+                        case ei_anc_north:
+                                x = widget->content_rect->size.width/2;
+                                y = 0;
+                                break;
+                        case ei_anc_northeast:
+                                x = widget->content_rect->size.width;
+                                y = 0;
+                                break;
+                        case ei_anc_east:
+                                x = widget->content_rect->size.width;
+                                y = widget->content_rect->size.height/2;
+                                break;
+                        case ei_anc_southeast:
+                                x = widget->content_rect->size.width;
+                                y = widget->content_rect->size.height;
+                                break;
+                        case ei_anc_south:
+                                x = widget->content_rect->size.width/2;
+                                y = widget->content_rect->size.height;
+                                break;
+                        case ei_anc_southwest:
+                                x = 0;
+                                y = widget->content_rect->size.height;
+                                break;
+                        case ei_anc_west:
+                                x = 0;
+                                y = widget->content_rect->size.height/2;
+                                break;
+                        default:
+                                x = 0;
+                                y = 0;
+                }
+                compute_spot(current, parent, x, y);
         }
 }
 
-void supress_widget_from_parent(ei_widget_t* widget){
+static void supress_widget_from_parent(ei_widget_t* widget){
         /*
         Fonction pour faciliter la supression d'un widget dans la
         liste des enfants de son placer_parent (appelée dans release)
