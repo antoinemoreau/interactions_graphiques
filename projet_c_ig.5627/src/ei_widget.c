@@ -163,10 +163,10 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	else if (!button->corner_radius)
 		button->corner_radius = 0;
 
-	if (relief != NULL)
+	if (relief == NULL || *relief == ei_relief_none)
+		button->relief = ei_relief_raised;
+	else
 		button->relief = *relief;
-	else if (!button->relief)
-		button->relief = ei_relief_none;
 
 	if (text != NULL)
 		button->text = text;
