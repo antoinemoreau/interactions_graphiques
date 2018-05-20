@@ -29,24 +29,6 @@ void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){
         res->alpha = initiale.alpha;
 }
 
-static int coordonnee_minimum(int x1, int x2){
-        if (x1 <= x2){
-                return x1;
-        }
-        else{
-                return x2;
-        }
-}
-
-static int coordonnee_maximum(int x1, int x2){
-        if (x1 <= x2){
-                return x2;
-        }
-        else{
-                return x1;
-        }
-}
-
 static ei_rect_t* rectangle_abs_min(ei_rect_t* clipper, ei_rect_t* sec_rect){
         if (clipper->top_left.x <= sec_rect->top_left.x){
                 return clipper;
