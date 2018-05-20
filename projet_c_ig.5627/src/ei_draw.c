@@ -20,13 +20,18 @@ void ei_draw_text(ei_surface_t		surface,
 	hw_surface_lock(surface_texte);
 	//on recupere le rectangle de la surface de texte
 	ei_rect_t rect_text = hw_surface_get_rect(surface_texte);
+	rect_text.top_left = *where;
 	//surface de destination
 	ei_rect_t rect_dest = {*where,rect_text.size};
 	if (clipper) {
 		ei_intersection_rectangle(clipper,&rect_text,&rect_dest);
 		rect_dest.top_left = *where;
-		rect_text.size.width = rect_dest.size.width;
-		rect_text.size.height = rect_dest.size.height;
+		fprintf(stdout, "widht %d, height %d\n",rect_text.size.width, rect_text.size.height);
+		fprintf(stdout, "%d, %d\n", rect_dest.size.width, rect_dest.size.height);
+		//rect_text.size.width = rect_dest.size.width;
+		//rect_text.size.height = rect_dest.size.height;
+		fprintf(stdout, "widht %d, height %d\n",rect_text.size.width, rect_text.size.height);
+
 	}
 	//checking if the surface has an alpha parameter
 	ei_bool_t alpha = hw_surface_has_alpha(surface_texte);

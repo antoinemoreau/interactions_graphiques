@@ -20,11 +20,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_rect_t*		clipper) {
 
         ei_frame_t* frame = (ei_frame_t*) widget;
-        //juste pour un test
-        ei_point_t ici = {260,280};
-        char* texte = "ATLAS";
-        ei_color_t col = {0x00,0x00,0xff,0xff};
-        //fin du test
+        ei_rect_t unter = {clipper->top_left,clipper->size};
         if (frame->border_width >0) {
                 ei_size_t size_unter = {frame->widget.screen_location.size.width-2*frame->border_width,frame->widget.screen_location.size.height-2*frame->border_width};
                 ei_color_t light_color;
@@ -53,7 +49,8 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_linked_point_t bot_poly_right = {top_right,&bot_poly_bot_bas};
                 ei_linked_point_t bot_poly_right_in = {right,&bot_poly_right};
                 ei_linked_point_t bot_poly_first = {bot_in,&bot_poly_right_in};
-                ei_rect_t unter = {low_first,size_unter};
+                unter.top_left = low_first;
+                unter.size = size_unter;
                 if (frame->relief == ei_relief_none) {
                         ei_fill(surface,frame->color,clipper);
                 }else if (frame->relief == ei_relief_raised) {
@@ -75,10 +72,9 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 hw_surface_unlock(pick_surface);
         }
         if (frame->text) {
-                fprintf(stdout, "pouloulou\n");
                 ei_point_t aqui;
                 ei_anchor_spot(frame->text_anchor,&(frame->widget),&aqui);
-                ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),clipper);
+                ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),&unter);
         }else{
                 if(frame->img){
                         ei_point_t aqui_image;
