@@ -27,6 +27,22 @@ void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){
         res->alpha = initiale.alpha;
 }
 
+void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_t* dest){
+        ei_point_t first_rect_x = clipper->top_left.x;
+        ei_point_t first_rect_y = clipper->top_left.y;
+        ei_point_t sec_rect_x = sec_rect->top_left.x;
+        ei_point_t sec_rect_y = sec_rect->top_left.y;
+        ei_point_t top_dest = {0,0};
+        if (sec_rect_x =>first_rect_x || sec_rect_y => first_rect_y) {
+                top_dest.x = first_rect_x;
+                top_dest.y = first_rect_y;
+        } else {
+                top_dest.x = sec_rect_x;
+                top_dest.y = sec_rect_y;
+        }
+        
+
+}
 
 void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_position){
         /*

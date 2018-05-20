@@ -1,4 +1,5 @@
 #include "ei_draw.h"
+#include "ei_draw_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,18 +23,18 @@ void ei_draw_text(ei_surface_t		surface,
 	ei_rect_t rect_text = hw_surface_get_rect(surface_texte);
 	//surface de destination
 	//checking if the surface has an alpha parameter
+	ei_rect_t rect_dest = {*where,rect_text.size};
 	if (clipper) {
-		fprintf(stdout, "g pa fé enkore\n");
+		ei_intersection_rectangle(clipper,&rect_text,&rect_dest);
 	}
 	ei_bool_t alpha = hw_surface_has_alpha(surface_texte);
 	//copie de la surface du text  l'endroit voulu
 	//on sort en erreur si les dimmensions  ne correspondent pas
-	ei_rect_t rect_dest = {*where,rect_text.size};
 	if (ei_copy_surface(surface,&rect_dest,surface_texte,&rect_text,alpha)) {
 		fprintf(stderr, "Different ROI size\n");
 		exit(1);
 	}
-	ei_copy_surface(surface,&rect_dest,surface_texte,&rect_text,alpha);
+	//ei_copy_surface(surface,&rect_dest,surface_texte,&rect_text,alpha);
 	hw_surface_unlock(surface_texte);
 	hw_surface_free(surface_texte);
 }
