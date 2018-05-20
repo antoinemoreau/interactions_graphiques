@@ -71,7 +71,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         ei_rect_t* top_rect = rectangle_ord_min(clipper, sec_rect);
         ei_rect_t* bot_rect = NULL;
         if (left_rect == clipper) {
-                right_rect = sec_rect
+                right_rect = sec_rect;
         }
         else {
                 right_rect = clipper;
@@ -86,7 +86,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         ei_point_t top_dest;
         ei_size_t dest_size;
 
-        if ( (left_rect->top_left.x + left_rect->size.width <= right_rect.top_left.x) || top_rect->top_left.y + top_rect->size.height <= bot_rect->top_left.y){
+        if ( (left_rect->top_left.x + left_rect->size.width <= right_rect->top_left.x) || top_rect->top_left.y + top_rect->size.height <= bot_rect->top_left.y){
                 top_dest.x = 0;
                 top_dest.y = 0;
                 dest_size.width = 0;
@@ -94,13 +94,13 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         }
         else{
                 top_dest.x = coordonnee_minimum(right_rect->top_left.x, left_rect->top_left.x + left_rect->size.width);
-                top_dest.y = coordonnee_minimum(bot_rect->top_left.y, high_rect->top_left.y + high_rect->size.height);
+                top_dest.y = coordonnee_minimum(bot_rect->top_left.y, top_rect->top_left.y + top_rect->size.height);
 
                 dest_size.width = coordonnee_maximum(right_rect->top_left.x, left_rect->top_left.x + left_rect->size.width) - top_dest.x;
-                dest_size.height = coordonnee_maximum(bot_rect->top_left.y, high_rect->top_left.y + high_rect->size.height) - top_dest.y;
+                dest_size.height = coordonnee_maximum(bot_rect->top_left.y, top_rect->top_left.y + top_rect->size.height) - top_dest.y;
 
         }
-        dest->point = top_dest;
+        dest->top_left = top_dest;
         dest->size = dest_size;
 }
 
