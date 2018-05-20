@@ -15,4 +15,7 @@ void ei_button_setdefaultsfunc (struct ei_widget_t* button);
 
 void ei_button_geomnotifyfunc (struct ei_widget_t* button, ei_rect_t rect);
 
+ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, int partie);
+
+
 #endif

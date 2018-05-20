@@ -15,6 +15,4 @@ void ei_frame_setdefaultsfunc (struct ei_widget_t* frame);
 
 void ei_frame_geomnotifyfunc (struct ei_widget_t* frame, ei_rect_t rect);
 
-ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, int partie);
-
 #endif
