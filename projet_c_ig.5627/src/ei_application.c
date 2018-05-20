@@ -33,7 +33,8 @@ void ei_app_run() {
         ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
         hw_surface_lock(root_surface);
-        root->wclass->drawfunc(root,root_surface,NULL,NULL);
+        ei_rect_t el_clipper = hw_surface_get_rect(root_surface);
+        root->wclass->drawfunc(root,root_surface,NULL,&el_clipper);
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface,NULL);
         getchar();
