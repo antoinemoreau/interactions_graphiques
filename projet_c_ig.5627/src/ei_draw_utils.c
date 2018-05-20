@@ -77,26 +77,24 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         else{
                 int marge_abs, marge_ord;
                 if (right_rect->top_left.x + right_rect->size.width <= left_rect->top_left.x + left_rect->size.width){
-                        marge_abs = left_rect->top_left.x + left_rect->size.width - right_rect->top_left.x + right_rect->size.width;
+                        marge_abs = left_rect->top_left.x + left_rect->size.width - (right_rect->top_left.x + right_rect->size.width);
                 }
                 else{
                         marge_abs = 0;
                 }
                 if (bot_rect->top_left.y + bot_rect->size.height <= top_rect->top_left.y + top_rect->size.height){
-                        marge_ord = top_rect->top_left.y + top_rect->size.height - bot_rect->top_left.y + bot_rect->size.height;
+                        marge_ord = top_rect->top_left.y + top_rect->size.height - (bot_rect->top_left.y + bot_rect->size.height);
                 }
                 else{
                         marge_abs = 0;
                 }
                 top_dest.y = bot_rect->top_left.y;
                 top_dest.x = right_rect->top_left.x;
-
                 dest_size.width = left_rect->top_left.x + left_rect->size.width - top_dest.x - marge_abs;
                 dest_size.height = top_rect->top_left.y + top_rect->size.height - top_dest.y - marge_ord;
         }
         dest->top_left = top_dest;
         dest->size = dest_size;
-        fprintf(stdout, "x: %d y: %d widht: %d height: %d\n", dest->top_left.x, dest->top_left.y, dest->size.width, dest->size.height);
 }
 
 void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_position){
