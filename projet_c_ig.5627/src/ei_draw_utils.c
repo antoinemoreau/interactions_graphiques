@@ -76,13 +76,13 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         }
         else{
                 int marge_abs, marge_ord;
-                if (right_rect->top_left.x + right_rect->size.width <= left_rect->top_left.x + right_rect->size.width){
+                if (right_rect->top_left.x + right_rect->size.width <= left_rect->top_left.x + left_rect->size.width){
                         marge_abs = left_rect->top_left.x + left_rect->size.width - right_rect->top_left.x + right_rect->size.width;
                 }
                 else{
                         marge_abs = 0;
                 }
-                if (bot_rect->top_left.y + bot_rect->size.height <= top_rect->top_left.y + bot_rect->size.height){
+                if (bot_rect->top_left.y + bot_rect->size.height <= top_rect->top_left.y + top_rect->size.height){
                         marge_ord = top_rect->top_left.y + top_rect->size.height - bot_rect->top_left.y + bot_rect->size.height;
                 }
                 else{
