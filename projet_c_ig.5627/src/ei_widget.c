@@ -146,6 +146,7 @@ void			ei_button_configure		(ei_widget_t*		widget,
 		widget->requested_size.height = 0;
 		widget->requested_size.width = 0;
 	}
+
 	ei_button_t* button = (ei_button_t*)widget;
 
 	if (color != NULL)
