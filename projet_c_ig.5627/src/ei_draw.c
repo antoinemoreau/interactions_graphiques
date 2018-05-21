@@ -19,21 +19,23 @@ void ei_draw_text(ei_surface_t		surface,
 	ei_rect_t rect_text = hw_surface_get_rect(surface_texte);//on recupere le rectangle de la surface de texte
 	ei_bool_t alpha = hw_surface_has_alpha(surface_texte);
 	ei_rect_t rect_dest = {*where,rect_text.size};
+	ei_rect_t clipper_new;
 	if (clipper) {
-		ei_intersection_rectangle(&rect_surface, clipper,clipper);
+		fprintf(stdout, "x: %d, y:%d, widht: %d, height: %d\n", rect_surface.top_left.x,rect_surface.top_left.y,rect_surface.size.width, rect_surface.size.height );
+		fprintf(stdout, "x: %d, y:%d, widht: %d, height: %d\n", clipper->top_left.x,clipper->top_left.y,clipper->size.width, clipper->size.height );
+		ei_intersection_rectangle(&rect_surface, clipper, &clipper_new);
+	}else{
+		clipper_new = rect_surface;
 	}
 	ei_rect_t dest_maj;
-	//rect_text.top_left = *where;
-	fprintf(stdout, "le clipper: top left: x:%d, y:%d, size: width: %d height: %d\n",clipper->top_left.x,clipper->top_left.y, clipper->size.width,clipper->size.height);
-	fprintf(stdout, "le texte: top left: x:%d, y:%d, size: width: %d height: %d\n",rect_text.top_left.x,rect_text.top_left.y, rect_text.size.width,rect_text.size.height);
+	fprintf(stdout, "x: %d, y:%d, widht: %d, height: %d\n", clipper_new.top_left.x,clipper_new.top_left.y,clipper_new.size.width, clipper_new.size.height );
+	fprintf(stdout, "x: %d, y:%d, widht: %d, height: %d\n", rect_dest.top_left.x,rect_dest.top_left.y,rect_dest.size.width, rect_dest.size.height );
+	ei_intersection_rectangle(&clipper_new, &rect_dest, &dest_maj);
+	fprintf(stdout, "x: %d, y:%d, widht: %d, height: %d\n", dest_maj.top_left.x,dest_maj.top_left.y,dest_maj.size.width, dest_maj.size.height );
 
-	ei_intersection_rectangle(clipper,&rect_dest, &rect_dest);
-	fprintf(stdout, "la dest: top left: x:%d, y:%d, size: width: %d height: %d\n",rect_dest.top_left.x,rect_dest.top_left.y, rect_dest.size.width,rect_dest.size.height);
 
-	//rect_text.top_left = *where;
-	rect_text.size = rect_dest.size;
-	fprintf(stdout, "text widht: %d height: %d\n dest widht: %d height: %d\n",rect_text.size.width, rect_text.size.height, rect_dest.size.width, rect_dest.size.height );
-	ei_copy_surface(surface,&rect_dest,surface_texte,&rect_text,alpha);
+	rect_text.size = dest_maj.size;
+	ei_copy_surface(surface, &dest_maj, surface_texte, &rect_text, alpha);
 	hw_surface_unlock(surface_texte);
 	hw_surface_free(surface_texte);
 }
