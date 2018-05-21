@@ -41,7 +41,7 @@ void ei_app_run() {
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
         ei_surface_t pick_surface = NULL;
-        //gestion des enfants
+        //on dessine tout les widgets en premier lieu
         ei_widget_t* current_widget = root;
         while (current_widget){
                 current_widget->wclass->drawfunc(current_widget, root_surface, pick_surface, current_widget->content_rect);
@@ -54,13 +54,11 @@ void ei_app_run() {
         }
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface,NULL);
-
+        //boucle des evenements
         while (!quit_app) {
+                hw_event_wait_next(&event);
                 hw_surface_update_rects(root_surface,rect_list);
-                //hw_event_wait_next(&event);
-                break;
         }
-        getchar();
 }
 
 void ei_app_invalidate_rect(ei_rect_t* rect) {
