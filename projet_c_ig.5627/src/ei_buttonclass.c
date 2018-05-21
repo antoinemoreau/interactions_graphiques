@@ -157,13 +157,6 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_draw_text(surface,&aqui,*(button->text),NULL, *(button->text_color),clipper);
 
         }
-
-        //gestion des enfants
-        ei_widget_t* current_child = button->widget.children_head;
-        while (current_child){
-                current_child->wclass->drawfunc(current_child, surface, pick_surface, current_child->content_rect);
-                current_child = current_child->next_sibling;
-        }
 }
 
 void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {

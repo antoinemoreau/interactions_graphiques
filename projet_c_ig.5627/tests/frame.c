@@ -20,14 +20,14 @@ int ei_main(int argc, char** argv)
 
 	ei_widget_t*	frame;
 	ei_size_t	frame_size		= {300,200};
-	int		frame_x			= 150;
+	int		frame_x			= 15;
 	int		frame_y			= 200;
 	ei_color_t	frame_color		= {0x80, 0x80, 0x80, 0xff};
 	ei_relief_t	frame_relief		= ei_relief_raised;
 	int		frame_border_width	= 6;
-	char* 		texte			= "Antoine et Robin";
+	char* 		texte			= "Maxime le dieu";
 	ei_color_t      couleur_du_texte	= {0xff,0x14,0x93,0xff};
-	ei_anchor_t 	ancre_text		= ei_anc_northwest;
+	ei_anchor_t 	ancre_text		= ei_anc_west;
 	/* Create the application and change the color of the background. */
 	ei_app_create(&screen_size, EI_FALSE);
 	ei_frame_configure(ei_app_root_widget(), NULL, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

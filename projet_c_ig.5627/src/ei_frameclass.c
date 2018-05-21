@@ -75,19 +75,13 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         }
         if (frame->text) {
                 ei_point_t aqui;
-                ei_anchor_spot(frame->text_anchor,&(frame->widget),&aqui);
+                ei_anchor_spot(frame->text_anchor,&inter,&aqui);
                 ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),&inter);
         }else{
                 if(frame->img){
                         ei_point_t aqui_image;
                         ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
                 }
-        }
-        //gestion des enfants
-        ei_widget_t* current_child = frame->widget.children_head;
-        while (current_child){
-                current_child->wclass->drawfunc(current_child, surface, pick_surface, current_child->content_rect);
-                current_child = current_child->next_sibling;
         }
 }
 
