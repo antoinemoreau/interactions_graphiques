@@ -2,6 +2,7 @@
 #include "ei_types.h"
 #include "ei_button.h"
 #include "ei_draw_utils.h"
+#include "ei_draw.h"
 #include <stdlib.h>
 #include <stdio.h>
 void*           ei_button_allocfunc             () {
@@ -31,17 +32,20 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
         ei_point_t bot_left = {rectangle.top_left.x, rectangle.top_left.y + rectangle.size.height};
         ei_point_t bot_right = {rectangle.top_left.x + rectangle.size.width, rectangle.top_left.y + rectangle.size.height};
         //On détermine les 4 centres autour desquels on formera les arcs de cercles
-        ei_point_t center_top_left = {top_left.x - rayon, top_left.y - rayon};
-        ei_point_t center_top_right = {top_right.x - rayon, top_right.y - rayon};
-        ei_point_t center_bot_left = {bot_left.x - rayon, bot_left.y - rayon};
-        ei_point_t center_bot_right = {bot_right.x - rayon, bot_right.y - rayon};
+        ei_point_t center_top_left = {top_left.x + rayon, top_left.y + rayon};
+        ei_point_t center_top_right = {top_right.x + rayon, top_right.y + rayon};
+        ei_point_t center_bot_left = {bot_left.x + rayon, bot_left.y + rayon};
+        ei_point_t center_bot_right = {bot_right.x + rayon, bot_right.y + rayon};
         //On récupère les points formant les arcs de cercles de chaque coin du rectangle
-        ei_extreme_linked_points_t* extreme_points_top_right_low = arc(center_top_right, rayon, 0, 45, nb_points);
-        ei_extreme_linked_points_t* extreme_points_top_right_high = arc(center_top_right, rayon, 45, 90, nb_points);
-        ei_extreme_linked_points_t* extreme_points_top_left = arc(center_top_left, rayon, 90, 180, nb_points);
-        ei_extreme_linked_points_t* extreme_points_bot_left_high = arc(center_bot_left, rayon, 180, 225, nb_points);
-        ei_extreme_linked_points_t* extreme_points_bot_left_low = arc(center_bot_left, rayon, 225, 270, nb_points);
-        ei_extreme_linked_points_t* extreme_points_bot_right = arc(center_bot_right, rayon, 270, 360, nb_points);
+        ei_extreme_linked_points_t* extreme_points_top_right_low = arc(center_top_right, rayon, 0.0, 45.0, nb_points);
+        ei_extreme_linked_points_t* extreme_points_top_right_high = arc(center_top_right, rayon, 45.0, 90.0, nb_points);
+        ei_extreme_linked_points_t* extreme_points_top_left = arc(center_top_left, rayon, 90.0, 180.0, nb_points);
+        ei_extreme_linked_points_t* extreme_points_bot_left_high = arc(center_bot_left, rayon, 180.0, 225.0, nb_points);
+        ei_extreme_linked_points_t* extreme_points_bot_left_low = arc(center_bot_left, rayon, 225.0, 270.0, nb_points);
+        ei_extreme_linked_points_t* extreme_points_bot_right = arc(center_bot_right, rayon, 270.0, 360.0, nb_points);
+        fprintf(stdout, "Point top right middle 1 : (%d, %d)", extreme_points_top_right_high->head_point->point.x,extreme_points_top_right_high->head_point->point.y );
+        fprintf(stdout, "Point top right middle 2 : (%d, %d)", extreme_points_top_right_high->head_point->point.x,extreme_points_top_right_high->head_point->point.y );
+
 
         //On déclare le premier point de la liste qu'on renvoie
         ei_linked_point_t* first_point = calloc(1, sizeof(ei_linked_point_t));
@@ -52,17 +56,20 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
                 extreme_points_bot_left_high->tail_point->next = extreme_points_bot_left_low->head_point;
                 extreme_points_bot_left_low->tail_point->next = extreme_points_bot_right->head_point;
                 extreme_points_bot_right->tail_point->next = extreme_points_top_right_low->head_point;
-                extreme_points_bot_left_low->tail_point->next = extreme_points_top_right_high->head_point;
+                extreme_points_top_right_low->tail_point->next = extreme_points_top_right_high->head_point;
+                extreme_points_top_right_high->tail_point->next = NULL;
                 first_point = extreme_points_top_left->head_point;
         }
         else if (partie == 0){
                 extreme_points_bot_left_low->tail_point->next = extreme_points_bot_right->head_point;
                 extreme_points_bot_right->tail_point->next = extreme_points_top_right_low->head_point;
+                extreme_points_top_right_low->tail_point->next = NULL;
                 first_point = extreme_points_bot_left_low->head_point;
         }
         else{
-                extreme_points_bot_left_high->tail_point->next = extreme_points_top_left->head_point;
+                extreme_points_top_right_high->tail_point->next = extreme_points_top_left->head_point;
                 extreme_points_top_left->tail_point->next = extreme_points_bot_left_high->head_point;
+                extreme_points_bot_left_high->tail_point->next = NULL;
                 first_point = extreme_points_top_right_high->head_point;
         }
         free(extreme_points_top_left);
@@ -80,25 +87,63 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_surface_t		pick_surface,
                                                 ei_rect_t*		clipper) {
         ei_button_t* button = (ei_button_t*) widget;
-        ei_rect_t unter = {clipper->top_left, clipper->size};
+        ei_rect_t inter;
+        int border = button->border_width;
+        inter.top_left.x = clipper->top_left.x + border;
+        inter.top_left.y = clipper->top_left.y + border;
+        inter.size.width = widget->screen_location.size.width - 2 * border;
+        inter.size.height = widget->screen_location.size.height - 2 * border;
         //On récupère les 3 parties à colorier
-        int nb_points = 8;
-        ei_linked_point_t* low_part = rounded_frame(*clipper, button->corner_radius, nb_points, 0);
-        ei_linked_point_t* high_part = rounded_frame(*clipper, button->corner_radius, nb_points, 1);
-        ei_linked_point_t* all_part = rounded_frame(*clipper, button->corner_radius, nb_points, 2);
-
+        int nb_points = 100;
         ei_color_t light_color;
         ei_color_t dark_color;
-        ei_compute_color(*button->color,&light_color,1.2);
-        ei_compute_color(*button->color,&dark_color,0.5);
+        ei_compute_color(*(button->color),&light_color,1.2);
+        ei_compute_color(*(button->color),&dark_color,0.5);
 
-        
+        ei_point_t point_top_right_big_square = {widget->screen_location.top_left.x + widget->screen_location.size.width - widget->screen_location.size.height/2, \
+                                        widget->screen_location.top_left.y + widget->screen_location.size.height/2};
+        ei_point_t point_bot_left_big_square = {widget->screen_location.top_left.x + widget->screen_location.size.height/2, \
+                                        widget->screen_location.top_left.y + widget->screen_location.size.height/2};
+
+        ei_linked_point_t* bot_left_big_square = calloc(1, sizeof(ei_linked_point_t));
+        ei_linked_point_t* top_right_big_square = calloc(1, sizeof(ei_linked_point_t));
+
+        top_right_big_square->point = point_top_right_big_square;
+        bot_left_big_square->point = point_bot_left_big_square;
+
+        ei_rect_t rect_surface = hw_surface_get_rect(surface);
+        //Calcule du polygone de la partie basse à colorer
+        ei_linked_point_t* low_part = rounded_frame(rect_surface, button->corner_radius, nb_points, 0);
+        top_right_big_square->next = bot_left_big_square;
+        bot_left_big_square->next = low_part;
+
+
+        //Calcule du polygone de la partie haute à colorer
+        ei_linked_point_t* high_part = rounded_frame(rect_surface, button->corner_radius, nb_points, 1);
+        bot_left_big_square->next = top_right_big_square;
+        top_right_big_square->next = high_part;
+
+
         if (button->relief == ei_relief_raised) {
-                // on draw les parties haute, basse, et l'intérieur du bouton
+                // on draw les parties haute et basse du bouton
+                ei_draw_polygon(surface, high_part, light_color, clipper);
+                ei_draw_polygon(surface, low_part, dark_color, clipper);
 
         }else if(button->relief == ei_relief_sunken){
-                // on draw les parties haute, basse, et l'intérieur du bouton avec couleurs inversees
+                // on draw les parties haute et basse du bouton avec couleurs inversees
+                ei_draw_polygon(surface, high_part, dark_color, clipper);
+                ei_draw_polygon(surface, low_part, light_color, clipper);
         }
+
+
+        //Libération des variables intermédaires
+        free(bot_left_big_square);
+        free(top_right_big_square);
+        //Dessin de la totalité de l'interieur du bouton
+        /*
+        ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
+        ei_draw_polygon(surface, all_part, *(button->color), &inter);
+        */
 
         if (pick_surface) {
                 /*
@@ -144,4 +189,3 @@ void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {
 void            ei_button_geomnotifyfunc        (ei_widget_t* widget, ei_rect_t rect) {
 
 }
-

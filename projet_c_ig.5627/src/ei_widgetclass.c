@@ -3,6 +3,7 @@
 #include "ei_buttonclass.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 
 /*On crée un pointeur widgetclass_list qui nous permet de savoir quelle(s)
@@ -47,13 +48,13 @@ void ei_frame_register_class () {
         if (widgetclass_list != NULL) {
                 ei_widgetclass_t* current = widgetclass_list;
                 while (current != NULL) {
-                        if ( strcmp(ei_widgetclass_stringname(current->name), "frame") ) {
+                        if ( strcmp(ei_widgetclass_stringname(current->name), "frame") == 0 ) {
                                 return;
                         }
                 current = current->next;
                 }
         }
-        /*On crée le widget frame si il n'est pas déjà dans la liste*/
+        /*On crée le widget frame si il n'est pas déjà dans la bibliothèque*/
         ei_widgetclass_register(create_frame_widget());
 }
 
@@ -61,13 +62,13 @@ void ei_button_register_class () {
         if (widgetclass_list != NULL) {
                 ei_widgetclass_t* current = widgetclass_list;
                 while (current != NULL) {
-                        if ( strcmp(ei_widgetclass_stringname(current->name), "button") ) {
+                        if ( strcmp(ei_widgetclass_stringname(current->name), "button") == 0 ) {
                                 return;
                         }
                 current = current->next;
                 }
         }
-        /*On crée le widget button si il n'est pas déjà dans la liste*/
+        /*On crée le widget button si il n'est pas déjà dans la blibliothèque*/
         ei_widgetclass_register(create_button_widget());
 }
 

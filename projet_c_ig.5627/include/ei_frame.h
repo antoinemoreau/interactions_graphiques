@@ -7,9 +7,9 @@
 #include "ei_widgetclass.h"
 
 /**
- * 
- * 
- * 
+ *
+ *
+ *
  */
 typedef struct ei_frame_t {
 	ei_widget_t		widget;
