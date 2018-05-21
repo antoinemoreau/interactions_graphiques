@@ -7,6 +7,8 @@
 #include <string.h>
 #include <math.h>
 
+#define PI 3.14159265
+
 void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation){
         int rouge = (int) initiale.red*variation ;
         int bleu = (int) initiale.blue*variation;
@@ -97,7 +99,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         dest->size = dest_size;
 }
 
-void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_position){
+void ei_anchor_spot(ei_anchor_t anchor, ei_rect_t* rectangle, ei_point_t* anchor_position){
         /*
         Renvoi la position du point choisi avec anchor_position
 
@@ -109,49 +111,49 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_
         }
         switch (anchor) {
                 case ei_anc_center:
-                        (*anchor_position).x = widget->screen_location.top_left.x + widget->screen_location.size.width/2;
-                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height/2;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2;
                         break;
                 case ei_anc_north:
-                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width/2;
-                        (*anchor_position).y = widget->screen_location.top_left.y;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2;
+                        (*anchor_position).y = rectangle->top_left.y;
                         break;
                 case ei_anc_northeast:
-                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width;
-                        (*anchor_position).y = widget->screen_location.top_left.y;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width;
+                        (*anchor_position).y = rectangle->top_left.y;
                         break;
                 case ei_anc_east:
-                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width;
-                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height/2;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2;
                         break;
                 case ei_anc_southeast:
-                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width;
-                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height;
                         break;
                 case ei_anc_south:
-                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height;
-                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width/2;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2;
                         break;
                 case ei_anc_southwest:
-                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height;
-                        (*anchor_position).x = widget->screen_location.top_left.x;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height;
+                        (*anchor_position).x = rectangle->top_left.x;
                         break;
                 case ei_anc_west:
-                        (*anchor_position).x = widget->screen_location.top_left.x;
-                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height/2;
+                        (*anchor_position).x = rectangle->top_left.x;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2;
                         break;
                 default:
-                        (*anchor_position).x = widget->screen_location.top_left.x;
-                        (*anchor_position).y = widget->screen_location.top_left.y;
+                        (*anchor_position).x = rectangle->top_left.x;
+                        (*anchor_position).y = rectangle->top_left.y;
         }
 }
 
-ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, int angle_depart, int angle_fin, int nb_points){
+ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, float angle_depart, float angle_fin, int nb_points){
         /*
         Retourne une chaine de points calculés pour formé un quart de cercle
-        compris entre angle_depart et angle_fin
+        compris entre angle_depart et angle_fin (on exprime en radiant)
         */
-        ei_point_t point = {center.x + rayon * cos(angle_depart), center.y + rayon * sin(angle_depart)};
+        ei_point_t point = {center.x + rayon * cos(angle_depart * PI / 180), center.y + rayon * sin(angle_depart * PI / 180)};
         ei_linked_point_t* first_point = calloc(1, sizeof(ei_linked_point_t));
         int angle;
         first_point->point = point;
@@ -159,19 +161,17 @@ ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, int angle_depart, 
         ei_linked_point_t* previous = first_point;
         ei_linked_point_t* current = NULL;
 
-        for (int i = 1; i <= nb_points + 1; i++){
-                angle = angle_depart + i*(angle_fin - angle_depart)/(nb_points + 1);
+        for (int i = 1; i <= nb_points; i++){
+                angle = ( angle_depart + i*(angle_fin - angle_depart)/nb_points ) * PI / 180;
                 current = calloc(1, sizeof(ei_linked_point_t));
-                point.x = center.x + rayon * cos(angle);
-                point.y = center.y + rayon * sin(angle);
+                point.x = (int) (center.x + rayon * cos(angle));
+                point.y = (int) (center.y + rayon * sin(angle));
                 current->point = point;
-                current->next = NULL;
                 previous->next = current;
                 previous = current;
-                current = current->next;
         }
         ei_extreme_linked_points_t* extreme_points = calloc(1, sizeof(ei_extreme_linked_points_t));
         extreme_points->head_point = first_point;
-        extreme_points->tail_point = previous;
+        extreme_points->tail_point = current;
         return extreme_points;
 }

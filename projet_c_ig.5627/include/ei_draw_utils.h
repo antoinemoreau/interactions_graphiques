@@ -27,4 +27,4 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_
 
 void ei_intersection_rectangle(ei_rect_t* first_rect, ei_rect_t* sec_rect, ei_rect_t* dest);
 
-ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, int angle_depart, int angle_fin, int nb_points);
+ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, float angle_depart, float angle_fin, int nb_points);

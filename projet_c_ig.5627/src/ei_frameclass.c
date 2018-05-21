@@ -74,7 +74,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         }
         if (frame->text) {
                 ei_point_t aqui;
-                ei_anchor_spot(ei_anc_west,&(frame->widget),&aqui);
+                ei_anchor_spot(frame->text_anchor,&(frame->widget),&aqui);
                 ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),&unter);
         }else{
                 if(frame->img){
