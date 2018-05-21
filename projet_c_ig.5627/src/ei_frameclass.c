@@ -82,8 +82,9 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 hw_surface_free(surface_text);
         }else{
                 if(frame->img){
-                        ei_point_t aqui_image;
-                        //ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
+                        // ei_point_t aqui_image;
+                        // ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
+                        //ei_copy_surface(surface,frame->img_rect,frame->img,frame->img_rect,EI_FALSE);
                 }
         }
 }
