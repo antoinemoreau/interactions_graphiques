@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void ei_draw_text(ei_surface_t		surface,
+void 		ei_draw_text			(ei_surface_t		surface,
 						 const ei_point_t*	where,
 						 const char*		text,
 						 const ei_font_t	font,
@@ -20,19 +20,13 @@ void ei_draw_text(ei_surface_t		surface,
 	ei_bool_t alpha = hw_surface_has_alpha(surface_texte);
 	ei_rect_t rect_dest = {*where,rect_text.size};
 	if (clipper) {
-		ei_intersection_rectangle(&rect_surface, clipper,clipper);
+		//ei_intersection_rectangle(&rect_surface, clipper,clipper);
 	}
 	ei_rect_t dest_maj;
-	//rect_text.top_left = *where;
-	fprintf(stdout, "le clipper: top left: x:%d, y:%d, size: width: %d height: %d\n",clipper->top_left.x,clipper->top_left.y, clipper->size.width,clipper->size.height);
-	fprintf(stdout, "le texte: top left: x:%d, y:%d, size: width: %d height: %d\n",rect_text.top_left.x,rect_text.top_left.y, rect_text.size.width,rect_text.size.height);
 
 	ei_intersection_rectangle(clipper,&rect_dest, &rect_dest);
-	fprintf(stdout, "la dest: top left: x:%d, y:%d, size: width: %d height: %d\n",rect_dest.top_left.x,rect_dest.top_left.y, rect_dest.size.width,rect_dest.size.height);
 
-	//rect_text.top_left = *where;
 	rect_text.size = rect_dest.size;
-	fprintf(stdout, "text widht: %d height: %d\n dest widht: %d height: %d\n",rect_text.size.width, rect_text.size.height, rect_dest.size.width, rect_dest.size.height );
 	ei_copy_surface(surface,&rect_dest,surface_texte,&rect_text,alpha);
 	hw_surface_unlock(surface_texte);
 	hw_surface_free(surface_texte);
