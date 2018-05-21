@@ -105,10 +105,6 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_rect_t* rectangle, ei_point_t* anchor
 
         Condition : le widget a un geometry manager et anchor différent de none
         */
-        if (strcmp(widget->geom_params->manager->name, "placer") != 0){
-                fprintf(stderr, "Geometry manager is not \"placer\" \n");
-                exit(1);
-        }
         switch (anchor) {
                 case ei_anc_center:
                         (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2;
