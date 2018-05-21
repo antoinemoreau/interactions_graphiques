@@ -107,46 +107,42 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_widget_t* widget, ei_point_t* anchor_
                 fprintf(stderr, "Geometry manager is not \"placer\" \n");
                 exit(1);
         }
-        else if (anchor == ei_anc_none){
-                anchor = ei_anc_northwest;
-        }
-
-
-        if (anchor == ei_anc_center){
-                (*anchor_position).x = (int) (widget->screen_location.top_left.x +  widget->screen_location.size.width/2);
-                (*anchor_position).y = (int) (widget->screen_location.top_left.y +  widget->screen_location.size.height/2);
-        }
-        else if (anchor == ei_anc_north){
-                (*anchor_position).x = (int) (widget->screen_location.top_left.x +  widget->screen_location.size.width/2);
-                (*anchor_position).y = widget->screen_location.top_left.y;
-        }
-        else if (anchor == ei_anc_northeast){
-                (*anchor_position).x = (int) (widget->screen_location.top_left.x +  widget->screen_location.size.width);
-                (*anchor_position).y = widget->screen_location.top_left.y;
-        }
-        else if (anchor == ei_anc_east){
-                (*anchor_position).x = (int) (widget->screen_location.top_left.x +  widget->screen_location.size.width);
-                (*anchor_position).y = (int) (widget->screen_location.top_left.y +  widget->screen_location.size.height/2);
-        }
-        else if (anchor == ei_anc_southeast){
-                (*anchor_position).x = (int) (widget->screen_location.top_left.x +  widget->screen_location.size.width);
-                (*anchor_position).y = (int) (widget->screen_location.top_left.y +  widget->screen_location.size.height);
-        }
-        else if (anchor == ei_anc_south){
-                (*anchor_position).y = (int) (widget->screen_location.top_left.y +  widget->screen_location.size.height);
-                (*anchor_position).x = (int) (widget->screen_location.top_left.x +  widget->screen_location.size.width/2);
-        }
-        else if (anchor == ei_anc_southwest){
-                (*anchor_position).y = (int) (widget->screen_location.top_left.y +  widget->screen_location.size.height);
-                (*anchor_position).x = widget->screen_location.top_left.x;
-        }
-        else if (anchor == ei_anc_west){
-                (*anchor_position).x = widget->screen_location.top_left.x;
-                (*anchor_position).y = (int) (widget->screen_location.top_left.y +  widget->screen_location.size.height/2);
-        }
-        else if (anchor == ei_anc_northwest){
-                (*anchor_position).x = widget->screen_location.top_left.x;
-                (*anchor_position).y = widget->screen_location.top_left.y;
+        switch (anchor) {
+                case ei_anc_center:
+                        (*anchor_position).x = widget->screen_location.top_left.x + widget->screen_location.size.width/2;
+                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height/2;
+                        break;
+                case ei_anc_north:
+                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width/2;
+                        (*anchor_position).y = widget->screen_location.top_left.y;
+                        break;
+                case ei_anc_northeast:
+                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width;
+                        (*anchor_position).y = widget->screen_location.top_left.y;
+                        break;
+                case ei_anc_east:
+                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width;
+                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height/2;
+                        break;
+                case ei_anc_southeast:
+                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width;
+                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height;
+                        break;
+                case ei_anc_south:
+                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height;
+                        (*anchor_position).x = widget->screen_location.top_left.x +  widget->screen_location.size.width/2;
+                        break;
+                case ei_anc_southwest:
+                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height;
+                        (*anchor_position).x = widget->screen_location.top_left.x;
+                        break;
+                case ei_anc_west:
+                        (*anchor_position).x = widget->screen_location.top_left.x;
+                        (*anchor_position).y = widget->screen_location.top_left.y +  widget->screen_location.size.height/2;
+                        break;
+                default:
+                        (*anchor_position).x = widget->screen_location.top_left.x;
+                        (*anchor_position).y = widget->screen_location.top_left.y;
         }
 }
 

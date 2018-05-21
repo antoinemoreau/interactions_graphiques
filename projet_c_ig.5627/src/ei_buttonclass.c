@@ -17,10 +17,22 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_surface_t		pick_surface,
                                                 ei_rect_t*		clipper) {
         ei_button_t* button = (ei_button_t*) widget;
-        const ei_color_t* color = button->color;
+        ei_rect_t unter = {clipper->top_left, clipper->size};
+        //On récupère les 3 parties à colorier
+        int nb_points = 8;
+        ei_linked_point_t* low_part = rounded_frame(*clipper, button->corner_radius, nb_points, 0);
+        ei_linked_point_t* high_part = rounded_frame(*clipper, button->corner_radius, nb_points, 1);
+        ei_linked_point_t* all_part = rounded_frame(*clipper, button->corner_radius, nb_points, 2);
+
+        ei_color_t light_color;
+        ei_color_t dark_color;
+        ei_compute_color(*button->color,&light_color,1.2);
+        ei_compute_color(*frame->color,&dark_color,0.5);
+
+        
         if (button->relief == ei_relief_raised) {
                 // on draw les parties haute, basse, et l'intérieur du bouton
-                
+
         }else if(button->relief == ei_relief_sunken){
                 // on draw les parties haute, basse, et l'intérieur du bouton avec couleurs inversees
         }
