@@ -152,9 +152,12 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         }
         if (button->text) {
+                ei_surface_t surface_text = hw_text_create_surface(*(button->text), ei_default_font, *(button->text_color));
+                ei_rect_t rect_text = hw_surface_get_rect(surface_text);
                 ei_point_t aqui;
-                ei_anchor_spot(button->text_anchor,&(button->widget),&aqui);
-                ei_draw_text(surface,&aqui,*(button->text),NULL, *(button->text_color),clipper);
+                ei_anchor_spot(button->text_anchor, &rect_text,&inter,&aqui);
+                ei_draw_text(surface,&aqui,*(button->text),NULL, *(button->text_color),&inter);
+                hw_surface_free(surface_text);
 
         }
 }

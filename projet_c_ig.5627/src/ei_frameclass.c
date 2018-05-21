@@ -75,12 +75,15 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         }
         if (frame->text) {
                 ei_point_t aqui;
-                ei_anchor_spot(frame->text_anchor,&inter,&aqui);
+                ei_surface_t surface_text = hw_text_create_surface(*(frame->text), ei_default_font, *(frame->text_color));
+                ei_rect_t rect_text = hw_surface_get_rect(surface_text);
+                ei_anchor_spot(frame->text_anchor, &rect_text, &inter, &aqui);
                 ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),&inter);
+                hw_surface_free(surface_text);
         }else{
                 if(frame->img){
                         ei_point_t aqui_image;
-                        ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
+                        //ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
                 }
         }
 }
