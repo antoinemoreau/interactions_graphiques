@@ -146,22 +146,21 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_rect_t* rectangle, ei_point_t* anchor
 
 ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, float angle_depart, float angle_fin, int nb_points){
         /*
-        Retourne une chaine de points calculés pour formé un quart de cercle
+        Retourne une chaine de points calculés pour former un arc de cercle
         compris entre angle_depart et angle_fin (on exprime en radiant)
         */
-        ei_point_t point = {center.x + rayon * cos(angle_depart * PI / 180), center.y + rayon * sin(angle_depart * PI / 180)};
+        ei_point_t point = {center.x + rayon * cos(angle_depart * PI / 180), center.y - rayon * sin(angle_depart * PI / 180)};
         ei_linked_point_t* first_point = calloc(1, sizeof(ei_linked_point_t));
-        int angle;
+        float angle;
         first_point->point = point;
-        first_point->next = NULL;
         ei_linked_point_t* previous = first_point;
         ei_linked_point_t* current = NULL;
 
-        for (int i = 1; i <= nb_points; i++){
+        for (int i = 1; i < nb_points + 1; i++){
                 angle = ( angle_depart + i*(angle_fin - angle_depart)/nb_points ) * PI / 180;
                 current = calloc(1, sizeof(ei_linked_point_t));
                 point.x = (int) (center.x + rayon * cos(angle));
-                point.y = (int) (center.y + rayon * sin(angle));
+                point.y = (int) (center.y - rayon * sin(angle));
                 current->point = point;
                 previous->next = current;
                 previous = current;
@@ -169,5 +168,6 @@ ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, float angle_depart
         ei_extreme_linked_points_t* extreme_points = calloc(1, sizeof(ei_extreme_linked_points_t));
         extreme_points->head_point = first_point;
         extreme_points->tail_point = current;
+        current->next = NULL;
         return extreme_points;
 }

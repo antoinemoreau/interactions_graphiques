@@ -33,18 +33,17 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
         ei_point_t bot_right = {rectangle.top_left.x + rectangle.size.width, rectangle.top_left.y + rectangle.size.height};
         //On détermine les 4 centres autour desquels on formera les arcs de cercles
         ei_point_t center_top_left = {top_left.x + rayon, top_left.y + rayon};
-        ei_point_t center_top_right = {top_right.x + rayon, top_right.y + rayon};
-        ei_point_t center_bot_left = {bot_left.x + rayon, bot_left.y + rayon};
-        ei_point_t center_bot_right = {bot_right.x + rayon, bot_right.y + rayon};
+        ei_point_t center_top_right = {top_right.x - rayon, top_right.y + rayon};
+
+        ei_point_t center_bot_left = {bot_left.x + rayon, bot_left.y - rayon};
+        ei_point_t center_bot_right = {bot_right.x - rayon, bot_right.y - rayon};
         //On récupère les points formant les arcs de cercles de chaque coin du rectangle
-        ei_extreme_linked_points_t* extreme_points_top_right_low = arc(center_top_right, rayon, 0.0, 45.0, nb_points);
-        ei_extreme_linked_points_t* extreme_points_top_right_high = arc(center_top_right, rayon, 45.0, 90.0, nb_points);
+        ei_extreme_linked_points_t* extreme_points_top_right_low = arc(center_top_right, rayon, 0.0, 45.0, nb_points/2);
+        ei_extreme_linked_points_t* extreme_points_top_right_high = arc(center_top_right, rayon, 45.0, 90.0, nb_points/2);
         ei_extreme_linked_points_t* extreme_points_top_left = arc(center_top_left, rayon, 90.0, 180.0, nb_points);
-        ei_extreme_linked_points_t* extreme_points_bot_left_high = arc(center_bot_left, rayon, 180.0, 225.0, nb_points);
-        ei_extreme_linked_points_t* extreme_points_bot_left_low = arc(center_bot_left, rayon, 225.0, 270.0, nb_points);
+        ei_extreme_linked_points_t* extreme_points_bot_left_high = arc(center_bot_left, rayon, 180.0, 225.0, nb_points/2);
+        ei_extreme_linked_points_t* extreme_points_bot_left_low = arc(center_bot_left, rayon, 225.0, 270.0, nb_points/2);
         ei_extreme_linked_points_t* extreme_points_bot_right = arc(center_bot_right, rayon, 270.0, 360.0, nb_points);
-        fprintf(stdout, "Point top right middle 1 : (%d, %d)", extreme_points_top_right_high->head_point->point.x,extreme_points_top_right_high->head_point->point.y );
-        fprintf(stdout, "Point top right middle 2 : (%d, %d)", extreme_points_top_right_high->head_point->point.x,extreme_points_top_right_high->head_point->point.y );
 
 
         //On déclare le premier point de la liste qu'on renvoie
@@ -86,6 +85,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_surface_t		surface,
                                                 ei_surface_t		pick_surface,
                                                 ei_rect_t*		clipper) {
+
         ei_button_t* button = (ei_button_t*) widget;
         ei_rect_t inter;
         int border = button->border_width;
@@ -111,15 +111,14 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         top_right_big_square->point = point_top_right_big_square;
         bot_left_big_square->point = point_bot_left_big_square;
 
-        ei_rect_t rect_surface = hw_surface_get_rect(surface);
         //Calcule du polygone de la partie basse à colorer
-        ei_linked_point_t* low_part = rounded_frame(rect_surface, button->corner_radius, nb_points, 0);
+        ei_linked_point_t* low_part = rounded_frame(*clipper, button->corner_radius, nb_points, 0);
         top_right_big_square->next = bot_left_big_square;
         bot_left_big_square->next = low_part;
 
 
         //Calcule du polygone de la partie haute à colorer
-        ei_linked_point_t* high_part = rounded_frame(rect_surface, button->corner_radius, nb_points, 1);
+        ei_linked_point_t* high_part = rounded_frame(*clipper, button->corner_radius, nb_points, 1);
         bot_left_big_square->next = top_right_big_square;
         top_right_big_square->next = high_part;
 
@@ -140,24 +139,23 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         free(bot_left_big_square);
         free(top_right_big_square);
         //Dessin de la totalité de l'interieur du bouton
-        /*
+
         ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
         ei_draw_polygon(surface, all_part, *(button->color), &inter);
-        */
+
 
         if (pick_surface) {
-                /*
+
                 hw_surface_lock(pick_surface);
                 ei_fill(pick_surface,button->widget.pick_color,clipper);
                 hw_surface_unlock(pick_surface);
-                */
+
         }
         if (button->text) {
-                /*
                 ei_point_t aqui;
                 ei_anchor_spot(button->text_anchor,&(button->widget),&aqui);
                 ei_draw_text(surface,&aqui,*(button->text),NULL, *(button->text_color),clipper);
-                */
+
         }
 
         //gestion des enfants

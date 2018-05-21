@@ -50,6 +50,7 @@ int ei_main(int argc, char** argv)
 	int		button_x		= 150;
 	int		button_y		= 200;
 	ei_color_t	button_color		= {0x88, 0x88, 0x88, 0xff};
+	ei_anchor_t	text_anchor 		= ei_anc_center;
 	char*		button_title		= "Mon premier Bouton !";
 	ei_color_t	button_text_color	= {0x00, 0x00, 0x00, 0xff};
 	int		button_corner_radius	= 20;
@@ -64,7 +65,7 @@ int ei_main(int argc, char** argv)
 	/* Create, configure and place the button on screen. */
 	button = ei_widget_create("button", ei_app_root_widget());
 	ei_button_configure	(button, &button_size, &button_color,
-				 &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, NULL,
+				 &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, &text_anchor,
 				 NULL, NULL, NULL, &button_callback, NULL);
 	ei_place(button, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL );
 
