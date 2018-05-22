@@ -18,3 +18,5 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
         ei_button_t* button = (ei_button_t*)widget;
         button->relief = ei_relief_sunken;
 }
+
+// TODO : Ecrire une autre fonction pour raised le bouton quand on relache

@@ -49,6 +49,24 @@ static ei_rect_t* rectangle_ord_min(ei_rect_t* clipper, ei_rect_t* sec_rect){
         }
 }
 
+static int coordonnes_min(int x1, int x2){
+  if (x1 < x2){
+    return x1;
+  }
+  else{
+    return x2;
+  }
+}
+
+static int coordonnes_max(int x1, int x2){
+  if (x1 < x2){
+    return x2;
+  }
+  else{
+    return x1;
+  }
+}
+
 void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_t* dest){
         ei_rect_t* left_rect = rectangle_abs_min(clipper, sec_rect);
         ei_rect_t* right_rect = NULL;
@@ -99,7 +117,40 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         dest->size = dest_size;
 }
 
+void ei_intersection_rectangle_bis(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_t* dest){
+        ei_point_t point1 = {clipper->top_left.x, clipper->top_left.y};
+        ei_point_t point2 = {sec_rect->top_left.x, sec_rect->top_left.y};
+        ei_size_t size1 = {clipper->size.width, clipper->size.height};
+        ei_size_t size2 = {sec_rect->size.width, sec_rect->size.height};
+
+        int abs_left = coordonnes_max(point1.x, point2.x);
+        int ord_top = coordonnes_max(point1.y, point2.y);
+        int abs_right = coordonnes_min(point1.x + size1.width, point2.x + size2.width);
+        int ord_bot = coordonnes_min(point1.y + size1.height, point2.y + size2.height);
+        fprintf(stdout, "abs_left = %d\n", abs_left);
+        fprintf(stdout, "abs_right = %d\n", abs_right);
+
+        fprintf(stdout, "ord_top = %d\n", ord_top);
+
+        fprintf(stdout, "ord_bot = %d\n", ord_bot);
+
+
+        if (abs_right <= abs_left || ord_bot <= ord_top){
+                //Si les deux rectangles ne sont pas de point en commun sur l'axe des abscisses
+                abs_left = 0;
+                ord_top = 0;
+                abs_right = 0;
+                ord_bot = 0;
+        }
+        dest->top_left.x = abs_left;
+        dest->top_left.y = ord_top;
+        dest->size.width = abs_right - abs_left;
+        dest->size.width = ord_bot - ord_top;
+}
+
+
 void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* texte, ei_rect_t* rectangle, ei_point_t* anchor_position){
+
         /*
         Renvoi la position du point choisi avec anchor_position
 
