@@ -9,11 +9,12 @@ void		ei_bind			(ei_eventtype_t		eventtype,
 					 ei_tag_t		tag,
 					 ei_callback_t		callback,
 					 void*			user_param){
-	if (eventtype == ei_ev_keydown) {
-		ei_button_t* button = (ei_button_t *) widget;
-		button->callback = &callback;
+	ei_linked_event_t* list_of_events = list_events();
+	ei_linked_event_t* event = calloc(1,sizeof(ei_linked_event_t));
+	list_of_events[]->next = event;
+	list_of_events[] = event
+	event->widget = widget;
 
-	}
 
 }
 

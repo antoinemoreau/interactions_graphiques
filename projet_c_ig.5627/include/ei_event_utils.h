@@ -7,3 +7,8 @@ typedef struct ei_linked_event_t {
         ei_callback_t                  callback;
 	struct ei_linked_event_t*      next;
 } ei_linked_event_t;
+
+
+ei_linked_event_t* list_events();
+
+void ei_init_list_events();
