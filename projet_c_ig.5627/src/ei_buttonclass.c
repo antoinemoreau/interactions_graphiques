@@ -146,18 +146,18 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         if (pick_surface) {
 
-                hw_surface_lock(pick_surface);
-                ei_fill(pick_surface,button->widget.pick_color,clipper);
-                hw_surface_unlock(pick_surface);
+                // hw_surface_lock(pick_surface);
+                // ei_fill(pick_surface,button->widget.pick_color,clipper);
+                // hw_surface_unlock(pick_surface);
 
         }
-        if (button->text) {
-                ei_surface_t surface_text = hw_text_create_surface(*(button->text), ei_default_font, *(button->text_color));
-                ei_rect_t rect_text = hw_surface_get_rect(surface_text);
+        if (button->text && strcmp(button->text,"") != 0) {
+
                 ei_point_t aqui;
-                ei_anchor_spot(button->text_anchor, &rect_text,&inter,&aqui);
+                ei_size_t size_texte;
+                hw_text_compute_size(*(button->text),button->text_font,&(size_texte.width),&(size_texte.height));
+                ei_anchor_spot(button->text_anchor, &size_texte,&inter,&aqui);
                 ei_draw_text(surface,&aqui,*(button->text),NULL, *(button->text_color),&inter);
-                hw_surface_free(surface_text);
 
         }
 }

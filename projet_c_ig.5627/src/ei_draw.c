@@ -9,6 +9,9 @@ void 		ei_draw_text			(ei_surface_t		surface,
 						 const ei_font_t	font,
 						 const ei_color_t	color,
 						 const ei_rect_t*	clipper){
+	if(strcmp(text,"") == 0){
+		return;
+	}
 	ei_rect_t rect_surface = hw_surface_get_rect(surface);
 	ei_font_t font_text = font;
 	if (font_text == NULL) {
