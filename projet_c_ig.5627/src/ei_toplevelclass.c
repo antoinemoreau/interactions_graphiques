@@ -98,7 +98,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
                 ei_point_t aqui;
                 //ei_anchor_spot(ei_anc_none, &text_size,&title_rect,&aqui);
-                //ei_draw_text(surface,&aqui,*(toplevel->title),ei_default_font, *(toplevel->text_color),&title_rect);
+                ei_draw_text(surface,&aqui,*(toplevel->title),ei_default_font, text_color,&title_rect);
 
         }
 }
