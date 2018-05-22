@@ -25,13 +25,12 @@ int ei_main(int argc, char** argv)
 	ei_color_t	frame_color		= {0x80, 0x80, 0x80, 0xff};
 	ei_relief_t	frame_relief		= ei_relief_raised;
 	int		frame_border_width	= 6;
-	char* 		texte			= "Tristan le haineux";
+	char* 		texte			= "Test long frame";
 	ei_color_t      couleur_du_texte	= {0xff,0x14,0x93,0xff};
 	ei_anchor_t 	ancre_text		= ei_anc_center;
 	/* Create the application and change the color of the background. */
 	ei_app_create(&screen_size, EI_FALSE);
 	ei_frame_configure(ei_app_root_widget(), NULL, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
 	/* Create, configure and place the frame on screen. */
 	frame = ei_widget_create("frame", ei_app_root_widget());
 	ei_frame_configure(frame, &frame_size, &frame_color,

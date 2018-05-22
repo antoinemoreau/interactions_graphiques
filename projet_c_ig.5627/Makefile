@@ -31,6 +31,7 @@ LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
 		   ${OBJDIR}/ei_placer.o \
 		   ${OBJDIR}/ei_draw.o \
 		   ${OBJDIR}/ei_draw_utils.o \
+		   ${OBJDIR}/ei_event.o \
 
 
 
@@ -56,7 +57,7 @@ else
 
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
-	LINK		= ${CC} ${VFLAGS}
+	LINK		= ${CC} #${VFLAGS}
 	LIBEI		= ${OBJDIR}/libei.a
 #	ARCH	        = 32
 	ARCH	        = 64
@@ -194,6 +195,9 @@ ${OBJDIR}/ei_draw_utils.o: ${SRC}/ei_draw_utils.c ${INCLUDES}/*
 
 ${OBJDIR}/ei_buttonclass.o: ${SRC}/ei_buttonclass.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_buttonclass.c -o ${OBJDIR}/ei_buttonclass.o
+
+${OBJDIR}/ei_event.o: ${SRC}/ei_event.c ${INCLUDES}/*
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_event.c -o ${OBJDIR}/ei_event.o
 
 
 

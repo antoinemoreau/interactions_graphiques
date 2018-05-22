@@ -11,6 +11,7 @@ ei_widget_t *root;
 ei_surface_t window;
 ei_bool_t quit_app = EI_FALSE;
 ei_linked_rect_t* rect_list = NULL;
+ei_liked
 
 void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
         hw_init();
@@ -37,10 +38,13 @@ void ei_app_run() {
         struct ei_event_t* event = malloc(sizeof(struct ei_event_t));
         ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
+        ei_size_t pick_size;
+        pick_size.width = root->requested_size.width;
+        pick_size.height = root->requested_size.height;
+        ei_surface_t pick_surface = hw_surface_create(root, &pick_size, EI_FALSE);
         ei_rect_t main_clipper;
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
-        ei_surface_t pick_surface = NULL;
         //on dessine tout les widgets en premier lieu
         ei_widget_t* current_widget = root;
         while (current_widget){
@@ -53,10 +57,14 @@ void ei_app_run() {
                 current_widget = current_widget->next_sibling;
         }
         hw_surface_unlock(root_surface);
-        hw_surface_update_rects(root_surface,NULL);
+        hw_surface_update_rects(root_surface, NULL);
+        hw_surface_update_rects(pick_surface, NULL);
         //boucle des evenements
         // while (!quit_app) {
         //         hw_event_wait_next(&event);
+        //         PARCOURS DE LA LISTE D'EVENEMENT ENREG
+        //         si on a un event qui existe pour le type_event  + tag
+        //         declanchement du callback
         //         hw_surface_update_rects(root_surface,rect_list);
         // }
         getchar();
