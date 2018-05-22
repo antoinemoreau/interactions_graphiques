@@ -1,6 +1,7 @@
 #include "ei_widgetclass.h"
 #include "ei_frameclass.h"
 #include "ei_buttonclass.h"
+#include "ei_toplevelclass.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
