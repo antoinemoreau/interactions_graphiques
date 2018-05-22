@@ -45,6 +45,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
         ei_color_t color = *(toplevel->color);
+        ei_color_t text_color = {0x80, 0x80, 0x80, 0x80};
         char** title = toplevel->title;
         int border_width = toplevel->border_width;
         ei_point_t toplevel_spot = toplevel->widget.screen_location.top_left;
@@ -74,17 +75,32 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         //Création du polygone du titre
         ei_linked_point_t* title_first_point = points_list(title_rect);
+        ei_draw_polygon(surface, title_first_point, color, clipper);
 
         //Création du polygone interieur (sous le titre)
         ei_linked_point_t* inter_first_point = points_list(inter);
-
-
-
-
+        ei_draw_polygon(surface, inter_first_point, color, clipper);
 
         //Libération des polygones
+        free(exter_first_point);
+        free(title_first_point);
+        free(inter_first_point);
 
+        if (pick_surface) {
 
+                // hw_surface_lock(pick_surface);
+                // ei_fill(pick_surface,button->widget.pick_color,clipper);
+                // hw_surface_unlock(pick_surface);
+
+        }
+
+        if (toplevel->title && strcmp(toplevel->title,"") != 0) {
+
+                ei_point_t aqui;
+                //ei_anchor_spot(ei_anc_none, &text_size,&title_rect,&aqui);
+                ei_draw_text(surface,&aqui,*(toplevel->title),ei_default_font, *(toplevel->text_color),&title_rect);
+
+        }
 }
 
 void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
