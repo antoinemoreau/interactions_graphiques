@@ -149,7 +149,7 @@ void ei_intersection_rectangle_bis(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_r
 }
 
 
-void ei_anchor_spot(ei_anchor_t anchor, ei_rect_t* texte, ei_rect_t* rectangle, ei_point_t* anchor_position){
+void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* texte, ei_rect_t* rectangle, ei_point_t* anchor_position){
 
         /*
         Renvoi la position du point choisi avec anchor_position

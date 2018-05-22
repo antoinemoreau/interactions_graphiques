@@ -8,14 +8,17 @@
 static ei_linked_point_t* points_list (ei_rect_t rectangle){
 
         ei_linked_point_t* bot_left = calloc(1, sizeof(ei_linked_point_t));
-        bot_left->point = {rectangle.top_left.x, rectangle.top_left.y + rectangle.size.height};
+        bot_left->point.x = rectangle.top_left.x;
+        bot_left->point.y = rectangle.top_left.y + rectangle.size.height;
 
         ei_linked_point_t* bot_right = calloc(1, sizeof(ei_linked_point_t));
-        bot_right->point = {rectangle.top_left.x + rectangle.size.width, rectangle.top_left.y + rectangle.size.height};
+        bot_right->point.x = rectangle.top_left.x + rectangle.size.width;
+        bot_right->point.y = rectangle.top_left.y + rectangle.size.height;
         bot_right->next = bot_left;
 
         ei_linked_point_t* top_right = calloc(1, sizeof(ei_linked_point_t));
-        top_right->point = {rectangle.top_left.x + rectangle.size.width, rectangle.top_left.y};
+        top_right->point.x = rectangle.top_left.x + rectangle.size.width;
+        top_right->point.y = rectangle.top_left.y;
         top_right->next = bot_right;
 
         ei_linked_point_t* top_left = calloc(1, sizeof(ei_linked_point_t));
@@ -57,11 +60,13 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         //Rectangle interieur sous le titre
         ei_rect_t inter;
-        inter.top_left = {text_spot.x + text_size.width + border_width, text_spot.y};
-        inter.size = { toplevel_size.width - 2 * border_width, toplevel_size.height - 2 * border_width - text_size.height};
+        inter.top_left.x = text_spot.x + text_size.width + border_width;
+        inter.top_left.y = text_spot.y;
+        inter.size.width = toplevel_size.width - 2 * border_width;
+        inter.size.height = toplevel_size.height - 2 * border_width - text_size.height;
 
         //Création du polygone exterieur en arrondissant le haut
-        ei_linked_point_t* exter_first_point = points_list();
+        ei_linked_point_t* exter_first_point = points_list(widget->screen_location);
         /*
         Mettre un round frame ici
         */
