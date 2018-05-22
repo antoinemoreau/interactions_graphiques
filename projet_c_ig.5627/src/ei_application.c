@@ -4,6 +4,7 @@
 #include "ei_geometrymanager.h"
 #include "hw_interface.h"
 #include "ei_event.h"
+#include "ei_event_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -35,6 +36,7 @@ void ei_app_free() {
 void ei_app_run() {
         //A.2 tentative de app run qui utilise les drawfunction des widgets
         struct ei_event_t* event = malloc(sizeof(struct ei_event_t));
+        ei_linked_event_t* event_list = list_events();
         ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
         ei_size_t pick_size;
@@ -59,13 +61,17 @@ void ei_app_run() {
         hw_surface_update_rects(root_surface, NULL);
         hw_surface_update_rects(pick_surface, NULL);
         //boucle des evenements
-        // while (!quit_app) {
-        //         hw_event_wait_next(&event);
+        while (!quit_app) {
+                hw_event_wait_next(&event);
+                if(event){
+        //
+                }
         //         PARCOURS DE LA LISTE D'EVENEMENT ENREG
         //         si on a un event qui existe pour le type_event  + tag
         //         declanchement du callback
-        //         hw_surface_update_rects(root_surface,rect_list);
-        // }
+                hw_surface_update_rects(root_surface,rect_list);
+                rect_list = NULL;
+        }
         getchar();
 }
 
