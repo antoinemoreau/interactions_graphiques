@@ -5,6 +5,34 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+static uint32_t pick_id = -1;
+static ei_color_t pick_color = {0x00, 0x00, 0x01, 0xff};
+
+static ei_color_t* inc_pick_color () {
+	if (pick_color.blue < 0xff) {
+		pick_color.blue++;
+	} else {
+		pick_color.blue = 0x00;
+		if (pick_color.green < 0xff) {
+			pick_color.green++;
+		} else {
+			pick_color.blue = 0x00;
+			if (pick_color.red < 0xff) {
+				pick_color.red++;
+			} else {
+				fprintf(stderr, "Seriously, 16 777 216 widgets ?");
+				exit(1);
+			}
+		}
+	}
+	ei_color_t* color = calloc(1, sizeof(ei_color_t));
+	color->red = pick_color.red;
+	color->green = pick_color.green;
+	color->blue = pick_color.blue;
+	color->alpha = pick_color.alpha;
+	return color;
+}
+
 ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 							 ei_widget_t*		parent) {
 	ei_widgetclass_t* widgetclass = ei_widgetclass_from_name(class_name);
@@ -13,9 +41,9 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		ei_widget_t* widget = widgetclass->allocfunc();
 		widget->wclass = widgetclass;
 
-		//id et color a modifier pour gestion des evenements
-		widget->pick_id = 1;
-		widget->pick_color = &ei_default_background_color;
+		//id incremente a chaque instanciation de widget
+		widget->pick_id = ++pick_id;
+		widget->pick_color = inc_pick_color();
 
 		//affectation du widget parent
 		widget->parent = parent;
