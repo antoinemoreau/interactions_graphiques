@@ -10,9 +10,8 @@ void* ei_frame_allocfunc () {
 }
 
 
-void ei_frame_releasefunc (struct ei_widget_t* widget){
-        ei_frame_t* frame = (ei_frame_t*) widget;
-        free(frame);
+void ei_frame_releasefunc (struct ei_widget_t* widget) {
+        //free(widget);
 }
 
 void ei_frame_drawfunc      (ei_widget_t*	widget,
@@ -68,7 +67,6 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         }else{
                 ei_fill(surface, frame->color, clipper);
         }
-        //ei_draw_text(surface,&ici,texte,NULL,col,NULL);
         if (pick_surface) {
                 // hw_surface_lock(pick_surface);
                 // ei_fill(pick_surface,frame->widget.pick_color,clipper);
