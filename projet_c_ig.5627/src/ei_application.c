@@ -72,7 +72,7 @@ void ei_app_run() {
                 hw_surface_update_rects(root_surface,rect_list);
                 rect_list = NULL;
         }
-        getchar();
+        ei_app_quit_request();
 }
 
 void ei_app_invalidate_rect(ei_rect_t* rect) {
