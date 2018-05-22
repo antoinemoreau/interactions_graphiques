@@ -11,6 +11,7 @@ ei_widget_t *root;
 ei_surface_t window;
 ei_bool_t quit_app = EI_FALSE;
 ei_linked_rect_t* rect_list = NULL;
+ei_liked
 
 void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
         hw_init();
@@ -61,6 +62,9 @@ void ei_app_run() {
         //boucle des evenements
         // while (!quit_app) {
         //         hw_event_wait_next(&event);
+        //         PARCOURS DE LA LISTE D'EVENEMENT ENREG
+        //         si on a un event qui existe pour le type_event  + tag
+        //         declanchement du callback
         //         hw_surface_update_rects(root_surface,rect_list);
         // }
         getchar();
