@@ -69,9 +69,9 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         }
         //ei_draw_text(surface,&ici,texte,NULL,col,NULL);
         if (pick_surface) {
-                hw_surface_lock(pick_surface);
-                ei_fill(pick_surface,frame->widget.pick_color,clipper);
-                hw_surface_unlock(pick_surface);
+                // hw_surface_lock(pick_surface);
+                // ei_fill(pick_surface,frame->widget.pick_color,clipper);
+                // hw_surface_unlock(pick_surface);
         }
         if (frame->text) {
                 ei_point_t aqui;

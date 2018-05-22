@@ -11,7 +11,6 @@ ei_widget_t *root;
 ei_surface_t window;
 ei_bool_t quit_app = EI_FALSE;
 ei_linked_rect_t* rect_list = NULL;
-ei_liked
 
 void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
         hw_init();

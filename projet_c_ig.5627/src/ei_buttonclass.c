@@ -146,9 +146,9 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         if (pick_surface) {
 
-                hw_surface_lock(pick_surface);
-                ei_fill(pick_surface,button->widget.pick_color,clipper);
-                hw_surface_unlock(pick_surface);
+                // hw_surface_lock(pick_surface);
+                // ei_fill(pick_surface,button->widget.pick_color,clipper);
+                // hw_surface_unlock(pick_surface);
 
         }
         if (button->text) {

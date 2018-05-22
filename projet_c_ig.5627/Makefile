@@ -32,6 +32,7 @@ LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
 		   ${OBJDIR}/ei_draw.o \
 		   ${OBJDIR}/ei_draw_utils.o \
 		   ${OBJDIR}/ei_event.o \
+		   ${OBJDIR}/ei_event_utils.o \
 
 
 
@@ -199,6 +200,8 @@ ${OBJDIR}/ei_buttonclass.o: ${SRC}/ei_buttonclass.c ${INCLUDES}/*
 ${OBJDIR}/ei_event.o: ${SRC}/ei_event.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_event.c -o ${OBJDIR}/ei_event.o
 
+${OBJDIR}/ei_event_utils.o: ${SRC}/ei_event_utils.c ${INCLUDES}/*
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_event_utils.c -o ${OBJDIR}/ei_event_utils.o
 
 
 
