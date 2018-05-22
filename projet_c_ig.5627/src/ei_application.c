@@ -55,10 +55,11 @@ void ei_app_run() {
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface,NULL);
         //boucle des evenements
-        while (!quit_app) {
-                hw_event_wait_next(&event);
-                hw_surface_update_rects(root_surface,rect_list);
-        }
+        // while (!quit_app) {
+        //         hw_event_wait_next(&event);
+        //         hw_surface_update_rects(root_surface,rect_list);
+        // }
+        getchar();
 }
 
 void ei_app_invalidate_rect(ei_rect_t* rect) {
