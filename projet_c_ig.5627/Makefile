@@ -33,6 +33,7 @@ LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
 		   ${OBJDIR}/ei_draw_utils.o \
 		   ${OBJDIR}/ei_event.o \
 		   ${OBJDIR}/ei_event_utils.o \
+		   ${OBJDIR}/ei_toplevelclass.o \
 
 
 
@@ -58,6 +59,7 @@ else
 
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
+
 	LINK		= ${CC} #${VFLAGS}
 	LIBEI		= ${OBJDIR}/libei.a
 #	ARCH	        = 32
@@ -202,6 +204,9 @@ ${OBJDIR}/ei_event.o: ${SRC}/ei_event.c ${INCLUDES}/*
 
 ${OBJDIR}/ei_event_utils.o: ${SRC}/ei_event_utils.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_event_utils.c -o ${OBJDIR}/ei_event_utils.o
+
+${OBJDIR}/ei_toplevelclass.o: ${SRC}/ei_toplevelclass.c ${INCLUDES}/*
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_toplevelclass.c -o ${OBJDIR}/ei_toplevelclass.o
 
 
 
