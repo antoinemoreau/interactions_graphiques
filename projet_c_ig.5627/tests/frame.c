@@ -25,7 +25,7 @@ int ei_main(int argc, char** argv)
 	ei_color_t	frame_color		= {0x80, 0x80, 0x80, 0xff};
 	ei_relief_t	frame_relief		= ei_relief_raised;
 	int		frame_border_width	= 6;
-	char* 		texte			= "Maxime le dieu";
+	char* 		texte			= "Maxime le dieu de ";
 	ei_color_t      couleur_du_texte	= {0xff,0x14,0x93,0xff};
 	ei_anchor_t 	ancre_text		= ei_anc_center;
 	/* Create the application and change the color of the background. */
@@ -37,6 +37,7 @@ int ei_main(int argc, char** argv)
 	ei_frame_configure(frame, &frame_size, &frame_color,
 			    &frame_border_width, &frame_relief, &texte, NULL, &couleur_du_texte, &ancre_text,
 			    NULL, NULL, NULL);
+
 	ei_place(frame, NULL, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL );
 
 	/* Run the application's main loop. */
