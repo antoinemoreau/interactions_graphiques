@@ -1,6 +1,7 @@
 #include "ei_widget.h"
 #include "ei_frame.h"
 #include "ei_button.h"
+#include "ei_toplevel.h"
 #include "ei_geometrymanager.h"
 #include "ei_draw.h"
 #include <stdlib.h>
@@ -72,7 +73,7 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->screen_location.top_left.y = 0;
 		widget->screen_location.size.width = 0;
 		widget->screen_location.size.height = 0;
-		widget->content_rect = &widget->screen_location;
+		widget->content_rect = &(widget->screen_location);
 		widgetclass->setdefaultsfunc(widget);
 		return widget;
 	}
@@ -245,4 +246,45 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 							 ei_axis_set_t*		resizable,
 						 	 ei_size_t**		min_size) {
 
+
+	 if (requested_size != NULL){
+ 		widget->requested_size = *requested_size;
+ 	}
+ 	else {
+ 		widget->requested_size.height = 320;
+ 		widget->requested_size.width = 240;
+ 	}
+	ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
+
+	if (color != NULL)
+		toplevel->color = color;
+	else if (!toplevel->color)
+		toplevel->color = &ei_default_background_color;
+
+	if (border_width != NULL)
+		toplevel->border_width = *border_width;
+	else if (!toplevel->border_width)
+		toplevel->border_width = 4;
+
+	if (title != NULL)
+		toplevel->title = title;
+	else if (!toplevel->title)
+		toplevel->title = "Toplevel";
+
+	if (closable != NULL)
+		toplevel->closable = *closable;
+	else if (!toplevel->closable)
+		toplevel->closable = EI_TRUE;
+
+	if (resizable != NULL)
+		toplevel->resizable = *resizable;
+	else if (!toplevel->resizable)
+		toplevel->resizable = ei_axis_both;
+
+	if (min_size != NULL)
+		toplevel->min_size = *min_size;
+	else if (!toplevel->min_size){
+		(*(toplevel->min_size)).width = 160;
+		(*(toplevel->min_size)).height = 120;
+	}
 }

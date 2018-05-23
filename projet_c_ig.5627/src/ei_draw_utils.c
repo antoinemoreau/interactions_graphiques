@@ -88,7 +88,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         ei_point_t top_dest;
         ei_size_t dest_size;
 
-        if ( (left_rect->top_left.x + left_rect->size.width <= right_rect->top_left.x) || top_rect->top_left.y + top_rect->size.height <= bot_rect->top_left.y){
+        if ( (left_rect->top_left.x + left_rect->size.width < right_rect->top_left.x) || top_rect->top_left.y + top_rect->size.height < bot_rect->top_left.y){
                 top_dest.x = 0;
                 top_dest.y = 0;
                 dest_size.width = 0;
@@ -108,8 +108,8 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
                 else{
                         marge_ord = 0;
                 }
-                top_dest.y = bot_rect->top_left.y;
                 top_dest.x = right_rect->top_left.x;
+                top_dest.y = bot_rect->top_left.y;
                 dest_size.width = left_rect->top_left.x + left_rect->size.width - top_dest.x - marge_abs;
                 dest_size.height = top_rect->top_left.y + top_rect->size.height - top_dest.y - marge_ord;
         }
@@ -146,7 +146,7 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* texte, ei_rect_t* rectangle, 
         /*
         Renvoi la position du point choisi avec anchor_position
 
-        Condition : le widget a un geometry manager et anchor différent de none
+        Condition : le widget a un geometry manager et anchor différents de none
         */
         switch (anchor) {
                 case ei_anc_center:
