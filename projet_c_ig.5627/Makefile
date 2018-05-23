@@ -34,6 +34,7 @@ LIBEIOBJS	:= ${OBJDIR}/ei_application.o \
 		   ${OBJDIR}/ei_event.o \
 		   ${OBJDIR}/ei_event_utils.o \
 		   ${OBJDIR}/ei_toplevelclass.o \
+		   ${OBJDIR}/ei_application_utils.o \
 
 
 
@@ -207,6 +208,9 @@ ${OBJDIR}/ei_event_utils.o: ${SRC}/ei_event_utils.c ${INCLUDES}/*
 
 ${OBJDIR}/ei_toplevelclass.o: ${SRC}/ei_toplevelclass.c ${INCLUDES}/*
 	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_toplevelclass.c -o ${OBJDIR}/ei_toplevelclass.o
+
+${OBJDIR}/ei_application_utils.o: ${SRC}/ei_application_utils.c ${INCLUDES}/*
+	${CC} ${CCFLAGS} ${INCFLAGS} ${SRC}/ei_application_utils.c -o ${OBJDIR}/ei_application_utils.o
 
 
 
