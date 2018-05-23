@@ -40,11 +40,7 @@ void 		ei_draw_text			(ei_surface_t		surface,
 	ei_rect_t clipper_new;
 	if (clipper) {
 		ei_intersection_rectangle(&rect_surface, clipper, &clipper_new);
-		fprintf(stdout, "Rectangle frame : coordonnees (%d, %d) taille (%d, %d)\n", rect_surface.top_left.x, rect_surface.top_left.y,  rect_surface.size.width, rect_surface.size.height);
-		fprintf(stdout, "Rectangle texte : coordonnees (%d, %d) taille (%d, %d)\n", clipper->top_left.x, clipper->top_left.y,  clipper->size.width, clipper->size.height);
-		fprintf(stdout, "Coordonnees : (%d, %d) Taille : (%d, %d) \n ", clipper_new.top_left.x, clipper_new.top_left.y, clipper_new.size.width, clipper_new.size.height);
-	}
-	else{
+	} else {
 		clipper_new = rect_surface;
 	}
 	ei_rect_t dest_maj;

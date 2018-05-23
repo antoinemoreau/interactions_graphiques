@@ -88,12 +88,17 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         ei_button_t* button = (ei_button_t*) widget;
         button->widget.pick_id = ei_map_rgba(pick_surface,button->widget.pick_color);
-        ei_rect_t inter;
+        ei_rect_t inter = {clipper->top_left,clipper->size};
+        printf("clipper width: %d height : %d\n", clipper->size.width, clipper->size.height);
+        printf("screen location width: %d height : %d\n", button->widget.screen_location.size.width, button->widget.screen_location.size.height);
+        printf("top left screen %d, %d\n",button->widget.screen_location.top_left.x, button->widget.screen_location.top_left.y);
+        ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
+        printf("inter width: %d height : %d\n", inter.size.width, inter.size.height);
+        printf("top left inter %d, %d\n",inter.top_left.x, inter.top_left.y);
+
+
         int border = button->border_width;
-        inter.top_left.x = clipper->top_left.x + border;
-        inter.top_left.y = clipper->top_left.y + border;
-        inter.size.width = widget->screen_location.size.width - 2 * border;
-        inter.size.height = widget->screen_location.size.height - 2 * border;
+
         //On récupère les 3 parties à colorier
         int nb_points = 100;
         ei_color_t light_color;
@@ -101,10 +106,10 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         ei_compute_color(*(button->color),&light_color,1.2);
         ei_compute_color(*(button->color),&dark_color,0.5);
 
-        ei_point_t point_top_right_big_square = {widget->screen_location.top_left.x + widget->screen_location.size.width - widget->screen_location.size.height/2, \
-                                        widget->screen_location.top_left.y + widget->screen_location.size.height/2};
-        ei_point_t point_bot_left_big_square = {widget->screen_location.top_left.x + widget->screen_location.size.height/2, \
-                                        widget->screen_location.top_left.y + widget->screen_location.size.height/2};
+        ei_point_t point_top_right_big_square = {inter.top_left.x + inter.size.width - inter.size.height/2, \
+                                        inter.top_left.y + inter.size.height/2};
+        ei_point_t point_bot_left_big_square = {inter.top_left.x + inter.size.height/2, \
+                                        inter.top_left.y + inter.size.height/2};
 
         ei_linked_point_t* bot_left_big_square = calloc(1, sizeof(ei_linked_point_t));
         ei_linked_point_t* top_right_big_square = calloc(1, sizeof(ei_linked_point_t));
@@ -113,28 +118,31 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         bot_left_big_square->point = point_bot_left_big_square;
 
         //Calcule du polygone de la partie basse à colorer
-        ei_linked_point_t* low_part = rounded_frame(*clipper, button->corner_radius, nb_points, 0);
+        ei_linked_point_t* low_part = rounded_frame(inter, button->corner_radius, nb_points, 0);
         top_right_big_square->next = bot_left_big_square;
         bot_left_big_square->next = low_part;
 
 
         //Calcule du polygone de la partie haute à colorer
-        ei_linked_point_t* high_part = rounded_frame(*clipper, button->corner_radius, nb_points, 1);
+        ei_linked_point_t* high_part = rounded_frame(inter, button->corner_radius, nb_points, 1);
         bot_left_big_square->next = top_right_big_square;
         top_right_big_square->next = high_part;
 
 
         if (button->relief == ei_relief_raised) {
                 // on draw les parties haute et basse du bouton
-                ei_draw_polygon(surface, high_part, light_color, clipper);
-                ei_draw_polygon(surface, low_part, dark_color, clipper);
+                ei_draw_polygon(surface, high_part, light_color, &inter);
+                ei_draw_polygon(surface, low_part, dark_color, &inter);
 
         }else if(button->relief == ei_relief_sunken){
                 // on draw les parties haute et basse du bouton avec couleurs inversees
-                ei_draw_polygon(surface, high_part, dark_color, clipper);
-                ei_draw_polygon(surface, low_part, light_color, clipper);
+                ei_draw_polygon(surface, high_part, dark_color, &inter);
+                ei_draw_polygon(surface, low_part, light_color, &inter);
         }
-
+        inter.top_left.x += border;
+        inter.top_left.y += border;
+        inter.size.width -= 2 * border;
+        inter.size.height -= 2 * border;
 
         //Libération des variables intermédaires
         free(bot_left_big_square);
