@@ -22,7 +22,11 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         ei_frame_t* frame = (ei_frame_t*) widget;
         ei_rect_t inter = {clipper->top_left,clipper->size};
         if (frame->border_width >0) {
-                ei_size_t size_inter = {frame->widget.screen_location.size.width-2*frame->border_width,frame->widget.screen_location.size.height-2*frame->border_width};
+                ei_intersection_rectangle(clipper, &(frame->widget.screen_location), &inter);
+                inter.top_left.x += frame->border_width;
+                inter.top_left.y += frame->border_width;
+                inter.size.width -= 2*frame->border_width;
+                inter.size.height -= 2*frame->border_width;
                 ei_color_t light_color;
                 ei_color_t dark_color;
                 ei_compute_color(*frame->color,&light_color,1.2);
@@ -49,20 +53,21 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_linked_point_t bot_poly_right = {top_right,&bot_poly_bot_bas};
                 ei_linked_point_t bot_poly_right_in = {right,&bot_poly_right};
                 ei_linked_point_t bot_poly_first = {bot_in,&bot_poly_right_in};
-                inter.top_left = low_first;
-                inter.size = size_inter;
+                //inter.top_left = low_first;
+                //inter.size = size_inter;
                 if (frame->relief == ei_relief_none) {
                         inter.top_left = clipper->top_left;
                         inter.size = clipper->size;
                         ei_fill(surface,frame->color,clipper);
                 }else if (frame->relief == ei_relief_raised) {
-                        ei_draw_polygon(surface,&top_poly_first,light_color,clipper);
-                        ei_draw_polygon(surface,&bot_poly_first,dark_color,clipper);
-                        ei_fill(surface, frame->color,&inter);
+                        ei_draw_polygon(surface,&top_poly_first,light_color,&(inter));
+                        ei_draw_polygon(surface,&bot_poly_first,dark_color,&(inter));
+                        printf("inter: %d, clipper: %d\n", inter.size.width, clipper->size.width);
+                        ei_fill(surface, frame->color, &inter);
                 }else if(frame->relief == ei_relief_sunken){
                         ei_draw_polygon(surface,&top_poly_first,dark_color,clipper);
                         ei_draw_polygon(surface,&bot_poly_first,light_color,clipper);
-                        ei_fill(surface, frame->color,&inter);
+                        ei_fill(surface, frame->color, &inter);
                 }
         }else{
                 ei_fill(surface, frame->color, clipper);

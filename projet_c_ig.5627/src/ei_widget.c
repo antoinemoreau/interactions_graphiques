@@ -40,7 +40,6 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 	if (widgetclass) {
 		ei_widget_t* widget = widgetclass->allocfunc();
 		widget->wclass = widgetclass;
-		printf("creation de : %s\n", widget->wclass->name);
 
 		//id incremente a chaque instanciation de widget
 		widget->pick_id = ++pick_id;
@@ -49,7 +48,6 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		//affectation du widget parent
 		widget->parent = parent;
 		if(parent){
-			printf("parent : %s\n", parent->wclass->name);
 			if (parent->children_head == NULL) {
 				parent->children_head = widget;
 				parent->children_tail = widget;
