@@ -37,44 +37,41 @@ void ei_app_free() {
 }
 
 void ei_app_run() {
+        ei_init_list_events ();
         struct ei_event_t* event = malloc(sizeof(struct ei_event_t));
-        ei_linked_event_t* event_list = list_events();
+        ei_linked_event_t* event_list = get_list_events();
         ei_widget_t* root = ei_app_root_widget ();
         ei_surface_t root_surface = ei_app_root_surface();
         ei_size_t pick_size;
-        pick_size.width = root->requested_size.width;
-        pick_size.height = root->requested_size.height;
-        ei_surface_t pick_surface = hw_surface_create(root, &pick_size, EI_FALSE);
+        pick_size.width = root->screen_location.size.width;
+        pick_size.height = root->screen_location.size.height;
+        printf("%d\n",root->screen_location.size.width);
+        ei_surface_t pick_surface = hw_surface_create(root_surface, &pick_size, EI_FALSE);
         pick_size = hw_surface_get_size(pick_surface);
-        fprintf(stdout, "%d\n", pick_size.width);
         ei_rect_t main_clipper;
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
-
+        hw_surface_lock(pick_surface);
         //on dessine tout les widgets en premier lieu
-        draw_all_widgets(root, root_surface, pick_surface, root->content_rect);
+        draw_all_widgets(root, root_surface, pick_surface, root->content_rect, rect_list);
 
+        hw_surface_unlock(pick_surface);
         hw_surface_unlock(root_surface);
-        hw_surface_update_rects(root_surface, NULL);
-        hw_surface_update_rects(pick_surface, NULL);
-
+        hw_surface_update_rects(root_surface, rect_list);
+        //hw_surface_update_rects(pick_surface, NULL);
         //boucle des evenements
         while (!quit_app) {
-                //lire le prochain commentaire
-                //mais genre vraiment
-                //peut etre faire un case sur les differents eventtypes
-                //tu as lu le commentaire d'avant ?
                 hw_event_wait_next(event);
                 if (event->type != ei_ev_none){
-                        uint8_t* buffer_picking = hw_surface_get_buffer(pick_surface);
                         ei_point_t where_mouse = event->param.mouse.where;
                         ei_rect_t rect_pick = hw_surface_get_rect(pick_surface);
+                        hw_surface_lock(pick_surface);
+                        uint8_t* buffer_picking = hw_surface_get_buffer(pick_surface);
+                        hw_surface_unlock(pick_surface);
                         buffer_picking += (where_mouse.x + where_mouse.y*rect_pick.size.width)*4;
-                        ei_color_t mouse_color = {*(buffer_picking),*(buffer_picking+1),*(buffer_picking+2),*(buffer_picking+3)};
+                        ei_color_t mouse_color = {*(buffer_picking+2),*(buffer_picking+1),*(buffer_picking),*(buffer_picking+3)};
                         uint32_t mouse_id = ei_map_rgba(pick_surface, &mouse_color);
-                        //faut une fonction pour recup le widget
-                        ei_widget_t* widget = ei_pick_widget(mouse_id, root); //on met a nul pour pouvoir compiler
-                        //remplacer null par la fonction qui recup le widget
+                        ei_widget_t* widget = ei_pick_widget(mouse_id, root);
                         char* widget_name = widget->wclass->name;
                         ei_bool_t no_callback = EI_FALSE;
                         ei_linked_event_t* current_event = event_list;
@@ -82,7 +79,7 @@ void ei_app_run() {
                                 if(current_event->tag){
                                         if (strcmp(current_event->tag,"all") == 0) {
                                                 no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
-                                        } else if (strcmp(current_event->tag,widget_name) == 0) {
+                                        } else if (strcmp(current_event->tag, widget_name) == 0) {
                                                 no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
                                         }
                                 }else if (current_event->widget == widget){
@@ -91,24 +88,14 @@ void ei_app_run() {
                                 current_event = current_event->next;
                         }
                         hw_surface_lock(root_surface);
-                        widget->wclass->drawfunc(widget, root_surface, pick_surface, widget->content_rect);
-                        rect_list->rect = *(widget->content_rect);
-                        rect_list->next = NULL;
-                        ei_widget_t* current_child = widget->children_head;
-                        while (current_child) {
-                                current_child->wclass->drawfunc(current_child, root_surface, pick_surface, current_child->content_rect);
-                                ei_linked_rect_t* rect_child;
-                                rect_child->rect = *(current_child->content_rect);
-                                rect_child->next = NULL;
-                                rect_list->next = rect_child;
-                                current_child = current_child->next_sibling;
-                        }
+                        hw_surface_lock(pick_surface);
+                        draw_all_widgets(widget, root_surface, pick_surface, widget->content_rect, rect_list);
+                        hw_surface_unlock(pick_surface);
                         hw_surface_unlock(root_surface);
                         hw_surface_update_rects(root_surface,rect_list);
-                        hw_surface_update_rects(pick_surface,rect_list);
+                        //hw_surface_update_rects(pick_surface,rect_list);
                 }
                 //faut vider la liste des rectangles
-                rect_list =  NULL;
         }
         hw_surface_free(pick_surface);
         free(event);

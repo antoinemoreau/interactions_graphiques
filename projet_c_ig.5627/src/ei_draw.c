@@ -2,18 +2,21 @@
 #include "ei_draw_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+
 
 uint32_t 		ei_map_rgba(ei_surface_t surface, const ei_color_t* color){
 	int red_location;
 	int green_location;
 	int blue_location;
 	int alpha_location;
+
 	hw_surface_get_channel_indices(surface, &red_location, &green_location, &blue_location, &alpha_location);
 	uint32_t rgba = 0;
 	rgba += color->red << red_location*8;
 	rgba += color->blue << blue_location*8;
 	rgba += color->green << green_location*8;
-	rgba += color->alpha << alpha_location*8;
+	rgba += 0 << alpha_location*8;
 	return rgba;
 }
 

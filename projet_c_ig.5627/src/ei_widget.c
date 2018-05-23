@@ -6,12 +6,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static ei_color_t pick_color = {0x00, 0x00, 0x01, 0xff};
-static uint32_t pick_id = -1;
+static ei_color_t pick_color = {0x00, 0x00, 0x00, 0xff};
+//static uint32_t pick_id = 0;
 
 static ei_color_t* inc_pick_color () {
+	// if (pick_color.alpha < 0xff){
+	// 	pick_color.alpha++;
+	// } else {
 	if (pick_color.blue < 0xff) {
-		pick_color.blue++;
+		pick_color.blue += 0x40;
 	} else {
 		pick_color.blue = 0x00;
 		if (pick_color.green < 0xff) {
@@ -43,7 +46,7 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->wclass = widgetclass;
 
 		//id incremente a chaque instanciation de widget
-		widget->pick_id = ++pick_id;
+		widget->pick_id = 0;
 		widget->pick_color = inc_pick_color();
 
 		//affectation du widget parent

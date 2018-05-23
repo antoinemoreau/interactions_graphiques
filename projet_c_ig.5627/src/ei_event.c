@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 
 
 void		ei_bind			(ei_eventtype_t		eventtype,
@@ -13,7 +14,7 @@ void		ei_bind			(ei_eventtype_t		eventtype,
 					 ei_tag_t		tag,
 					 ei_callback_t		callback,
 					 void*			user_param){
-	ei_linked_event_t* list_of_events = list_events();
+	ei_linked_event_t* list_of_events = get_list_events();
 	ei_linked_event_t* event = calloc(1, sizeof(ei_linked_event_t));
 	event->eventtype = eventtype;
 	event->widget = widget;
@@ -22,6 +23,7 @@ void		ei_bind			(ei_eventtype_t		eventtype,
 	event->user_param = user_param;
 	event->next = list_of_events;
 	list_of_events = event;
+	set_list_events(list_of_events);
 }
 
 void		ei_unbind		(ei_eventtype_t		eventtype,
@@ -29,7 +31,7 @@ void		ei_unbind		(ei_eventtype_t		eventtype,
 					 ei_tag_t		tag,
 					 ei_callback_t		callback,
 					 void*			user_param){
-	ei_linked_event_t* prec = list_events();
+	ei_linked_event_t* prec = get_list_events();
 	ei_linked_event_t* del = NULL;
 	//Si la liste d'events est vide.
 	if (prec == NULL) {

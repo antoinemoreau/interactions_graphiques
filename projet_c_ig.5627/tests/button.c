@@ -71,12 +71,12 @@ int ei_main(int argc, char** argv)
 
 	/* Hook the keypress callback to the event. */
 	ei_bind(ei_ev_keydown,		NULL, "all", process_key, NULL);
-
+	ei_bind(ei_ev_mouse_buttondown, NULL,"button",button_press, NULL);
 	/* Run the application's main loop. */
 	ei_app_run();
 
 	/* We just exited from the main loop. Terminate the application (cleanup). */
-	//ei_unbind(ei_ev_keydown,	NULL, "all", process_key, NULL);
+	ei_unbind(ei_ev_keydown,	NULL, "all", process_key, NULL);
 	ei_app_free();
 
 	return (EXIT_SUCCESS);

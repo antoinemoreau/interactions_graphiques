@@ -111,7 +111,6 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
                 top_dest.y = bot_rect->top_left.y;
                 top_dest.x = right_rect->top_left.x;
                 dest_size.width = left_rect->top_left.x + left_rect->size.width - top_dest.x - marge_abs;
-                printf("top_rect y: %d, height: %d top dest y : %d marge_ord: %d\n" ,top_rect->top_left.y, top_rect->size.height, top_dest.y, marge_ord);
                 dest_size.height = top_rect->top_left.y + top_rect->size.height - top_dest.y - marge_ord;
         }
         dest->top_left = top_dest;
@@ -128,14 +127,6 @@ void ei_intersection_rectangle_bis(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_r
         int ord_top = coordonnes_max(point1.y, point2.y);
         int abs_right = coordonnes_min(point1.x + size1.width, point2.x + size2.width);
         int ord_bot = coordonnes_min(point1.y + size1.height, point2.y + size2.height);
-        fprintf(stdout, "abs_left = %d\n", abs_left);
-        fprintf(stdout, "abs_right = %d\n", abs_right);
-
-        fprintf(stdout, "ord_top = %d\n", ord_top);
-
-        fprintf(stdout, "ord_bot = %d\n", ord_bot);
-
-
         if (abs_right <= abs_left || ord_bot <= ord_top){
                 //Si les deux rectangles ne sont pas de point en commun sur l'axe des abscisses
                 abs_left = 0;
