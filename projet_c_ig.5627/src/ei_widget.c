@@ -38,7 +38,6 @@ static ei_color_t* inc_pick_color () {
 ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 							 ei_widget_t*		parent) {
 	ei_widgetclass_t* widgetclass = ei_widgetclass_from_name(class_name);
-	fprintf(stdout, "Création d'un widget de type %s\n", class_name);
 	//On vérifie si la classe de ce widget existe
 	if (widgetclass) {
 		ei_widget_t* widget = widgetclass->allocfunc();
@@ -244,14 +243,15 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 							 ei_axis_set_t*		resizable,
 						 	 ei_size_t**		min_size) {
 
-	ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
 
-	if (requested_size != NULL)
-		toplevel->requested_size = requested_size;
-	else if (!toplevel->requested_size){
-		(*(toplevel->requested_size)).width = 320;
-		(*(toplevel->requested_size)).height = 240;
-	}
+	 if (requested_size != NULL){
+ 		widget->requested_size = *requested_size;
+ 	}
+ 	else {
+ 		widget->requested_size.height = 320;
+ 		widget->requested_size.width = 240;
+ 	}
+	ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
 
 	if (color != NULL)
 		toplevel->color = color;

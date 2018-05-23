@@ -89,12 +89,9 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         ei_button_t* button = (ei_button_t*) widget;
         button->widget.pick_id = ei_map_rgba(pick_surface,button->widget.pick_color);
         ei_rect_t inter = {clipper->top_left,clipper->size};
-        printf("clipper width: %d height : %d\n", clipper->size.width, clipper->size.height);
-        printf("screen location width: %d height : %d\n", button->widget.screen_location.size.width, button->widget.screen_location.size.height);
-        printf("top left screen %d, %d\n",button->widget.screen_location.top_left.x, button->widget.screen_location.top_left.y);
+
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-        printf("inter width: %d height : %d\n", inter.size.width, inter.size.height);
-        printf("top left inter %d, %d\n",inter.top_left.x, inter.top_left.y);
+        
 
 
         int border = button->border_width;

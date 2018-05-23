@@ -47,7 +47,6 @@ void ei_app_run() {
         pick_size.height = root->requested_size.height;
         ei_surface_t pick_surface = hw_surface_create(root, &pick_size, EI_FALSE);
         pick_size = hw_surface_get_size(pick_surface);
-        fprintf(stdout, "%d\n", pick_size.width);
         ei_rect_t main_clipper;
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
@@ -60,6 +59,7 @@ void ei_app_run() {
         hw_surface_update_rects(pick_surface, NULL);
 
         //boucle des evenements
+        /*
         while (!quit_app) {
                 //lire le prochain commentaire
                 //mais genre vraiment
@@ -113,6 +113,8 @@ void ei_app_run() {
         }
         hw_surface_free(pick_surface);
         free(event);
+        */
+        getchar();
 }
 
 void ei_app_invalidate_rect(ei_rect_t* rect) {
