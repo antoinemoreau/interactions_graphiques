@@ -106,7 +106,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
                         marge_ord = top_rect->top_left.y + top_rect->size.height - (bot_rect->top_left.y + bot_rect->size.height);
                 }
                 else{
-                        marge_abs = 0;
+                        marge_ord = 0;
                 }
                 top_dest.y = bot_rect->top_left.y;
                 top_dest.x = right_rect->top_left.x;
