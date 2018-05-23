@@ -74,8 +74,18 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_extreme_linked_points_t* arc_top_left = arc(center_top_left, rayon, 90.0, 180.0, nb_points);
         ei_extreme_linked_points_t* arc_top_right = arc(center_top_left, rayon, 0.0, 90.0, nb_points);
 
+        ei_point_t point_bot_left = {toplevel_spot.x, toplevel_spot.y + toplevel_size.height};
+        ei_point_t point_bot_right = {toplevel_spot.x + toplevel_size.width, toplevel_spot.y + toplevel_size.height};
+
+        ei_linked_point_t* bot_right = calloc(1, sizeof(ei_linked_point_t));
+        bot_right->point = point_bot_right;
+
+        ei_linked_point_t* bot_left = calloc(1, sizeof(ei_linked_point_t));
+        bot_left->point = point_bot_left;
+        bot_left->next = bot_right;
         ei_linked_point_t* exter_first_point = arc_top_right->head_point;
         arc_top_right->tail_point->next = arc_top_left->head_point;
+        arc_top_left->tail_point->next = bot_left;
         /*
         Mettre un round frame ici
         */
@@ -91,12 +101,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_draw_polygon(surface, inter_first_point, color, clipper);
 
         //Libération des polygones
-        ei_linked_point_t* previous = exter_first_point;
-        ei_linked_point_t* current = exter_first_point->next;
-        while (current != NULL) {
-                free(previous);
-                
-        }
+
         free(exter_first_point);
         free(title_first_point);
         free(inter_first_point);
@@ -127,10 +132,9 @@ void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         toplevel->title = "Toplevel";
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
-        fprintf(stdout, "YO!\n");
         toplevel->min_size = calloc(1, sizeof(ei_size_t));
-        (*(toplevel->min_size)).width = 160;
-        (*(toplevel->min_size)).height = 120;
+        toplevel->min_size->width = 160;
+        toplevel->min_size->height = 120;
 }
 
 void ei_toplevel_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect){

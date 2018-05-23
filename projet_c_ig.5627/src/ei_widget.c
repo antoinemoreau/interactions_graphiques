@@ -37,6 +37,7 @@ static ei_color_t* inc_pick_color () {
 ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 							 ei_widget_t*		parent) {
 	ei_widgetclass_t* widgetclass = ei_widgetclass_from_name(class_name);
+	fprintf(stdout, "Création d'un widget de type %s\n", class_name);
 	//On vérifie si la classe de ce widget existe
 	if (widgetclass) {
 		ei_widget_t* widget = widgetclass->allocfunc();
@@ -48,7 +49,6 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 		//affectation du widget parent
 		widget->parent = parent;
-		printf("parent : %s\n", widget->wclass->name);
 		if(parent){
 			if (parent->children_head == NULL) {
 				parent->children_head = widget;

@@ -88,7 +88,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         ei_point_t top_dest;
         ei_size_t dest_size;
 
-        if ( (left_rect->top_left.x + left_rect->size.width <= right_rect->top_left.x) || top_rect->top_left.y + top_rect->size.height <= bot_rect->top_left.y){
+        if ( (left_rect->top_left.x + left_rect->size.width < right_rect->top_left.x) || top_rect->top_left.y + top_rect->size.height < bot_rect->top_left.y){
                 top_dest.x = 0;
                 top_dest.y = 0;
                 dest_size.width = 0;
