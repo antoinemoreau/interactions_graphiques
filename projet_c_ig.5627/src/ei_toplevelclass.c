@@ -29,7 +29,7 @@ static ei_linked_point_t* points_list (ei_rect_t rectangle){
         return top_left;
 }
 
-void* ei_toplevel_allocfunc(){
+void* ei_toplevel_allocfunc () {
         return calloc(1, sizeof(ei_toplevel_t));
 }
 
@@ -45,7 +45,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
         ei_color_t color = *(toplevel->color);
-        ei_color_t text_color = {0x80, 0x80, 0x80, 0x80};
+        ei_color_t text_color = {0x20, 0x20, 0x20, 0x20};
         char** title = toplevel->title;
         int border_width = toplevel->border_width;
         ei_point_t toplevel_spot = toplevel->widget.screen_location.top_left;
@@ -67,7 +67,15 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         inter.size.height = toplevel_size.height - 2 * border_width - text_size.height;
 
         //Création du polygone exterieur en arrondissant le haut
-        ei_linked_point_t* exter_first_point = points_list(widget->screen_location);
+        int nb_points = 10;
+        int rayon = 20;
+        ei_point_t center_top_left = {toplevel_spot.x + rayon, toplevel_spot.y + rayon};
+        ei_point_t center_top_right = {toplevel_spot.x + rayon + toplevel_size.width, toplevel_spot.y + rayon};
+        ei_extreme_linked_points_t* arc_top_left = arc(center_top_left, rayon, 90.0, 180.0, nb_points);
+        ei_extreme_linked_points_t* arc_top_right = arc(center_top_left, rayon, 0.0, 90.0, nb_points);
+
+        ei_linked_point_t* exter_first_point = arc_top_right->head_point;
+        arc_top_right->tail_point->next = arc_top_left->head_point;
         /*
         Mettre un round frame ici
         */
@@ -83,6 +91,12 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_draw_polygon(surface, inter_first_point, color, clipper);
 
         //Libération des polygones
+        ei_linked_point_t* previous = exter_first_point;
+        ei_linked_point_t* current = exter_first_point->next;
+        while (current != NULL) {
+                free(previous);
+                
+        }
         free(exter_first_point);
         free(title_first_point);
         free(inter_first_point);
@@ -113,6 +127,8 @@ void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         toplevel->title = "Toplevel";
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
+        fprintf(stdout, "YO!\n");
+        toplevel->min_size = calloc(1, sizeof(ei_size_t));
         (*(toplevel->min_size)).width = 160;
         (*(toplevel->min_size)).height = 120;
 }

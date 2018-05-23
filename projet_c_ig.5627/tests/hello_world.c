@@ -64,6 +64,9 @@ int ei_main(int argc, char** argv)
 
         toplevel = ei_widget_create("toplevel", ei_app_root_widget());
         button = ei_widget_create("button", toplevel);
+        fprintf(stdout, "Toplevel : %p", toplevel);
+        fprintf(stdout, "Boutton : %p", button);
+
 
         ei_toplevel_configure(toplevel, &window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
         ei_button_configure(button, NULL, &button_color,

@@ -38,12 +38,9 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 							 ei_widget_t*		parent) {
 	ei_widgetclass_t* widgetclass = ei_widgetclass_from_name(class_name);
 	//On vérifie si la classe de ce widget existe
-
 	if (widgetclass) {
-		fprintf(stdout, "coucou : %s\n", widgetclass->name);
 		ei_widget_t* widget = widgetclass->allocfunc();
 		widget->wclass = widgetclass;
-		printf("creation de : %s\n", widget->wclass->name);
 
 		//id incremente a chaque instanciation de widget
 		widget->pick_id = ++pick_id;
@@ -51,8 +48,8 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 		//affectation du widget parent
 		widget->parent = parent;
+		printf("parent : %s\n", widget->wclass->name);
 		if(parent){
-			printf("parent : %s\n", parent->wclass->name);
 			if (parent->children_head == NULL) {
 				parent->children_head = widget;
 				parent->children_tail = widget;
@@ -73,7 +70,7 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->screen_location.top_left.y = 0;
 		widget->screen_location.size.width = 0;
 		widget->screen_location.size.height = 0;
-		widget->content_rect = &widget->screen_location;
+		widget->content_rect = &(widget->screen_location);
 		widgetclass->setdefaultsfunc(widget);
 		return widget;
 	}
