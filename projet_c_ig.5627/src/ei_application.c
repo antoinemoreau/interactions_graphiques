@@ -21,7 +21,6 @@ void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
 
         ei_frame_register_class();
         ei_button_register_class();
-        ei_toplevel_register_class();
         ei_register_placer_manager();
 
         root = ei_widget_create("frame", NULL);
@@ -61,7 +60,6 @@ void ei_app_run() {
         hw_surface_update_rects(root_surface, rect_list);
         //hw_surface_update_rects(pick_surface, NULL);
         //boucle des evenements
-        /*
         while (!quit_app) {
                 hw_event_wait_next(event);
                 if (event->type != ei_ev_none){
@@ -101,8 +99,6 @@ void ei_app_run() {
         }
         hw_surface_free(pick_surface);
         free(event);
-        */
-        getchar();
 }
 
 void ei_app_invalidate_rect(ei_rect_t* rect) {
