@@ -89,13 +89,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         ei_button_t* button = (ei_button_t*) widget;
         button->widget.pick_id = ei_map_rgba(pick_surface, button->widget.pick_color);
         ei_rect_t inter = {clipper->top_left,clipper->size};
-<<<<<<< HEAD
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-=======
-
-        ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-        
->>>>>>> dba9b856b18f5a51ccac1cb5a06766dd48281e0a
 
 
         int border = button->border_width;
