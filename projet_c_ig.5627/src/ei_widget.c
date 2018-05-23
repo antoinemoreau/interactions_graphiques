@@ -1,6 +1,7 @@
 #include "ei_widget.h"
 #include "ei_frame.h"
 #include "ei_button.h"
+#include "ei_toplevel.h"
 #include "ei_geometrymanager.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -37,7 +38,9 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 							 ei_widget_t*		parent) {
 	ei_widgetclass_t* widgetclass = ei_widgetclass_from_name(class_name);
 	//On vérifie si la classe de ce widget existe
+
 	if (widgetclass) {
+		fprintf(stdout, "coucou : %s\n", widgetclass->name);
 		ei_widget_t* widget = widgetclass->allocfunc();
 		widget->wclass = widgetclass;
 
@@ -242,4 +245,44 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 							 ei_axis_set_t*		resizable,
 						 	 ei_size_t**		min_size) {
 
+	ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
+
+	if (requested_size != NULL)
+		toplevel->requested_size = requested_size;
+	else if (!toplevel->requested_size){
+		(*(toplevel->requested_size)).width = 320;
+		(*(toplevel->requested_size)).height = 240;
+	}
+
+	if (color != NULL)
+		toplevel->color = color;
+	else if (!toplevel->color)
+		toplevel->color = &ei_default_background_color;
+
+	if (border_width != NULL)
+		toplevel->border_width = *border_width;
+	else if (!toplevel->border_width)
+		toplevel->border_width = 4;
+
+	if (title != NULL)
+		toplevel->title = title;
+	else if (!toplevel->title)
+		toplevel->title = "Toplevel";
+
+	if (closable != NULL)
+		toplevel->closable = *closable;
+	else if (!toplevel->closable)
+		toplevel->closable = EI_TRUE;
+
+	if (resizable != NULL)
+		toplevel->resizable = *resizable;
+	else if (!toplevel->resizable)
+		toplevel->resizable = ei_axis_both;
+
+	if (min_size != NULL)
+		toplevel->min_size = *min_size;
+	else if (!toplevel->min_size){
+		(*(toplevel->min_size)).width = 160;
+		(*(toplevel->min_size)).height = 120;
+	}
 }

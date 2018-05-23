@@ -71,6 +71,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         /*
         Mettre un round frame ici
         */
+        ei_draw_polygon(surface, exter_first_point, color, clipper);
 
 
         //Création du polygone du titre
@@ -97,7 +98,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         if (toplevel->title && strcmp(toplevel->title,"") != 0) {
 
                 ei_point_t aqui;
-                //ei_anchor_spot(ei_anc_none, &text_size,&title_rect,&aqui);
+                ei_anchor_spot(ei_anc_none, &text_size,&title_rect,&aqui);
                 ei_draw_text(surface,&aqui,*(toplevel->title),ei_default_font, text_color,&title_rect);
 
         }
@@ -106,14 +107,14 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
         toplevel->widget = *widget;
-        toplevel->requested_size = widget->requested_size;
+        toplevel->requested_size = &(widget->requested_size);
         toplevel->color = widget->pick_color;
         toplevel->border_width = 4;
         toplevel->title = "Toplevel";
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
-        toplevel->min_size.width = 160;
-        toplevel->min_size.height = 120;
+        (*(toplevel->min_size)).width = 160;
+        (*(toplevel->min_size)).height = 120;
 }
 
 void ei_toplevel_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect){
