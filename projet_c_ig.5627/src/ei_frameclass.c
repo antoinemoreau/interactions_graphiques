@@ -2,6 +2,7 @@
 #include "ei_types.h"
 #include "ei_frame.h"
 #include "ei_draw_utils.h"
+#include "ei_draw.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -20,6 +21,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_rect_t*		clipper) {
 
         ei_frame_t* frame = (ei_frame_t*) widget;
+        frame->widget.pick_id = ei_map_rgba(pick_surface,frame->widget.pick_color);
         ei_rect_t inter = {clipper->top_left,clipper->size};
         if (frame->border_width >0) {
                 printf("clipper width: %d height : %d\n", clipper->size.width, clipper->size.height);
