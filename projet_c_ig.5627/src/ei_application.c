@@ -51,7 +51,7 @@ void ei_app_run() {
         main_clipper = hw_surface_get_rect(root_surface);
 
         //on dessine tout les widgets en premier lieu
-        draw_all_widgets(root, root_surface, pick_surface);
+        draw_all_widgets(root, root_surface, pick_surface, root->content_rect);
 
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface, NULL);

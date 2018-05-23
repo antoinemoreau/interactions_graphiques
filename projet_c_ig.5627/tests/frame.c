@@ -23,9 +23,10 @@ int ei_main(int argc, char** argv)
 	ei_size_t	frame_size		= {300,200};
 	int		frame_x			= 150;
 	int		frame_y			= 200;
-	int		frame_x2		= 100;
-	int		frame_y2		= 150;
+	int		frame_x2		= 60;
+	int		frame_y2		= 60;
 	ei_color_t	frame_color		= {0x80, 0x80, 0x80, 0xff};
+	ei_color_t	frame_color2		= {0xff, 0x00, 0x00, 0xff};
 	ei_relief_t	frame_relief		= ei_relief_raised;
 	int		frame_border_width	= 6;
 
@@ -43,8 +44,8 @@ int ei_main(int argc, char** argv)
     	ei_place(frame, NULL, &frame_x, &frame_y, NULL, NULL, NULL, NULL, NULL, NULL );
 
 
-    	frame2 = ei_widget_create("frame", &frame);
-	ei_frame_configure(frame2, &frame_size, &frame_color,
+    	frame2 = ei_widget_create("frame", frame);
+	ei_frame_configure(frame2, &frame_size, &frame_color2,
 			    &frame_border_width, &frame_relief, &texte, NULL, &couleur_du_texte, &ancre_text,
 			    NULL, NULL, NULL);
 	ei_place(frame2, NULL, &frame_x2, &frame_y2, NULL, NULL, NULL, NULL, NULL, NULL );
