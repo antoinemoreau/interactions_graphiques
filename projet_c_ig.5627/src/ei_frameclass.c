@@ -22,22 +22,22 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         ei_frame_t* frame = (ei_frame_t*) widget;
         ei_rect_t inter = {clipper->top_left,clipper->size};
         if (frame->border_width >0) {
+                printf("clipper width: %d height : %d\n", clipper->size.width, clipper->size.height);
+                printf("screen location width: %d height : %d\n", frame->widget.screen_location.size.width, frame->widget.screen_location.size.height);
                 ei_intersection_rectangle(clipper, &(frame->widget.screen_location), &inter);
-                inter.top_left.x += frame->border_width;
-                inter.top_left.y += frame->border_width;
-                inter.size.width -= 2*frame->border_width;
-                inter.size.height -= 2*frame->border_width;
+                printf("inter width: %d height : %d\n", inter.size.width, inter.size.height);
+
                 ei_color_t light_color;
                 ei_color_t dark_color;
                 ei_compute_color(*frame->color,&light_color,1.2);
                 ei_compute_color(*frame->color,&dark_color,0.5);
-                ei_point_t top_first = frame->widget.screen_location.top_left;
-                ei_point_t top_right = {top_first.x + frame->widget.screen_location.size.width,top_first.y};
+                ei_point_t top_first = inter.top_left;
+                ei_point_t top_right = {top_first.x + inter.size.width,top_first.y};
                 ei_point_t right = {top_right.x - frame->border_width, top_right.y + frame->border_width};
                 ei_point_t low_first = {top_first.x + frame->border_width,right.y};
-                ei_point_t bot_last = {top_first.x,top_first.y + frame->widget.screen_location.size.height};
+                ei_point_t bot_last = {top_first.x,top_first.y + inter.size.height};
                 ei_point_t last = {low_first.x,bot_last.y - frame->border_width};
-                ei_point_t bot_bot = {top_first.x + frame->widget.screen_location.size.width,top_first.y+ frame->widget.screen_location.size.height};
+                ei_point_t bot_bot = {top_first.x + inter.size.width,top_first.y+ inter.size.height};
                 ei_point_t bot_in = {bot_bot.x - frame->border_width, bot_bot.y - frame->border_width};
                 //creation du polygone du haut
                 ei_linked_point_t top_poly_last = {last,NULL};
@@ -62,7 +62,10 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 }else if (frame->relief == ei_relief_raised) {
                         ei_draw_polygon(surface,&top_poly_first,light_color,&(inter));
                         ei_draw_polygon(surface,&bot_poly_first,dark_color,&(inter));
-                        printf("inter: %d, clipper: %d\n", inter.size.width, clipper->size.width);
+                        inter.top_left.x += frame->border_width;
+                        inter.top_left.y += frame->border_width;
+                        inter.size.width -= 2*frame->border_width;
+                        inter.size.height -= 2*frame->border_width;
                         ei_fill(surface, frame->color, &inter);
                 }else if(frame->relief == ei_relief_sunken){
                         ei_draw_polygon(surface,&top_poly_first,dark_color,clipper);
