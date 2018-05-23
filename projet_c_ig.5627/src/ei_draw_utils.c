@@ -111,6 +111,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
                 top_dest.y = bot_rect->top_left.y;
                 top_dest.x = right_rect->top_left.x;
                 dest_size.width = left_rect->top_left.x + left_rect->size.width - top_dest.x - marge_abs;
+                printf("top_rect y: %d, height: %d top dest y : %d marge_ord: %d\n" ,top_rect->top_left.y, top_rect->size.height, top_dest.y, marge_ord);
                 dest_size.height = top_rect->top_left.y + top_rect->size.height - top_dest.y - marge_ord;
         }
         dest->top_left = top_dest;
