@@ -2,6 +2,7 @@
 #include "ei_event.h"
 #include <stdlib.h>
 #include "ei_button.h"
+#include "ei_application.h"
 
 ei_linked_event_t* listed_events;
 
@@ -23,6 +24,26 @@ ei_linked_event_t* find_event(ei_widget_t* widget, ei_eventtype_t eventtype, ei_
                 }
         }
 }
+ei_widget_t* ei_pick_widget(int pick_id, ei_widget_t* widget){
+        ei_widget_t* picked_widget = NULL;
+        if (pick_id == widget->pick_id) {
+                return widget;
+        }else{
+                ei_widget_t* child = widget->children_head;
+                while (child) {
+                        ei_widget_t* pick = ei_pick_widget(pick_id, child);
+                        if(pick){
+                                picked_widget = pick;
+                        }
+                        child = child->next_sibling;
+                }
+        }
+        return picked_widget;
+}
+
+// int     widget_under_mouse(ei_mouse_event_t mouse){
+//
+// }
 
 ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         ei_button_t* button = (ei_button_t*)widget;

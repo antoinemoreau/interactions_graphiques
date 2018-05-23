@@ -2,11 +2,12 @@
 #include "ei_frame.h"
 #include "ei_button.h"
 #include "ei_geometrymanager.h"
+#include "ei_draw.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-static uint32_t pick_id = -1;
 static ei_color_t pick_color = {0x00, 0x00, 0x01, 0xff};
+static uint32_t pick_id = -1;
 
 static ei_color_t* inc_pick_color () {
 	if (pick_color.blue < 0xff) {
