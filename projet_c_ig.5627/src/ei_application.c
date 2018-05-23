@@ -5,6 +5,7 @@
 #include "hw_interface.h"
 #include "ei_event.h"
 #include "ei_event_utils.h"
+#include "ei_application_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,20 +48,14 @@ void ei_app_run() {
         ei_rect_t main_clipper;
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
+
         //on dessine tout les widgets en premier lieu
-        ei_widget_t* current_widget = root;
-        while (current_widget){
-                current_widget->wclass->drawfunc(current_widget, root_surface, pick_surface, current_widget->content_rect);
-                ei_widget_t* current_child = current_widget->children_head;
-                while (current_child) {
-                        current_child->wclass->drawfunc(current_child, root_surface, pick_surface, current_child->content_rect);
-                        current_child = current_child->next_sibling;
-                }
-                current_widget = current_widget->next_sibling;
-        }
+        draw_all_widgets(root, root_surface, pick_surface);
+
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface, NULL);
         hw_surface_update_rects(pick_surface, NULL);
+
         //boucle des evenements
         while (!quit_app) {
                 hw_event_wait_next(event);
@@ -99,7 +94,7 @@ void ei_app_run() {
                 hw_surface_update_rects(root_surface,rect_list);
                 hw_surface_update_rects(pick_surface,rect_list);
                 //faut vider la liste des rectangles
-                rect_list = NULL;
+                rect_list =  NULL;
         }
         free(event);
 }
