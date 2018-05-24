@@ -11,9 +11,10 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                 new_rect->rect = *(widget->content_rect);
                 new_rect->next = list_rects;
                 list_rects = new_rect;
-                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling) {
-                        draw_all_widgets(current, root_surface, pick_surface, widget->content_rect, list_rects);
-                }
+                //printf("Dans la recursive voila le content_rect: w: %d h :%d, x : %d, y : %d\n",widget->content_rect->size.width,widget->content_rect->size.height, widget->content_rect->top_left.x,widget->content_rect->top_left.y);
+                draw_all_widgets(widget->children_head, root_surface, pick_surface, widget->content_rect, list_rects);
+                draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->content_rect, list_rects);
+
         }
 }
 
