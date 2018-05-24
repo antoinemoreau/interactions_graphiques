@@ -31,13 +31,17 @@ static ei_linked_point_t* points_list (ei_rect_t rectangle){
         return top_left;
 }
 
-static void closing_button(ei_toplevel_t* toplevel){
+static ei_point_t closing_button(ei_toplevel_t* toplevel, ei_surface_t surface,
+                                                        ei_surface_t pick_surface,
+                                                        ei_rect_t* clipper,
+                                                        ei_size_t text_size,
+                                                        ei_point_t text_spot) {
         //Récupération de la border_width du toplevel
         int             toplevel_border_width   = toplevel->border_width;
 
 
         //Définition des paramètres du bouton
-        int             radius                  = ei_font_default_size/2 - toplevel_border_width;
+        int             radius                  = ei_font_default_size/2;
         int             diameter                = 2 * radius;
 
         int             button_border_width     = 2;
@@ -45,44 +49,40 @@ static void closing_button(ei_toplevel_t* toplevel){
         ei_anchor_t	button_anchor	        = ei_anc_northwest;
         float           button_rel_x            = 0.0;
         float           button_rel_y            = 0.0;
-        int		button_x	        = border_width;
-        int		button_y	        = border_width;
-        float           button_rel_size_x       = 0.5;
+        int		button_x	        = toplevel_border_width;
+        int		button_y	        = toplevel_border_width;
         ei_relief_t     relief                  = ei_relief_raised;
-
-        ei_color_t      light_color;
-        ei_color_t      dark_color;
 
         //Création et configuration du bouton suivant les paramètres
         ei_widget_t*    button_widget           = ei_widget_create ("button", &(toplevel->widget));
         ei_button_t*    button                  = (ei_button_t*) button_widget;
 
-        ei_button_configure(button, NULL, &button_color,
+        ei_button_configure(button_widget, NULL, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
                             NULL, NULL, NULL, NULL, NULL);
 
-        ei_compute_color(*(button->color),&light_color,1.2);
-        ei_compute_color(*(button->color),&dark_color,0.5);
 
-        //Création d'un bouton avant le texte pour fermer
+        //Création d'un bouton avant le texte pour fermer la fenêtre
+        ei_place(button_widget, &button_anchor, &button_x, &button_y, NULL, NULL, &button_rel_x, &button_rel_y, NULL, NULL);
+        button_widget->screen_location.size.width = diameter;
+        button_widget->screen_location.size.height = diameter;
 
 
         if (toplevel->title && strcmp(toplevel->title,"") != 0) {
                 //On va décaler le titre et déterminer la taille du bouton
-                radius = text_size.height / 2 - toplevel_border_width;
+                radius = text_size.height / 2;
                 text_spot.x = text_spot.x + toplevel_border_width + 2 * radius;
-
         }
 
         //On place le bouton sur l'écran
-        ei_point_t center = {button_widget->screen_location.top_left.x + radius, button_widget->screen_location.top_left.y + radius};
-        ei_place(button_widget, &button_anchor, &button_x, &button_y, NULL, NULL, &button_rel_x, &button_rel_y, NULL, NULL);
+
         ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
         /*
         ei_extreme_linked_points_t* points = arc(center, radius - toplevel_border_width, 0.0, 355.0, nb_points);
         ei_linked_point_t* first_point = points->head_point;
         ei_draw_polygon(surface, first_point, button_color, &intersection);
         */
+        return text_spot;
 }
 
 
@@ -178,8 +178,8 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         }
 
         if (closable == EI_TRUE){
-                //Dessin du bouton en haut à gauche du toplevel
-                closing_button(toplevel, border_width);
+                //Dessin du bouton en haut à gauche du
+                text_spot = closing_button(toplevel, surface, pick_surface, clipper, text_size, text_spot);
         }
 
 
