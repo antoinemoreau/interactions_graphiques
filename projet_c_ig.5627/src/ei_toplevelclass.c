@@ -31,6 +31,63 @@ static ei_linked_point_t* points_list (ei_rect_t rectangle){
         return top_left;
 }
 
+static void closing_button(ei_toplevel_t* toplevel){
+        //Récupération de la border_width du toplevel
+        int             toplevel_border_width   = toplevel->border_width;
+
+
+        //Définition des paramètres du bouton
+        int             radius                  = ei_font_default_size/2 - toplevel_border_width;
+        int             diameter                = 2 * radius;
+
+        int             button_border_width     = 2;
+        ei_color_t      button_color            = {0xa9,0x11,0x01, 0xff};
+        ei_anchor_t	button_anchor	        = ei_anc_northwest;
+        float           button_rel_x            = 0.0;
+        float           button_rel_y            = 0.0;
+        int		button_x	        = border_width;
+        int		button_y	        = border_width;
+        float           button_rel_size_x       = 0.5;
+        ei_relief_t     relief                  = ei_relief_raised;
+
+        ei_color_t      light_color;
+        ei_color_t      dark_color;
+
+        //Création et configuration du bouton suivant les paramètres
+        ei_widget_t*    button_widget           = ei_widget_create ("button", &(toplevel->widget));
+        ei_button_t*    button                  = (ei_button_t*) button_widget;
+
+        ei_button_configure(button, NULL, &button_color,
+                            &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
+                            NULL, NULL, NULL, NULL, NULL);
+
+        ei_compute_color(*(button->color),&light_color,1.2);
+        ei_compute_color(*(button->color),&dark_color,0.5);
+
+        //Création d'un bouton avant le texte pour fermer
+
+
+        if (toplevel->title && strcmp(toplevel->title,"") != 0) {
+                //On va décaler le titre et déterminer la taille du bouton
+                radius = text_size.height / 2 - toplevel_border_width;
+                text_spot.x = text_spot.x + toplevel_border_width + 2 * radius;
+
+        }
+
+        //On place le bouton sur l'écran
+        ei_point_t center = {button_widget->screen_location.top_left.x + radius, button_widget->screen_location.top_left.y + radius};
+        ei_place(button_widget, &button_anchor, &button_x, &button_y, NULL, NULL, &button_rel_x, &button_rel_y, NULL, NULL);
+        ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
+        /*
+        ei_extreme_linked_points_t* points = arc(center, radius - toplevel_border_width, 0.0, 355.0, nb_points);
+        ei_linked_point_t* first_point = points->head_point;
+        ei_draw_polygon(surface, first_point, button_color, &intersection);
+        */
+}
+
+
+
+
 void* ei_toplevel_allocfunc () {
         return calloc(1, sizeof(ei_toplevel_t));
 }
@@ -45,18 +102,21 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                                                         ei_surface_t pick_surface,
                                                         ei_rect_t* clipper){
 
-        ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
-        ei_axis_set_t resizable = toplevel->resizable;
-        ei_bool_t closable = toplevel->closable;
+
+        ei_toplevel_t*          toplevel              = (ei_toplevel_t*) widget;
+        ei_axis_set_t           resizable             = toplevel->resizable;
+        ei_bool_t               closable              = toplevel->closable;
+
+        ei_color_t              color                 = *(toplevel->color);
+        ei_color_t              text_color            = {0x00, 0x00, 0x00, 0xff};
+        char**                  title                 = toplevel->title;
+        int                     border_width          = toplevel->border_width;
+
+        ei_point_t              toplevel_spot         = toplevel->widget.screen_location.top_left;
+        ei_size_t               toplevel_size         = toplevel->widget.screen_location.size;
 
 
-        ei_color_t color = *(toplevel->color);
-        ei_color_t text_color = {0x00, 0x00, 0x00, 0xff};
-        char** title = toplevel->title;
-        int border_width = toplevel->border_width;
-
-        ei_point_t toplevel_spot = toplevel->widget.screen_location.top_left;
-        ei_size_t toplevel_size = toplevel->widget.screen_location.size;
+        //Calcule de l'intersection avec le clipper
         ei_rect_t intersection;
         ei_intersection_rectangle(clipper, &(widget->screen_location), &intersection);
 
@@ -105,7 +165,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_linked_point_t* inter_first_point = points_list(interieur);
         ei_draw_polygon(surface, inter_first_point, inter_color, &intersection);
 
-
         if (resizable != ei_axis_none){
                 //Création du polygone pour resize
                 int square_size = 2 * border_width;
@@ -119,53 +178,9 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         }
 
         if (closable == EI_TRUE){
-                int button_border_width = 2;
-                int radius = ei_font_default_size/2;
-                int diameter = 2 * radius;
-                ei_color_t button_color = {0xa9,0x11,0x01, 0xff};
-                ei_anchor_t	button_anchor	= ei_anc_northwest;
-                float           button_rel_x    = 0.0;
-                float           button_rel_y    = 0.0;
-                int		button_x	= border_width;
-                int		button_y	= border_width;
-                float           button_rel_size_x = 0.5;
-                ei_relief_t relief = ei_relief_raised;
-
-                ei_color_t light_color;
-                ei_color_t dark_color;
-
-
-                ei_widget_t* button_widget = ei_widget_create ("button", widget);
-                ei_button_t* button = (ei_button_t*) button_widget;
-                ei_compute_color(*(button->color),&light_color,1.2);
-                ei_compute_color(*(button->color),&dark_color,0.5);
-
-
-
-                ei_button_configure(button, NULL, &button_color,
-                                    &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
-                                    NULL, NULL, NULL, NULL, NULL);
-
-                //Création d'un bouton avant le texte pour fermer
-
-
-                if (toplevel->title && strcmp(toplevel->title,"") != 0) {
-                        //On va décaler le titre et déterminer la taille du bouton
-                        radius = text_size.height / 2;
-                        text_spot.x = text_spot.x + border_width + 2 * radius;
-
-                }
-                ei_point_t center = {button_widget->screen_location.top_left.x + radius, button_widget->screen_location.top_left.y + radius};
-                //On place le bouton sur l'écran
-                ei_place(button_widget, &button_anchor, &button_x, &button_y, NULL, NULL, &button_rel_x, &button_rel_y, NULL, NULL);
-                ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
-                ei_extreme_linked_points_t* points = arc(center, radius - border_width, 0.0, 355.0, nb_points);
-                ei_linked_point_t* first_point = points->head_point;
-                ei_draw_polygon(surface, first_point, button_color, &intersection);
+                //Dessin du bouton en haut à gauche du toplevel
+                closing_button(toplevel, border_width);
         }
-
-
-
 
 
         if (pick_surface) {
@@ -189,6 +204,11 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         free(exter_first_point);
         free(inter_first_point);
 }
+
+
+
+
+
 
 void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
