@@ -75,10 +75,10 @@ void ei_app_run() {
                         case ei_ev_keyup:
                                 widget = NULL;
                                 handle_event(event_list, event, widget);
-                                redraw(root_surface, pick_surface, widget, rect_list);
+                                //redraw(root_surface, pick_surface, widget, rect_list);
                                 break;
 
-                        case    ei_ev_mouse_buttondown:
+                        case ei_ev_mouse_buttondown:
                         case ei_ev_mouse_buttonup:
                         case ei_ev_mouse_move:
                                 widget = mouse_capture(event, pick_surface, root);

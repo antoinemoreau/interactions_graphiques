@@ -48,15 +48,20 @@ void            handle_event            (ei_linked_event_t*     event_list,
                                          ei_widget_t*           widget) {
         ei_bool_t no_callback = EI_FALSE;
         ei_linked_event_t* current_event = event_list;
+
+
+
         while(!no_callback && current_event){
-                if(current_event->tag){
-                        if (strcmp(current_event->tag,"all") == 0) {
-                                no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
-                        } else if (strcmp(current_event->tag, widget->wclass->name) == 0) {
+                if (current_event->eventtype == event->type) {
+                        if(current_event->tag ){
+                                if (strcmp(current_event->tag,"all") == 0) {
+                                        no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
+                                } else if (strcmp(current_event->tag, widget->wclass->name) == 0) {
+                                        no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
+                                }
+                        }else if (current_event->widget == widget){
                                 no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
                         }
-                }else if (current_event->widget == widget){
-                        no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
                 }
                 current_event = current_event->next;
         }
