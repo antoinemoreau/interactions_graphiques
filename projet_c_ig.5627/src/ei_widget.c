@@ -73,7 +73,11 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->screen_location.top_left.y = 0;
 		widget->screen_location.size.width = 0;
 		widget->screen_location.size.height = 0;
-		widget->content_rect = &(widget->screen_location);
+		widget->content_rect = malloc(sizeof(ei_rect_t));
+		widget->content_rect->top_left.x = 0;
+		widget->content_rect->top_left.y = 0;
+		widget->content_rect->size.width = 0;
+		widget->content_rect->size.height = 0;
 		widgetclass->setdefaultsfunc(widget);
 		return widget;
 	}

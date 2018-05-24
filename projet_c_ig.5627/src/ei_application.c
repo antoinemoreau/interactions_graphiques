@@ -53,7 +53,7 @@ void ei_app_run() {
         hw_surface_lock(pick_surface);
         ei_rect_t coucou = {main_clipper.top_left,{main_clipper.size.width -100,main_clipper.size.height -100 }};
         //on dessine tout les widgets en premier lieu
-        draw_all_widgets(root, root_surface, pick_surface, root->content_rect, rect_list);
+        draw_all_widgets(root, root_surface, pick_surface, &main_clipper, rect_list);
         // root->wclass->drawfunc(root, root_surface, pick_surface, root->content_rect);
         // root->children_head->wclass->drawfunc(root->children_head, root_surface, pick_surface, root->content_rect);
         // root->children_head->children_head->wclass->drawfunc(root->children_head->children_head, root_surface, pick_surface, root->children_head->content_rect);
