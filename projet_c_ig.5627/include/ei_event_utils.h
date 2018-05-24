@@ -1,6 +1,5 @@
 #include "ei_event.h"
 
-
 typedef struct ei_linked_event_t {
 	ei_widget_t*                    widget;
 	ei_eventtype_t			eventtype;

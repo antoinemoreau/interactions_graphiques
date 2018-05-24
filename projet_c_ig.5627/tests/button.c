@@ -46,16 +46,10 @@ int ei_main(int argc, char** argv)
 	ei_color_t	root_bgcol		= {0x52, 0x7f, 0xb4, 0xff};
 
 	ei_widget_t*	button;
-	ei_widget_t*	button2;
 	ei_size_t	button_size		= {300,200};
-	ei_size_t	button_size2		= {100,50};
 	int		button_x		= 150;
 	int		button_y		= 200;
-	int		button_x2		= 160;
-	int		button_y2		= 210;
 	ei_color_t	button_color		= {0x88, 0x88, 0x88, 0xff};
-
-	ei_color_t	button2_color		= {0xa9,0x11,0x01, 0xff};
 
 	ei_anchor_t	text_anchor 		= ei_anc_center;
 	char*		button_title		= "Mon premier Bouton !";
@@ -75,12 +69,6 @@ int ei_main(int argc, char** argv)
 				 &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, &text_anchor,
 				 NULL, NULL, NULL, &button_callback, NULL);
 	ei_place(button, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL );
-
-	button2 = ei_widget_create("button", button);
-	ei_button_configure	(button2, &button_size2, &button2_color,
-				 &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, &text_anchor,
-				 NULL, NULL, NULL, &button_callback, NULL);
-	ei_place(button, NULL, &button_x2, &button_y2, NULL, NULL, NULL, NULL, NULL, NULL );
 
 	/* Hook the keypress callback to the event. */
 	ei_bind(ei_ev_keydown,		NULL, "all", process_key, NULL);

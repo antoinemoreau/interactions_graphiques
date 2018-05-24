@@ -6,6 +6,7 @@
 #include "ei_event.h"
 #include "ei_event_utils.h"
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * Parcours en largeur récursif affichant tous les widgets
