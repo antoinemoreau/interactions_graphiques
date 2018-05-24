@@ -74,11 +74,11 @@ int ei_main(int argc, char** argv)
         ei_place(toplevel, NULL, &(window_position.x), &(window_position.y), NULL, NULL, NULL, NULL, NULL, NULL);
         ei_place(button, &button_anchor, &button_x, &button_y, NULL,NULL, &button_rel_x, &button_rel_y, &button_rel_size_x, NULL);
 
-	//ei_bind(ei_ev_keydown, NULL, "all", process_key, NULL);
+	ei_bind(ei_ev_keydown, NULL, "all", process_key, NULL);
 
         ei_app_run();
 
-	//ei_unbind(ei_ev_keydown, NULL, "all", process_key, NULL);
+	ei_unbind(ei_ev_keydown, NULL, "all", process_key, NULL);
 
 	//ei_app_free();
 

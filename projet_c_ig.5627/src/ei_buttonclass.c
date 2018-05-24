@@ -95,7 +95,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         int border = button->border_width;
 
         //On récupère les 3 parties à colorier
-        int nb_points = 100;
+        int nb_points = 10;
         ei_color_t light_color;
         ei_color_t dark_color;
         ei_compute_color(*(button->color),&light_color,1.2);
@@ -129,7 +129,8 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_draw_polygon(surface, high_part, light_color, &inter);
                 ei_draw_polygon(surface, low_part, dark_color, &inter);
 
-        }else if(button->relief == ei_relief_sunken){
+        }
+        else if(button->relief == ei_relief_sunken){
                 // on draw les parties haute et basse du bouton avec couleurs inversees
                 ei_draw_polygon(surface, high_part, dark_color, &inter);
                 ei_draw_polygon(surface, low_part, light_color, &inter);
