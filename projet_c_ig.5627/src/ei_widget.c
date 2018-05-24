@@ -15,7 +15,7 @@ static ei_color_t* inc_pick_color () {
 	// 	pick_color.alpha++;
 	// } else {
 	if (pick_color.blue < 0xff) {
-		pick_color.blue += 0x40;
+		pick_color.blue ++;
 	} else {
 		pick_color.blue = 0x00;
 		if (pick_color.green < 0xff) {
