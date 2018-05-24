@@ -7,9 +7,10 @@
 /**
  * Parcours en largeur récursif affichant tous les widgets
  */
-void            draw_all_widgets        (ei_widget_t*   widget,
-                                         ei_surface_t   root_surface,
-                                         ei_surface_t   pick_surface,
-                                         ei_rect_t*     content_rect);
+void            draw_all_widgets        (ei_widget_t*           widget,
+                                         ei_surface_t           root_surface,
+                                         ei_surface_t           pick_surface,
+                                         ei_rect_t*             content_rect,
+                                         ei_linked_rect_t*      list_rects);
 
 #endif

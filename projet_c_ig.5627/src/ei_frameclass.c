@@ -21,13 +21,10 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_rect_t*		clipper) {
 
         ei_frame_t* frame = (ei_frame_t*) widget;
-        frame->widget.pick_id = ei_map_rgba(pick_surface,frame->widget.pick_color);
+        frame->widget.pick_id = ei_map_rgba(pick_surface, frame->widget.pick_color);
         ei_rect_t inter = {clipper->top_left,clipper->size};
         if (frame->border_width >0) {
-                printf("clipper width: %d height : %d\n", clipper->size.width, clipper->size.height);
-                printf("screen location width: %d height : %d\n", frame->widget.screen_location.size.width, frame->widget.screen_location.size.height);
                 ei_intersection_rectangle(clipper, &(frame->widget.screen_location), &inter);
-                printf("inter width: %d height : %d\n", inter.size.width, inter.size.height);
 
                 ei_color_t light_color;
                 ei_color_t dark_color;
@@ -75,12 +72,20 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                         ei_fill(surface, frame->color, &inter);
                 }
         }else{
-                ei_fill(surface, frame->color, clipper);
+                ei_fill(surface, frame->color, &inter);
         }
         if (pick_surface) {
-                // hw_surface_lock(pick_surface);
-                // ei_fill(pick_surface,frame->widget.pick_color,clipper);
-                // hw_surface_unlock(pick_surface);
+                ei_point_t top_first = inter.top_left;
+                ei_point_t top_right = {top_first.x + inter.size.width,top_first.y};
+                ei_point_t bot_bot = {top_first.x + inter.size.width,top_first.y+ inter.size.height};
+                ei_point_t bot_last = {top_first.x,top_first.y + inter.size.height};
+
+                ei_linked_point_t top_exter = {top_first, NULL};
+                ei_linked_point_t right_exter = {top_right,&top_exter};
+                ei_linked_point_t bot_exter = {bot_bot,&right_exter};
+                ei_linked_point_t left_exter = { bot_last,&bot_exter};
+                ei_draw_polygon(pick_surface,&left_exter,*(frame->widget.pick_color),&inter);
+                //ei_fill(pick_surface, frame->widget.pick_color, &inter);
         }
         if (frame->text && strcmp(frame->text,"") != 0) {
                 ei_point_t aqui;
@@ -92,7 +97,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 if(frame->img){
                         // ei_point_t aqui_image;
                         // ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
-                        //ei_copy_surface(surface,frame->img_rect,frame->img,frame->img_rect,EI_FALSE);
+                        // ei_copy_surface(surface,frame->img_rect,frame->img,frame->img_rect,EI_FALSE);
                 }
         }
 }
