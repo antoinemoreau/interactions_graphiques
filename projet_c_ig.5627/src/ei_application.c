@@ -53,7 +53,7 @@ void ei_app_run() {
         main_clipper = hw_surface_get_rect(root_surface);
         hw_surface_lock(pick_surface);
         //on dessine tout les widgets en premier lieu
-        draw_all_widgets(root, root_surface, pick_surface, root->content_rect, rect_list);
+        draw_all_widgets(root, root_surface, pick_surface, root->content_rect, &rect_list);
 
         hw_surface_unlock(pick_surface);
         hw_surface_unlock(root_surface);
@@ -83,7 +83,7 @@ void ei_app_run() {
                         case ei_ev_mouse_move:
                                 widget = mouse_capture(event, pick_surface, root);
                                 handle_event(event_list, event, widget);
-                                redraw(root_surface, pick_surface, widget, rect_list);
+                                redraw(root_surface, pick_surface, widget, &rect_list);
                                 break;
 
                         case ei_ev_last:

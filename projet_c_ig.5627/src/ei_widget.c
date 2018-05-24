@@ -105,10 +105,6 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
 	}
-	else {
-		widget->requested_size.height = 0;
-		widget->requested_size.width = 0;
-	}
 	ei_frame_t* frame = (ei_frame_t*)widget;
 
 	if (color != NULL)

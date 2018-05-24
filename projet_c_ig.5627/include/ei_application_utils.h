@@ -14,7 +14,7 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_surface_t           root_surface,
                                          ei_surface_t           pick_surface,
                                          ei_rect_t*             content_rect,
-                                         ei_linked_rect_t*      list_rects);
+                                         ei_linked_rect_t**     list_rects);
 
 /**
  * Renvoit le widget sous le pointeur de souris.
@@ -28,7 +28,7 @@ ei_widget_t*    mouse_capture           (ei_event_t*            event,
 void            redraw                  (ei_surface_t           root_surface,
                                           ei_surface_t          pick_surface,
                                           ei_widget_t*          widget,
-                                          ei_linked_rect_t*     rect_list);
+                                          ei_linked_rect_t**    rect_list);
 
 void            handle_event            (ei_linked_event_t*     event_list,
                                            ei_event_t*          event,

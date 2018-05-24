@@ -4,15 +4,18 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_surface_t           root_surface,
                                          ei_surface_t           pick_surface,
                                          ei_rect_t*             content_rect,
-                                         ei_linked_rect_t*      list_rects) {
+                                         ei_linked_rect_t**     list_rects) {
         if (widget != NULL) {
                 widget->wclass->drawfunc(widget, root_surface, pick_surface, content_rect);
                 ei_linked_rect_t* new_rect = calloc(1, sizeof(ei_linked_rect_t));
                 new_rect->rect = *(widget->content_rect);
-                new_rect->next = list_rects;
-                list_rects = new_rect;
-                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling) {
-                        draw_all_widgets(current, root_surface, pick_surface, widget->content_rect, list_rects);
+                new_rect->next = *list_rects;
+                *list_rects = new_rect;
+                if(widget->children_head !=NULL){
+                        draw_all_widgets(widget->children_head, root_surface, pick_surface, widget->content_rect, list_rects);
+                }
+                if (widget->next_sibling != NULL) {
+                        draw_all_widgets(widget->next_sibling,root_surface, pick_surface, content_rect, list_rects);
                 }
         }
 }
@@ -34,13 +37,13 @@ ei_widget_t*    mouse_capture           (ei_event_t*            event,
 void            redraw                  (ei_surface_t           root_surface,
                                          ei_surface_t           pick_surface,
                                          ei_widget_t*           widget,
-                                         ei_linked_rect_t*      rect_list) {
+                                         ei_linked_rect_t**     rect_list) {
         hw_surface_lock(root_surface);
         hw_surface_lock(pick_surface);
         draw_all_widgets(widget, root_surface, pick_surface, widget->content_rect, rect_list);
         hw_surface_unlock(pick_surface);
         hw_surface_unlock(root_surface);
-        hw_surface_update_rects(root_surface,rect_list);
+        hw_surface_update_rects(root_surface,*rect_list);
 }
 
 void            handle_event            (ei_linked_event_t*     event_list,
