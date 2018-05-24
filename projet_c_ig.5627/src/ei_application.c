@@ -6,7 +6,6 @@
 #include "ei_event.h"
 #include "ei_event_utils.h"
 #include "ei_draw.h"
-#include "ei_application_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,7 +45,6 @@ void ei_app_run() {
         ei_size_t pick_size;
         pick_size.width = root->screen_location.size.width;
         pick_size.height = root->screen_location.size.height;
-        printf("%d\n",root->screen_location.size.width);
         ei_surface_t pick_surface = hw_surface_create(root_surface, &pick_size, EI_FALSE);
         pick_size = hw_surface_get_size(pick_surface);
         ei_rect_t main_clipper;
@@ -59,45 +57,40 @@ void ei_app_run() {
         hw_surface_unlock(pick_surface);
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface, rect_list);
-        //hw_surface_update_rects(pick_surface, NULL);
         //boucle des evenements
 
         while (!quit_app) {
+                ei_widget_t* widget;
+
                 hw_event_wait_next(event);
-                if (event->type != ei_ev_none){
-                        ei_point_t where_mouse = event->param.mouse.where;
-                        ei_rect_t rect_pick = hw_surface_get_rect(pick_surface);
-                        hw_surface_lock(pick_surface);
-                        uint8_t* buffer_picking = hw_surface_get_buffer(pick_surface);
-                        hw_surface_unlock(pick_surface);
-                        buffer_picking += (where_mouse.x + where_mouse.y*rect_pick.size.width)*4;
-                        ei_color_t mouse_color = {*(buffer_picking+2),*(buffer_picking+1),*(buffer_picking),*(buffer_picking+3)};
-                        uint32_t mouse_id = ei_map_rgba(pick_surface, &mouse_color);
-                        ei_widget_t* widget = ei_pick_widget(mouse_id, root);
-                        char* widget_name = widget->wclass->name;
-                        ei_bool_t no_callback = EI_FALSE;
-                        ei_linked_event_t* current_event = event_list;
-                        while(!no_callback && current_event){
-                                if(current_event->tag){
-                                        if (strcmp(current_event->tag,"all") == 0) {
-                                                no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
-                                        } else if (strcmp(current_event->tag, widget_name) == 0) {
-                                                no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
-                                        }
-                                }else if (current_event->widget == widget){
-                                        no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
-                                }
-                                current_event = current_event->next;
-                        }
-                        hw_surface_lock(root_surface);
-                        hw_surface_lock(pick_surface);
-                        draw_all_widgets(widget, root_surface, pick_surface, widget->content_rect, rect_list);
-                        hw_surface_unlock(pick_surface);
-                        hw_surface_unlock(root_surface);
-                        hw_surface_update_rects(root_surface,rect_list);
-                        //hw_surface_update_rects(pick_surface,rect_list);
+
+                switch(event->type) {
+                        case ei_ev_app:
+                                break;
+
+                        case ei_ev_keydown:
+                        case ei_ev_keyup:
+                                widget = NULL;
+                                handle_event(event_list, event, widget);
+                                //redraw(root_surface, pick_surface, widget, rect_list);
+                                break;
+
+                        case ei_ev_mouse_buttondown:
+                        case ei_ev_mouse_buttonup:
+                        case ei_ev_mouse_move:
+                                widget = mouse_capture(event, pick_surface, root);
+                                handle_event(event_list, event, widget);
+                                redraw(root_surface, pick_surface, widget, rect_list);
+                                break;
+
+                        case ei_ev_last:
+                                break;
+
+                        default:
+                                break;
                 }
-                //faut vider la liste des rectangles
+
+                release_rect_list(&rect_list);
         }
         hw_surface_free(pick_surface);
         free(event);
