@@ -1,4 +1,5 @@
 #include "ei_event_utils.h"
+#include "ei_event.h"
 #include <stdlib.h>
 #include "ei_button.h"
 #include "ei_application.h"
