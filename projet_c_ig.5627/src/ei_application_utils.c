@@ -66,3 +66,14 @@ void            handle_event            (ei_linked_event_t*     event_list,
                 current_event = current_event->next;
         }
 }
+
+void            release_rect_list       (ei_linked_rect_t**      rect_list) {
+        if (*rect_list != NULL) {
+                ei_linked_rect_t* del = NULL;
+                while(*rect_list != NULL) {
+                        del = *rect_list;
+                        *rect_list = (*rect_list)->next;
+                        free(del);
+                }
+        }
+}

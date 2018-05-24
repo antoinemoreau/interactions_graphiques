@@ -25,13 +25,15 @@ ei_widget_t*    mouse_capture           (ei_event_t*            event,
 /**
  * Redessine un widget et tous ses fils.
  */
- void            redraw                  (ei_surface_t          root_surface,
+void            redraw                  (ei_surface_t           root_surface,
                                           ei_surface_t          pick_surface,
                                           ei_widget_t*          widget,
                                           ei_linked_rect_t*     rect_list);
 
-  void            handle_event            (ei_linked_event_t*     event_list,
-                                           ei_event_t*            event,
-                                           ei_widget_t*           widget) ;
+void            handle_event            (ei_linked_event_t*     event_list,
+                                           ei_event_t*          event,
+                                           ei_widget_t*         widget) ;
+
+void            release_rect_list       (ei_linked_rect_t**      rect_list);
 
 #endif

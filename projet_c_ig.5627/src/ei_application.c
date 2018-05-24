@@ -93,7 +93,7 @@ void ei_app_run() {
                                 break;
                 }
 
-                //faut vider la liste des rectangles
+                release_rect_list(&rect_list);
         }
         hw_surface_free(pick_surface);
         free(event);
