@@ -148,8 +148,6 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
         ei_draw_polygon(surface, all_part, *(button->color), &inter);
-        printf("%d ,%d \n",inter.top_left.x,inter.top_left.y );
-
 
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(inter, button->corner_radius, nb_points, 2);
