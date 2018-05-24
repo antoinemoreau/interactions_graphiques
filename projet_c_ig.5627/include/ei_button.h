@@ -7,13 +7,12 @@
 #include "ei_widgetclass.h"
 
 /**
- * 
- * 
- * 
+ *
+ *
+ *
  */
 typedef struct ei_button_t {
 	ei_widget_t		widget;
-        ei_size_t*		requested_size;
         const ei_color_t*	color;
         int			border_width;
         int			corner_radius;

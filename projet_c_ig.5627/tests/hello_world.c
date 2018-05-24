@@ -48,7 +48,7 @@ int ei_main(int argc, char** argv)
         float           button_rel_size_x = 0.5;
 
         ei_size_t       window_size     = {400,400};
-        char*           window_title    = "Hello World";
+        char*           window_title    = "Hello World !";
         ei_color_t      window_color    = {0xA0,0xA0,0xA0, 0xff};
         int             window_border_width    = 10; // Valeur de départ : 2
         ei_bool_t       closable        = EI_TRUE;
