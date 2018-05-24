@@ -88,9 +88,10 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         ei_button_t* button = (ei_button_t*) widget;
         button->widget.pick_id = ei_map_rgba(pick_surface, button->widget.pick_color);
-        ei_rect_t inter = {clipper->top_left,clipper->size};
+        ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-
+        button->widget.screen_location = inter;
+        button->widget.content_rect = &inter;
 
         int border = button->border_width;
 
@@ -147,7 +148,6 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
         ei_draw_polygon(surface, all_part, *(button->color), &inter);
-
 
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(inter, button->corner_radius, nb_points, 2);

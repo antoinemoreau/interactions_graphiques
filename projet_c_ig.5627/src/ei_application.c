@@ -45,7 +45,6 @@ void ei_app_run() {
         ei_size_t pick_size;
         pick_size.width = root->screen_location.size.width;
         pick_size.height = root->screen_location.size.height;
-        printf("%d\n",root->screen_location.size.width);
         ei_surface_t pick_surface = hw_surface_create(root_surface, &pick_size, EI_FALSE);
         pick_size = hw_surface_get_size(pick_surface);
         ei_rect_t main_clipper;
@@ -58,8 +57,6 @@ void ei_app_run() {
         hw_surface_unlock(pick_surface);
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface, rect_list);
-        hw_surface_update_rects(pick_surface, NULL);
-
         //boucle des evenements
 
         while (!quit_app) {

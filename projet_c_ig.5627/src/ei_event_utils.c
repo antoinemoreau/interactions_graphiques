@@ -55,9 +55,11 @@ ei_widget_t* ei_pick_widget(uint32_t pick_id, ei_widget_t* widget){
 
 ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(event->type == ei_ev_mouse_buttonup){
-                ei_button_t* button = sunken_button;
-                button->relief = ei_relief_raised;
-                return EI_TRUE;
+                if(sunken_button){
+                        ei_button_t* button = sunken_button;
+                        button->relief = ei_relief_raised;
+                        return EI_TRUE;
+                }
         }
         return EI_FALSE;
 }
@@ -66,7 +68,8 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
         if(event->type == ei_ev_mouse_buttondown){
                 sunken_button = (ei_button_t*)widget;
                 sunken_button->relief = ei_relief_sunken;
-                return button_press(widget, event, user_param);
+                //return button_press(widget, event, user_param);
+                return EI_FALSE;
         }
         return EI_FALSE;
 }

@@ -1,5 +1,5 @@
-#ifndef EI_TOPLEVEL_H
-#define EI_TOPLEVEL_H
+#ifndef EI_TOPLEVELCLASS_H
+#define EI_TOPLEVELCLASS_H
 #include "ei_types.h"
 #include "hw_interface.h"
 #include "ei_draw.h"

@@ -22,10 +22,12 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 
         ei_frame_t* frame = (ei_frame_t*) widget;
         frame->widget.pick_id = ei_map_rgba(pick_surface, frame->widget.pick_color);
-        ei_rect_t inter = {clipper->top_left,clipper->size};
-        if (frame->border_width >0) {
-                ei_intersection_rectangle(clipper, &(frame->widget.screen_location), &inter);
+        ei_rect_t inter = {frame->widget.screen_location.top_left,frame->widget.screen_location.size};
+        ei_intersection_rectangle(clipper, &(frame->widget.screen_location), &inter);
+        frame->widget.screen_location = inter;
+        frame->widget.content_rect = &inter;
 
+        if (frame->border_width >0) {
                 ei_color_t light_color;
                 ei_color_t dark_color;
                 ei_compute_color(*frame->color,&light_color,1.2);
