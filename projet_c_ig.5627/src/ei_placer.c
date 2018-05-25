@@ -3,32 +3,42 @@
 #include <stdio.h>
 
 static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y){
-        ei_placer_t* placer_parent = (ei_placer_t*) parent->geom_params;
         ei_placer_t* placer_widget = (ei_placer_t*) widget->geom_params;
+        if (parent != NULL){
+                ei_placer_t* placer_parent = (ei_placer_t*) parent->geom_params;
 
-        if (placer_parent == NULL){
-                /*
-                Si on est sur le widget root, on calcule simplement la position du widget fils
-                */
-                widget->screen_location.top_left.x = parent->screen_location.top_left.x + placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x - x;
-                widget->screen_location.top_left.y = parent->screen_location.top_left.y + placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y - y;
+                if (placer_parent == NULL){
+                        /*
+                        Si on est sur le widget root, on calcule simplement la position du widget fils
+                        */
+                        widget->screen_location.top_left.x = parent->screen_location.top_left.x + placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x - x;
+                        widget->screen_location.top_left.y = parent->screen_location.top_left.y + placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y - y;
 
+                }
+                else{   /*On calcule la place d'un des pixels du widget dans le référentiel du placer_parent
+                          Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
+                        */
+                        widget->screen_location.top_left.x = placer_parent->x + placer_widget->rel_x * placer_parent->width + placer_widget->x;
+                        widget->screen_location.top_left.y = placer_parent->y + placer_widget->rel_y * placer_parent->height + placer_widget->y;
+                }
         }
-        else{   /*On calcule la place d'un des pixels du widget dans le référentiel du placer_parent
-                  Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
-                */
-                widget->screen_location.top_left.x = placer_parent->x + placer_widget->rel_x * placer_parent->width + placer_widget->x;
-                widget->screen_location.top_left.y = placer_parent->y + placer_widget->rel_y * placer_parent->height + placer_widget->y;
+        else{
+                widget->screen_location.top_left.x = placer_widget->x;
+                widget->screen_location.top_left.y = placer_widget->y;
         }
 
 }
 
 static void compute_size(ei_widget_t* widget, ei_widget_t* parent){
         ei_placer_t* placer_widget = (ei_placer_t*) widget->geom_params;
-
-        widget->screen_location.size.width = placer_widget->rel_width * parent->screen_location.size.width + placer_widget->width;
-        widget->screen_location.size.height = placer_widget->rel_height * parent->screen_location.size.height + placer_widget->height;
-
+        if (parent != NULL){
+                widget->screen_location.size.width = placer_widget->rel_width * parent->screen_location.size.width + placer_widget->width;
+                widget->screen_location.size.height = placer_widget->rel_height * parent->screen_location.size.height + placer_widget->height;
+        }
+        else{
+                widget->screen_location.size.width = placer_widget->width;
+                widget->screen_location.size.height = placer_widget->height;
+        }
 }
 
 
