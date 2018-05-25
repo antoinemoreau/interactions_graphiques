@@ -3,7 +3,9 @@
 #include "ei_button.h"
 #include "ei_toplevel.h"
 #include "ei_geometrymanager.h"
+#include "ei_application.h"
 #include "ei_draw.h"
+#include "ei_event.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -253,13 +255,12 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	else if (!button->img_anchor)
 		button->img_anchor = ei_anc_center;
 
-	if (callback != NULL)
-		button->callback = callback;
-
-	if (user_param != NULL)
-		button->user_param = user_param;
-
-
+	if (callback != NULL) {
+		button->callback = *callback;
+		if (user_param != NULL)
+			button->user_param = *user_param;
+		ei_bind(ei_ev_mouse_buttondown, (ei_widget_t*)button, NULL, *callback, button->user_param);
+	}
 }
 
 void			ei_toplevel_configure		(ei_widget_t*		widget,
@@ -270,7 +271,6 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 							 ei_bool_t*		closable,
 							 ei_axis_set_t*		resizable,
 						 	 ei_size_t**		min_size) {
-
 
 	 if (requested_size != NULL){
  		widget->requested_size = *requested_size;

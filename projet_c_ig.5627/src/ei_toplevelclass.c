@@ -31,7 +31,7 @@ static ei_linked_point_t* points_list (ei_rect_t rectangle){
         return top_left;
 }
 
-static ei_button_t* closing_button(ei_toplevel_t* toplevel) {
+static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         //Récupération de la border_width du toplevel
         int             toplevel_border_width   = toplevel->border_width;
 

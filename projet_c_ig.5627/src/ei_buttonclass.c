@@ -88,9 +88,22 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         ei_button_t* button = (ei_button_t*) widget;
         button->widget.pick_id = ei_map_rgba(pick_surface, button->widget.pick_color);
-        ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};;
+
+
+        if (widget->screen_location.size.height == 0 && widget->screen_location.size.width == 0) {
+                if (button->text) {
+                        hw_text_compute_size(button->text, button->text_font, &(widget->screen_location.size.width), &(widget->screen_location.size.height));
+                        printf("screenloc width : %d\n", widget->screen_location.size.width);
+                } else {
+                        widget->screen_location.size.width = clipper->size.width;
+                        widget->screen_location.size.height = clipper->size.height;
+                }
+        }
+
+        ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
 
+        printf("inter width : %d\n", inter.size.width);
 
         button->widget.screen_location.size.width = inter.size.width;
         button->widget.screen_location.size.height = inter.size.height;
@@ -152,19 +165,19 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         //Libération des variables intermédaires
         free(bot_left_big_square);
         free(top_right_big_square);
-        //Dessin de la totalité de l'interieur du bouton
 
+        //Dessin de la totalité de l'interieur du bouton
         ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
         ei_draw_polygon(surface, all_part, *(button->color), &inter);
 
 
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 2);
-                ei_draw_polygon(pick_surface,pick_poly,*(button->widget.pick_color),&button->widget.screen_location);
+                ei_draw_polygon(pick_surface,pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
 
         }
-        if (button->text && strcmp(button->text,"") != 0) {
 
+        if (button->text && strcmp(button->text, "") != 0) {
                 ei_point_t aqui;
                 ei_size_t size_texte;
                 hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
