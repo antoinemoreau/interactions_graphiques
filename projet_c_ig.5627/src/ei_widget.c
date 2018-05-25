@@ -282,4 +282,11 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 		(*(toplevel->min_size)).width = 160;
 		(*(toplevel->min_size)).height = 120;
 	}
+
+	if (widget->content_rect->size.width < widget->requested_size.width){
+		widget->content_rect->size.width = widget->requested_size.width;
+	}
+	if (widget->content_rect->size.height < widget->requested_size.height){
+		widget->content_rect->size.height = widget->requested_size.height;
+	}
 }
