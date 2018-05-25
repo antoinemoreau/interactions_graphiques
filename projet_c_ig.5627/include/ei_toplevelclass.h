@@ -5,6 +5,7 @@
 #include "ei_draw.h"
 #include "ei_widget.h"
 #include "ei_widgetclass.h"
+#include "ei_geometrymanager.h"
 
 void* ei_toplevel_allocfunc ();
 

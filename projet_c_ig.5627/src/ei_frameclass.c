@@ -23,16 +23,11 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         ei_frame_t* frame = (ei_frame_t*) widget;
         frame->widget.pick_id = ei_map_rgba(pick_surface, frame->widget.pick_color);
         ei_rect_t inter = {frame->widget.screen_location.top_left,frame->widget.screen_location.size};
-        // ei_rect_t* inter = malloc(sizeof(ei_rect_t));
         ei_intersection_rectangle(clipper, &(frame->widget.screen_location), &inter);
-        // printf("frame screen top left x :%d, y :%d, size width : %d, height : %d\n",frame->widget.screen_location.top_left.x, frame->widget.screen_location.top_left.y,frame->widget.screen_location.size.width, frame->widget.screen_location.size.height);
-        // printf("frame clipper top left x :%d, y :%d, size width : %d, height : %d\n",clipper->top_left.x, clipper->top_left.y,clipper->size.width,clipper->size.height);
-        // printf("frame top left x :%d, y :%d, size width : %d, height : %d\n",inter->top_left.x, inter->top_left.y,inter->size.width,inter->size.height);
         frame->widget.screen_location.size.width = inter.size.width;
         frame->widget.screen_location.size.height = inter.size.height;
         frame->widget.screen_location.top_left.x = inter.top_left.x;
         frame->widget.screen_location.top_left.y = inter.top_left.y;
-        // printf("frame content_rect top left x :%d, y :%d, size width : %d, height : %d\n",frame->widget.content_rect->top_left.x, frame->widget.content_rect->top_left.y,frame->widget.content_rect->size.width, frame->widget.content_rect->size.height);
         frame->widget.content_rect->top_left.x = inter.top_left.x;
         frame->widget.content_rect->size.width = inter.size.width;
         frame->widget.content_rect->size.height = inter.size.height;
@@ -67,11 +62,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_linked_point_t bot_poly_right = {top_right,&bot_poly_bot_bas};
                 ei_linked_point_t bot_poly_right_in = {right,&bot_poly_right};
                 ei_linked_point_t bot_poly_first = {bot_in,&bot_poly_right_in};
-                //inter.top_left = low_first;
-                //inter.size = size_inter;
                 if (frame->relief == ei_relief_none) {
-                        //inter.top_left = clipper->top_left;
-                        //inter.size = clipper->size;
                         ei_fill(surface,frame->color,&inter);
                 }else if (frame->relief == ei_relief_raised) {
                         ei_draw_polygon(surface,&top_poly_first,light_color,&inter);
@@ -114,7 +105,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_draw_polygon(pick_surface,&left_exter,*(frame->widget.pick_color),&inter);
                 //ei_fill(pick_surface, frame->widget.pick_color, &inter);
         }
-        if (frame->text && strcmp(frame->text,"") != 0) {
+        if (frame->text && strcmp(*(frame->text),"") != 0) {
                 ei_point_t aqui;
                 ei_size_t size_texte = {0,0};
                 hw_text_compute_size(*(frame->text),frame->text_font,&(size_texte.width),&(size_texte.height));
@@ -132,12 +123,12 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 void ei_frame_setdefaultsfunc (ei_widget_t* widget) {
         ei_frame_t* frame = (ei_frame_t*) widget;
         frame->widget = *widget;
-        frame->color = &ei_default_background_color;
+        frame->color = (ei_color_t*)&ei_default_background_color;
         frame->border_width = 0;
         frame->relief = ei_relief_none;
         frame->text = NULL;
         frame->text_font = ei_default_font;
-        frame->text_color = &ei_font_default_color;
+        frame->text_color = (ei_color_t*)&ei_font_default_color;
         frame->text_anchor = ei_anc_center;
         frame->img = NULL;
         frame->img_rect = NULL;

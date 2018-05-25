@@ -1,6 +1,7 @@
 #ifndef EI_BUTTONCLASS_H
 #define EI_BUTTONCLASS_H
 
+#include <string.h>
 #include "hw_interface.h"
 #include "ei_draw.h"
 #include "ei_button.h"

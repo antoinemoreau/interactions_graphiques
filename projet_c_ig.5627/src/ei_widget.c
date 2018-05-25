@@ -65,7 +65,6 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->children_tail = NULL;
 		widget->next_sibling = NULL;
 
-		//a modifier
 		widget->geom_params = NULL;
 		widget->requested_size.width = 0;
 		widget->requested_size.height = 0;
@@ -91,7 +90,20 @@ void ei_widget_destroy (ei_widget_t* widget) {
 }
 
 ei_widget_t* ei_widget_pick (ei_point_t* where) {
-	return NULL;
+	ei_surface_t surface = ei_app_pick_surface();
+	ei_rect_t rect_picking = hw_surface_get_rect(surface);
+	hw_surface_lock(surface);
+	uint8_t* buffer_picking = hw_surface_get_buffer(surface);
+	buffer_picking += ((where->x) + (where->y)*rect_picking.size.width)*4;
+	int pos_r;
+	int pos_g;
+	int pos_b;
+	int pos_a;
+	hw_surface_get_channel_indices(surface, &pos_r, &pos_g, &pos_b, &pos_a);
+	ei_color_t mouse_color = {buffer_picking[pos_r], buffer_picking[pos_g],buffer_picking[pos_b],buffer_picking[pos_a]};
+	uint32_t mouse_id = ei_map_rgba(surface, &mouse_color);
+	ei_widget_t *root_widget = ei_app_root_widget();
+	return ei_find_widget(mouse_id, root_widget);
 }
 
 void		ei_frame_configure		(ei_widget_t*		widget,
@@ -140,7 +152,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	if (text_color != NULL)
 		frame->text_color = text_color;
 	else if (frame->text_color == NULL)
-		frame->text_color = &ei_font_default_color;
+		frame->text_color = (ei_color_t*)&ei_font_default_color;
 
 	if (text_anchor != NULL)
 		frame->text_anchor = *text_anchor;
@@ -211,7 +223,7 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	if (text_color != NULL)
 		button->text_color = text_color;
 	else if (button->text_color == NULL)
-		button->text_color = &ei_font_default_color;
+		button->text_color = (ei_color_t*)&ei_font_default_color;
 
 	if (text_anchor != NULL)
 		button->text_anchor = *text_anchor;
@@ -270,7 +282,7 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	if (title != NULL)
 		toplevel->title = title;
 	else if (!toplevel->title)
-		toplevel->title = "Toplevel";
+		*(toplevel->title) = "Toplevel";
 
 	if (closable != NULL)
 		toplevel->closable = *closable;
