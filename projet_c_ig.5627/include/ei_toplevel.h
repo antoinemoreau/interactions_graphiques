@@ -10,7 +10,7 @@ typedef struct ei_toplevel_t {
 	ei_button_t*		close_button;
         const ei_color_t*       color;
         int                     border_width;
-        char**                  title;
+        char*                   title;
         ei_bool_t              	closable;
         ei_axis_set_t          	resizable;
         ei_size_t*             	min_size;

@@ -105,12 +105,12 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_draw_polygon(pick_surface,&left_exter,*(frame->widget.pick_color),&inter);
                 //ei_fill(pick_surface, frame->widget.pick_color, &inter);
         }
-        if (frame->text && strcmp(*(frame->text),"") != 0) {
+        if (frame->text && strcmp(frame->text,"") != 0) {
                 ei_point_t aqui;
                 ei_size_t size_texte = {0,0};
-                hw_text_compute_size(*(frame->text),frame->text_font,&(size_texte.width),&(size_texte.height));
+                hw_text_compute_size(frame->text,frame->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(frame->text_anchor, &size_texte, &inter, &aqui);
-                ei_draw_text(surface,&aqui,*(frame->text),NULL, *(frame->text_color),&inter);
+                ei_draw_text(surface,&aqui,frame->text,NULL, *(frame->text_color),&inter);
         }else{
                 if(frame->img){
                         // ei_point_t aqui_image;

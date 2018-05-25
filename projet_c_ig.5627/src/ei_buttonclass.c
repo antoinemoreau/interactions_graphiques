@@ -163,13 +163,13 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_draw_polygon(pick_surface,pick_poly,*(button->widget.pick_color),&button->widget.screen_location);
 
         }
-        if (button->text && strcmp(*(button->text),"") != 0) {
+        if (button->text && strcmp(button->text,"") != 0) {
 
                 ei_point_t aqui;
                 ei_size_t size_texte;
-                hw_text_compute_size(*(button->text),button->text_font,&(size_texte.width),&(size_texte.height));
+                hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(button->text_anchor, &size_texte,&inter,&aqui);
-                ei_draw_text(surface,&aqui,*(button->text),NULL, *(button->text_color),&inter);
+                ei_draw_text(surface,&aqui,button->text,NULL, *(button->text_color),&inter);
 
         }
 }

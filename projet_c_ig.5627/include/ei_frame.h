@@ -16,7 +16,7 @@ typedef struct ei_frame_t {
 	const ei_color_t*	color;
 	int			border_width;
 	ei_relief_t		relief;
-	char**			text;
+	char* 			text;
 	ei_font_t*		text_font;
 	ei_color_t*		text_color;
 	ei_anchor_t		text_anchor;

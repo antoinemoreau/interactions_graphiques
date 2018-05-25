@@ -17,7 +17,7 @@ typedef struct ei_button_t {
         int			border_width;
         int			corner_radius;
         ei_relief_t		relief;
-        char**			text;
+        char* 			text;
         ei_font_t		text_font;
         ei_color_t*		text_color;
         ei_anchor_t		text_anchor;

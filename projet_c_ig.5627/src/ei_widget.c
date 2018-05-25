@@ -141,8 +141,14 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	else if (!frame->relief)
 		frame->relief = ei_relief_none;
 
-	if (text != NULL)
-		frame->text = text;
+	if (text != NULL) {
+		if (frame->text == NULL) {
+			frame->text = malloc(strlen(text)+1);
+		} else {
+			frame->text = realloc(frame->text, strlen(text)+1);
+		}
+		strcpy(frame->text, *text);
+	}
 
 	if (text_font != NULL)
 		frame->text_font = text_font;
@@ -212,8 +218,14 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	else
 		button->relief = *relief;
 
-	if (text != NULL)
-		button->text = text;
+	if (text != NULL) {
+		if (button->text == NULL) {
+			button->text = malloc(strlen(text)+1);
+		} else {
+			button->text = realloc(button->text, strlen(text)+1);
+		}
+		strcpy(button->text, *text);
+	}
 
 	if (text_font != NULL)
 		button->text_font = text_font;
@@ -279,10 +291,10 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	else if (!toplevel->border_width)
 		toplevel->border_width = 4;
 
-	if (title != NULL)
-		toplevel->title = title;
-	else if (!toplevel->title)
-		*(toplevel->title) = "Toplevel";
+	if (title != NULL) {
+		toplevel->title = realloc(toplevel->title, strlen(title)+1);
+		strcpy(toplevel->title, *title);
+	}
 
 	if (closable != NULL)
 		toplevel->closable = *closable;
