@@ -87,16 +87,17 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_rect_t*		clipper) {
 
         ei_button_t* button = (ei_button_t*) widget;
-
         if (widget->screen_location.size.height == 0 && widget->screen_location.size.width == 0) {
                 if (button->text) {
                         hw_text_compute_size(button->text, button->text_font, &(widget->screen_location.size.width), &(widget->screen_location.size.height));
                 } else {
-                        widget->screen_location.size.width = clipper->size.width;
-                        widget->screen_location.size.height = clipper->size.height;
+                        //Si le bouton est de taille (0,0) et qu'il ne contient pas de texte, on sort.
+                        fprintf(stderr, "Warning : button size is (0,0).\n");
+                        return;
                 }
         }
 
+        printf("topleft x : %d\n", button->widget.screen_location.top_left.x);
         ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
 

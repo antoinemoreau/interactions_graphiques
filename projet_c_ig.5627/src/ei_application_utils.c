@@ -1,4 +1,6 @@
 #include "ei_application_utils.h"
+#include "ei_application.h"
+#include "ei_toplevel.h"
 
 
 void            draw_all_widgets        (ei_widget_t*           widget,
@@ -7,14 +9,17 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_rect_t*             content_rect,
                                          ei_linked_rect_t**     list_rects) {
         if (widget != NULL) {
-                widget->wclass->drawfunc(widget, root_surface, pick_surface, content_rect);
-                ei_linked_rect_t* new_rect = calloc(1, sizeof(ei_linked_rect_t));
-                new_rect->rect = *(widget->content_rect);
-                new_rect->next = *list_rects;
-                *list_rects = new_rect;
-                draw_all_widgets(widget->children_head, root_surface, pick_surface, widget->content_rect, list_rects);
-                draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->content_rect, list_rects);
-
+                if (widget != ei_app_root_widget() && strcmp(widget->parent->wclass->name, "toplevel") == 0 && ((ei_toplevel_t*)widget)->closable == EI_TRUE) {
+                        widget->wclass->drawfunc(widget, root_surface, pick_surface, ei_app_root_widget()->content_rect);
+                } else {
+                        widget->wclass->drawfunc(widget, root_surface, pick_surface, content_rect);
+                        ei_linked_rect_t* new_rect = calloc(1, sizeof(ei_linked_rect_t));
+                        new_rect->rect = *(widget->content_rect);
+                        new_rect->next = *list_rects;
+                        *list_rects = new_rect;
+                        draw_all_widgets(widget->children_head, root_surface, pick_surface, widget->content_rect, list_rects);
+                        draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->content_rect, list_rects);
+                }
         }
 }
 

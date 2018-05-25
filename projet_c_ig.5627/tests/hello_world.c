@@ -68,8 +68,8 @@ int ei_main(int argc, char** argv)
 
         ei_toplevel_configure(toplevel, &window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
         ei_button_configure(button, NULL, &button_color,
-                            &button_border_width, NULL, &relief, &button_title, NULL, &text_color, NULL,
-                            NULL, NULL, NULL, &button_callback, NULL);
+                             &button_border_width, NULL, &relief, &button_title, NULL, &text_color, NULL,
+                             NULL, NULL, NULL, &button_callback, NULL);
 
         ei_place(toplevel, NULL, &(window_position.x), &(window_position.y), NULL, NULL, NULL, NULL, NULL, NULL);
         ei_place(button, &button_anchor, &button_x, &button_y, NULL,NULL, &button_rel_x, &button_rel_y, &button_rel_size_x, NULL);
@@ -80,7 +80,7 @@ int ei_main(int argc, char** argv)
 
 	ei_unbind(ei_ev_keydown, NULL, "all", process_key, NULL);
 
-	//ei_app_free();
+	ei_app_free();
 
 	return (EXIT_SUCCESS);
 }

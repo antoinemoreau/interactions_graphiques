@@ -39,6 +39,8 @@ ei_linked_event_t* find_event(ei_widget_t* widget, ei_eventtype_t eventtype, ei_
 
 ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
         ei_widget_t* picked_widget = NULL;
+        printf("%d\n", widget->pick_id);
+        printf("%d\n", pick_id);
         if (pick_id == widget->pick_id) {
                 return widget;
         }

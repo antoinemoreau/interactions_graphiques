@@ -35,23 +35,22 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         //Récupération de la border_width du toplevel
         int             toplevel_border_width   = toplevel->border_width;
 
-
         //Définition des paramètres du bouton
-        int             radius                  = 10;
+        int             radius                  = 6;
         int             diameter                = 2 * radius;
 
-        int             button_border_width     = 2;
+        int             button_border_width     = 1;
         ei_color_t      button_color            = {0xa9,0x11,0x01, 0xff};
-        ei_anchor_t	button_anchor	        = ei_anc_northwest;
-        float           button_rel_x            = 0.0;
-        float           button_rel_y            = 0.0;
+        // ei_anchor_t	button_anchor	        = ei_anc_northwest;
+        // float           button_rel_x            = 0.0;
+        // float           button_rel_y            = 0.0;
         int		button_x	        = toplevel_border_width;
         int		button_y	        = toplevel_border_width;
         ei_relief_t     relief                  = ei_relief_raised;
         ei_size_t       requested_size          = {diameter, diameter}; // On les défini en dur mais faut changer
 
         //Création et configuration du bouton suivant les paramètres
-        ei_widget_t*    button_widget           = ei_widget_create ("button", NULL);
+        ei_widget_t*    button_widget           = ei_widget_create ("button", &(toplevel->widget));
         button_widget->parent = (ei_widget_t*) toplevel;
         ei_button_t*    button                  = (ei_button_t*) button_widget;
 
@@ -59,9 +58,11 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
                             NULL, NULL, NULL, NULL, NULL);
 
-
         //Création d'un bouton avant le texte pour fermer la fenêtre
         ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
+        // button_widget->screen_location.size = requested_size;
+        // button_widget->screen_location.top_left.x = button_x;
+        // button_widget->screen_location.top_left.y = button_y;
 
         return button;
 }
@@ -160,21 +161,15 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                 ei_draw_polygon(surface, points_list(resize_rect), color, &intersection);
         }
 
-        if (closable == EI_TRUE){
-                //Dessin du bouton en haut à gauche du
-                ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
-
-
-                ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
+        if (pick_surface) {
+                //ei_fill(pick_surface,widget->pick_color,clipper);
+                ei_draw_polygon(pick_surface, exter_first_point, *(widget->pick_color), &intersection);
         }
 
-
-        if (pick_surface) {
-
-                // hw_surface_lock(pick_surface);
-                // ei_fill(pick_surface,button->widget.pick_color,clipper);
-                // hw_surface_unlock(pick_surface);
-
+        if (closable == EI_TRUE) {
+                //Dessin du bouton en haut à gauche du toplevel
+                ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
+                ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
         }
 
         if (toplevel->title && strcmp(toplevel->title,"") != 0) {
@@ -185,8 +180,8 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                 ei_draw_text(surface,&aqui,toplevel->title,ei_default_font, ei_font_default_color, clipper);
 
         }
-        //Libération des polygones
 
+        //Libération des polygones
         free(exter_first_point);
         free(inter_first_point);
 }
