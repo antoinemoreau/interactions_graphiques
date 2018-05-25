@@ -65,3 +65,7 @@ void            release_rect_list       (ei_linked_rect_t**      rect_list) {
                 }
         }
 }
+
+ei_surface_t ei_app_pick_surface() {
+        return pick_surface;
+}

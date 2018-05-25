@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+ei_surface_t pick_surface;
+
 /**
  * Parcours en largeur récursif affichant tous les widgets
  */

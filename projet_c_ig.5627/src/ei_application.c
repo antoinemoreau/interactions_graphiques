@@ -13,7 +13,6 @@
 
 ei_widget_t *root;
 ei_surface_t root_surface;
-ei_surface_t pick_surface;
 ei_bool_t quit_app = EI_FALSE;
 ei_linked_rect_t* rect_list = NULL;
 
@@ -25,13 +24,18 @@ void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
         ei_toplevel_register_class();
         ei_register_placer_manager();
 
-        root = ei_widget_create("frame", NULL);
 
+        root_surface = hw_create_window(main_window_size, fullscreen);
+
+        ei_size_t pick_size;
+        pick_size.width = main_window_size->width;
+        pick_size.height = main_window_size->height;
+        pick_surface = hw_surface_create(root_surface, &pick_size, EI_FALSE);
+
+        root = ei_widget_create("frame", NULL);
         root->requested_size = *main_window_size;
         root->screen_location.size.width = main_window_size->width;
         root->screen_location.size.height = main_window_size->height;
-
-        root_surface = hw_create_window(main_window_size, fullscreen);
 }
 
 void ei_app_free() {
@@ -42,10 +46,6 @@ void ei_app_run() {
         ei_init_list_events ();
         struct ei_event_t* event = malloc(sizeof(struct ei_event_t));
         ei_linked_event_t* event_list = get_list_events();
-        ei_size_t pick_size;
-        pick_size.width = root->screen_location.size.width;
-        pick_size.height = root->screen_location.size.height;
-        pick_surface = hw_surface_create(root_surface, &pick_size, EI_FALSE);
         ei_rect_t main_clipper;
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
@@ -111,8 +111,4 @@ ei_widget_t* ei_app_root_widget() {
 
 ei_surface_t ei_app_root_surface() {
         return root_surface;
-}
-
-ei_surface_t ei_app_pick_surface() {
-        return pick_surface;
 }

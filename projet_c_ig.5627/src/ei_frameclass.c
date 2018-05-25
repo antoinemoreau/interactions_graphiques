@@ -21,7 +21,6 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 							 ei_rect_t*		clipper) {
 
         ei_frame_t* frame = (ei_frame_t*) widget;
-        frame->widget.pick_id = ei_map_rgba(pick_surface, frame->widget.pick_color);
         ei_rect_t inter = {frame->widget.screen_location.top_left,frame->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(frame->widget.screen_location), &inter);
         frame->widget.screen_location.size.width = inter.size.width;

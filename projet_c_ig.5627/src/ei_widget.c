@@ -3,7 +3,7 @@
 #include "ei_button.h"
 #include "ei_toplevel.h"
 #include "ei_geometrymanager.h"
-#include "ei_application.h"
+#include "ei_application_utils.h"
 #include "ei_draw.h"
 #include "ei_event.h"
 #include <stdlib.h>
@@ -49,8 +49,8 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->wclass = widgetclass;
 
 		//id incremente a chaque instanciation de widget
-		widget->pick_id = 0;
 		widget->pick_color = inc_pick_color();
+		widget->pick_id = ei_map_rgba(ei_app_pick_surface(), widget->pick_color);
 
 		//affectation du widget parent
 		widget->parent = parent;

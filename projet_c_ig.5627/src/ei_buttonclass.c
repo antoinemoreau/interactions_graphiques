@@ -87,13 +87,10 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                                                 ei_rect_t*		clipper) {
 
         ei_button_t* button = (ei_button_t*) widget;
-        button->widget.pick_id = ei_map_rgba(pick_surface, button->widget.pick_color);
-
 
         if (widget->screen_location.size.height == 0 && widget->screen_location.size.width == 0) {
                 if (button->text) {
                         hw_text_compute_size(button->text, button->text_font, &(widget->screen_location.size.width), &(widget->screen_location.size.height));
-                        printf("screenloc width : %d\n", widget->screen_location.size.width);
                 } else {
                         widget->screen_location.size.width = clipper->size.width;
                         widget->screen_location.size.height = clipper->size.height;
@@ -102,8 +99,6 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-
-        printf("inter width : %d\n", inter.size.width);
 
         button->widget.screen_location.size.width = inter.size.width;
         button->widget.screen_location.size.height = inter.size.height;
