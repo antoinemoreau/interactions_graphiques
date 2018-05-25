@@ -159,8 +159,8 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
 
         if (pick_surface) {
-                ei_linked_point_t* pick_poly = rounded_frame(inter, button->corner_radius, nb_points, 2);
-                ei_draw_polygon(pick_surface,pick_poly,*(button->widget.pick_color),&inter);
+                ei_linked_point_t* pick_poly = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 2);
+                ei_draw_polygon(pick_surface,pick_poly,*(button->widget.pick_color),&button->widget.screen_location);
 
         }
         if (button->text && strcmp(button->text,"") != 0) {
