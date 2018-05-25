@@ -1,10 +1,10 @@
 #include "ei_application.h"
+#include "ei_application_utils.h"
 #include "ei_widgetclass.h"
 #include "ei_frame.h"
 #include "ei_geometrymanager.h"
 #include "hw_interface.h"
 #include "ei_event.h"
-#include "ei_event_utils.h"
 #include "ei_draw.h"
 #include "ei_widget.h"
 #include <stdio.h>

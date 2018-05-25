@@ -65,7 +65,6 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->children_tail = NULL;
 		widget->next_sibling = NULL;
 
-		//a modifier
 		widget->geom_params = NULL;
 		widget->requested_size.width = 0;
 		widget->requested_size.height = 0;
@@ -150,7 +149,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	if (text_color != NULL)
 		frame->text_color = text_color;
 	else if (frame->text_color == NULL)
-		frame->text_color = &ei_font_default_color;
+		frame->text_color = (ei_color_t*)&ei_font_default_color;
 
 	if (text_anchor != NULL)
 		frame->text_anchor = *text_anchor;
@@ -221,7 +220,7 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	if (text_color != NULL)
 		button->text_color = text_color;
 	else if (button->text_color == NULL)
-		button->text_color = &ei_font_default_color;
+		button->text_color = (ei_color_t*)&ei_font_default_color;
 
 	if (text_anchor != NULL)
 		button->text_anchor = *text_anchor;
@@ -278,7 +277,7 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	if (title != NULL)
 		toplevel->title = title;
 	else if (!toplevel->title)
-		toplevel->title = "Toplevel";
+		*(toplevel->title) = "Toplevel";
 
 	if (closable != NULL)
 		toplevel->closable = *closable;

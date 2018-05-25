@@ -48,10 +48,11 @@ static ei_button_t* closing_button(ei_toplevel_t* toplevel) {
         int		button_x	        = toplevel_border_width;
         int		button_y	        = toplevel_border_width;
         ei_relief_t     relief                  = ei_relief_raised;
-        ei_size_t       requested_size          = {diameter, diameter};
+        ei_size_t       requested_size          = {diameter, diameter}; // On les défini en dur mais faut changer
 
         //Création et configuration du bouton suivant les paramètres
-        ei_widget_t*    button_widget           = ei_widget_create ("button", &(toplevel->widget));
+        ei_widget_t*    button_widget           = ei_widget_create ("button", NULL);
+        button_widget->parent = (ei_widget_t*) toplevel;
         ei_button_t*    button                  = (ei_button_t*) button_widget;
 
         ei_button_configure(button_widget, &requested_size, &button_color,
@@ -61,8 +62,6 @@ static ei_button_t* closing_button(ei_toplevel_t* toplevel) {
 
         //Création d'un bouton avant le texte pour fermer la fenêtre
         ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
-
-
 
         return button;
 }
@@ -105,17 +104,19 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_point_t frame_spot = {toplevel_spot.x + border_width, toplevel_spot.y + 2 * border_width + text_size.height};
         ei_size_t toplevel_size = {frame_size.width + 2 * border_width, frame_size.height + text_size.height + 3 * border_width};
 
+        //Clipping de la toplevel en fonction du parent
+        toplevel->widget.screen_location.size = toplevel_size;
+        ei_rect_t intersection = {toplevel->widget.screen_location.top_left,toplevel->widget.screen_location.size};
+        ei_intersection_rectangle(clipper, &toplevel->widget.screen_location, &intersection);
+
         //Calcule du clipper du rectangle sous le titre
         ei_rect_t frame_rect = {frame_spot, frame_size};
-        ei_rect_t interieur;
-        ei_intersection_rectangle(clipper, &frame_rect, &interieur);
+        ei_rect_t interieur = frame_rect;
+        ei_intersection_rectangle(clipper, &frame_rect, &interieur); // Peut etre changer clipper avec intersection
 
         //Calcule du clipper de la toplevel
-        ei_rect_t toplevel_rect = {toplevel_spot, toplevel_size};
-        ei_rect_t intersection;
-        ei_intersection_rectangle(clipper, &toplevel_rect, &intersection);
-        toplevel->widget.screen_location.size = toplevel_size;
-        toplevel->widget.content_rect->top_left = frame_spot;
+        toplevel->widget.content_rect->top_left = interieur.top_left;
+        toplevel->widget.content_rect->size = interieur.size;
 
         //Création du polygone exterieur en arrondissant le haut
         int nb_points = 10;
@@ -163,7 +164,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                 //Dessin du bouton en haut à gauche du
                 ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
 
-                ei_button_drawfunc(button_widget, surface, pick_surface, &toplevel_rect);
+                ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
         }
 
 
@@ -175,12 +176,12 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         }
 
-        if (toplevel->title && strcmp(toplevel->title,"") != 0) {
+        if (toplevel->title && strcmp(*(toplevel->title),"") != 0) {
                 ei_rect_t title_rect = {text_spot, text_size};
 
                 ei_point_t aqui;
                 ei_anchor_spot(ei_anc_none, &text_size,&title_rect,&aqui);
-                ei_draw_text(surface,&aqui,*(toplevel->title),ei_default_font, ei_font_default_color,&title_rect);
+                ei_draw_text(surface,&aqui,*(toplevel->title),ei_default_font, ei_font_default_color, clipper);
 
         }
         //Libération des polygones
@@ -189,17 +190,12 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         free(inter_first_point);
 }
 
-
-
-
-
-
 void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
         toplevel->widget = *widget;
         toplevel->color = widget->pick_color;
         toplevel->border_width = 4;
-        toplevel->title = "Toplevel";
+        *(toplevel->title) = "Toplevel";
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
         toplevel->min_size = calloc(1, sizeof(ei_size_t));

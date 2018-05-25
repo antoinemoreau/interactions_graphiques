@@ -38,7 +38,7 @@ void            handle_event            (ei_linked_event_t*     event_list,
 
 
 
-        while(!no_callback && current_event){
+        while (!no_callback && current_event) {
                 if (current_event->eventtype == event->type) {
                         if(current_event->tag ){
                                 if (strcmp(current_event->tag,"all") == 0) {

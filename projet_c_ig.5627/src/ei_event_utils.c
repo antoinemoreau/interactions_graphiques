@@ -1,10 +1,9 @@
-#include "ei_event_utils.h"
-#include "ei_event.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include "ei_event_utils.h"
 #include "ei_button.h"
 #include "ei_application.h"
-#include <stdio.h>
-#include <stdint.h>
 
 ei_linked_event_t* listed_events;
 

@@ -42,7 +42,7 @@ void 		ei_draw_text			(ei_surface_t		surface,
 	ei_rect_t rect_dest = {*where,rect_text.size};
 	ei_rect_t clipper_new;
 	if (clipper) {
-		ei_intersection_rectangle(&rect_surface, clipper, &clipper_new);
+		ei_intersection_rectangle(&rect_surface, (ei_rect_t*)clipper, &clipper_new);
 	} else {
 		clipper_new = rect_surface;
 	}

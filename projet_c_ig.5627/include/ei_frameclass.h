@@ -1,6 +1,7 @@
 #ifndef EI_FRAMECLASS_H
 #define EI_FRAMECLASS_H
 
+#include <string.h>
 #include "hw_interface.h"
 #include "ei_draw.h"
 #include "ei_frame.h"
