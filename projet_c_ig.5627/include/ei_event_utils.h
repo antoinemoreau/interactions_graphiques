@@ -23,4 +23,4 @@ ei_bool_t pressbutton_animation(ei_widget_t*, struct ei_event_t* event, void* us
 ei_bool_t unpressbutton_animation(ei_widget_t*, struct ei_event_t* event, void* user_param);
 
 
-ei_widget_t* ei_pick_widget(uint32_t pick_id, ei_widget_t* widget);
+ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget);

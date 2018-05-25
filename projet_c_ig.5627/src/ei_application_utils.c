@@ -1,5 +1,6 @@
 #include "ei_application_utils.h"
 
+
 void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_surface_t           root_surface,
                                          ei_surface_t           pick_surface,
@@ -15,20 +16,6 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                 draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->content_rect, list_rects);
 
         }
-}
-
-ei_widget_t*    mouse_capture           (ei_event_t*            event,
-                                         ei_surface_t           pick_surface,
-                                         ei_surface_t           root) {
-        ei_point_t where_mouse = event->param.mouse.where;
-        ei_rect_t rect_pick = hw_surface_get_rect(pick_surface);
-        hw_surface_lock(pick_surface);
-        uint8_t* buffer_picking = hw_surface_get_buffer(pick_surface);
-        hw_surface_unlock(pick_surface);
-        buffer_picking += (where_mouse.x + where_mouse.y*rect_pick.size.width)*4;
-        ei_color_t mouse_color = {*(buffer_picking+2),*(buffer_picking+1),*(buffer_picking),*(buffer_picking+3)};
-        uint32_t mouse_id = ei_map_rgba(pick_surface, &mouse_color);
-        return ei_pick_widget(mouse_id, root);
 }
 
 void            redraw                  (ei_surface_t           root_surface,

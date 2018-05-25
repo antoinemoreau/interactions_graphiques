@@ -34,7 +34,7 @@ ei_linked_event_t* find_event(ei_widget_t* widget, ei_eventtype_t eventtype, ei_
         fprintf(stderr, "cet evenement n'est pas encore traité \n");
         exit(1);
 }
-ei_widget_t* ei_pick_widget(uint32_t pick_id, ei_widget_t* widget){
+ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
         ei_widget_t* picked_widget = NULL;
         if (pick_id == widget->pick_id) {
                 return widget;
@@ -44,7 +44,7 @@ ei_widget_t* ei_pick_widget(uint32_t pick_id, ei_widget_t* widget){
         // }
         ei_widget_t* child = widget->children_head;
         while (child) {
-                ei_widget_t* pick = ei_pick_widget(pick_id, child);
+                ei_widget_t* pick = ei_find_widget(pick_id, child);
                 if(pick){
                         picked_widget = pick;
                 }
@@ -68,8 +68,10 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
         if(event->type == ei_ev_mouse_buttondown){
                 sunken_button = (ei_button_t*)widget;
                 sunken_button->relief = ei_relief_sunken;
-                //return button_press(widget, event, user_param);
-                return EI_FALSE;
+                if(sunken_button->callback){
+                        (*(sunken_button->callback))(widget, event, user_param);
+                }
+                return EI_TRUE;
         }
         return EI_FALSE;
 }

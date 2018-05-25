@@ -13,6 +13,7 @@
 
 ei_widget_t *root;
 ei_surface_t window;
+ei_surface_t pick_surface;
 ei_bool_t quit_app = EI_FALSE;
 ei_linked_rect_t* rect_list = NULL;
 
@@ -46,13 +47,11 @@ void ei_app_run() {
         ei_size_t pick_size;
         pick_size.width = root->screen_location.size.width;
         pick_size.height = root->screen_location.size.height;
-        ei_surface_t pick_surface = hw_surface_create(root_surface, &pick_size, EI_FALSE);
-        pick_size = hw_surface_get_size(pick_surface);
+        pick_surface = hw_surface_create(root_surface, &pick_size, EI_FALSE);
         ei_rect_t main_clipper;
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
         hw_surface_lock(pick_surface);
-        ei_rect_t coucou = {main_clipper.top_left,{main_clipper.size.width -100,main_clipper.size.height -100 }};
         //on dessine tout les widgets en premier lieu
         draw_all_widgets(root, root_surface, pick_surface, &main_clipper, &rect_list);
         hw_surface_unlock(pick_surface);
@@ -66,6 +65,7 @@ void ei_app_run() {
 
                 hw_event_wait_next(event);
 
+                ei_point_t mouse_where = event->param.mouse.where;
                 switch(event->type) {
                         case ei_ev_app:
                                 break;
@@ -80,7 +80,7 @@ void ei_app_run() {
                         case ei_ev_mouse_buttondown:
                         case ei_ev_mouse_buttonup:
                         case ei_ev_mouse_move:
-                                widget = mouse_capture(event, pick_surface, root);
+                                widget = ei_widget_pick(&mouse_where);
                                 handle_event(event_list, event, widget);
                                 redraw(root_surface, pick_surface, widget, &rect_list);
                                 break;
@@ -112,4 +112,8 @@ ei_widget_t* ei_app_root_widget() {
 
 ei_surface_t ei_app_root_surface() {
         return window;
+}
+
+ei_surface_t ei_app_pick_surface() {
+        return pick_surface;
 }
