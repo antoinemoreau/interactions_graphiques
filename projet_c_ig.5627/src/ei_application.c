@@ -1,10 +1,10 @@
 #include "ei_application.h"
+#include "ei_application_utils.h"
 #include "ei_widgetclass.h"
 #include "ei_frame.h"
 #include "ei_geometrymanager.h"
 #include "hw_interface.h"
 #include "ei_event.h"
-#include "ei_event_utils.h"
 #include "ei_draw.h"
 #include "ei_widget.h"
 #include <stdio.h>
@@ -52,7 +52,7 @@ void ei_app_run() {
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
         hw_surface_lock(pick_surface);
-        ei_rect_t coucou = {main_clipper.top_left,{main_clipper.size.width -100,main_clipper.size.height -100 }};
+
         //on dessine tout les widgets en premier lieu
         draw_all_widgets(root, root_surface, pick_surface, &main_clipper, &rect_list);
         hw_surface_unlock(pick_surface);

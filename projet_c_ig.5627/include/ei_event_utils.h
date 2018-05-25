@@ -10,7 +10,7 @@ typedef struct ei_linked_event_t {
 } ei_linked_event_t;
 
 
-ei_linked_event_t* list_events();
+ei_linked_event_t* get_list_events();
 
 void set_list_events (ei_linked_event_t* list);
 

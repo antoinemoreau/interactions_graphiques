@@ -163,7 +163,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_draw_polygon(pick_surface,pick_poly,*(button->widget.pick_color),&inter);
 
         }
-        if (button->text && strcmp(button->text,"") != 0) {
+        if (button->text && strcmp(*(button->text),"") != 0) {
 
                 ei_point_t aqui;
                 ei_size_t size_texte;
@@ -177,13 +177,13 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {
         ei_button_t* button = (ei_button_t*) widget;
         button->widget = *widget;
-        button->color = &ei_default_background_color;
+        button->color = (ei_color_t*)&ei_default_background_color;
         button->border_width = k_default_button_border_width;
         button->corner_radius = k_default_button_corner_radius;
         button->relief = ei_relief_raised;
         button->text = NULL;
         button->text_font = ei_default_font;
-        button->text_color = &ei_font_default_color;
+        button->text_color = (ei_color_t*)&ei_font_default_color;
         button->text_anchor = ei_anc_center;
         button->img = NULL;
         button->img_rect = NULL;

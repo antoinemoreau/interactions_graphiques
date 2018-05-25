@@ -68,7 +68,7 @@ static ei_point_t closing_button(ei_toplevel_t* toplevel, ei_surface_t surface,
         button_widget->screen_location.size.height = diameter;
 
 
-        if (toplevel->title && strcmp(toplevel->title,"") != 0) {
+        if (toplevel->title && strcmp(*(toplevel->title),"") != 0) {
                 //On va décaler le titre et déterminer la taille du bouton
                 radius = text_size.height / 2;
                 text_spot.x = text_spot.x + toplevel_border_width + 2 * radius;
@@ -191,7 +191,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         }
 
-        if (toplevel->title && strcmp(toplevel->title,"") != 0) {
+        if (toplevel->title && strcmp(*(toplevel->title),"") != 0) {
                 ei_rect_t title_rect = {text_spot, text_size};
 
                 ei_point_t aqui;
@@ -205,17 +205,12 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         free(inter_first_point);
 }
 
-
-
-
-
-
 void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
         toplevel->widget = *widget;
         toplevel->color = widget->pick_color;
         toplevel->border_width = 4;
-        toplevel->title = "Toplevel";
+        *(toplevel->title) = "Toplevel";
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
         toplevel->min_size = calloc(1, sizeof(ei_size_t));
