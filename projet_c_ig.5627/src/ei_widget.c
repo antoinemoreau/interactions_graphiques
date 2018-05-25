@@ -109,6 +109,9 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
 	}
+	else{
+		widget->requested_size = widget->content_rect->size;
+	}
 	ei_frame_t* frame = (ei_frame_t*)widget;
 
 	if (color != NULL)
@@ -231,6 +234,8 @@ void			ei_button_configure		(ei_widget_t*		widget,
 
 	if (user_param != NULL)
 		button->user_param = user_param;
+
+
 }
 
 void			ei_toplevel_configure		(ei_widget_t*		widget,

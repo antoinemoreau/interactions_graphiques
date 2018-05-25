@@ -62,9 +62,7 @@ static ei_button_t* closing_button(ei_toplevel_t* toplevel) {
 
         //Création d'un bouton avant le texte pour fermer la fenêtre
         ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
-
-
-
+        
         return button;
 }
 
@@ -165,6 +163,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         if (closable == EI_TRUE){
                 //Dessin du bouton en haut à gauche du
                 ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
+
 
                 ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
         }
