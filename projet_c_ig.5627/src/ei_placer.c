@@ -20,10 +20,15 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                 widget->screen_location.top_left.x = placer_parent->x + placer_widget->rel_x * placer_parent->width + placer_widget->x;
                 widget->screen_location.top_left.y = placer_parent->y + placer_widget->rel_y * placer_parent->height + placer_widget->y;
         }
-        /*On alloue la bonne taille pour la fenêtre
-        */
-        widget->screen_location.size.width = placer_widget->width;
-        widget->screen_location.size.height = placer_widget->height;
+
+}
+
+static void compute_size(ei_widget_t* widget, ei_widget_t* parent){
+        ei_placer_t* placer_widget = (ei_placer_t*) widget->geom_params;
+
+        widget->screen_location.size.width = placer_widget->rel_width * parent->screen_location.size.width + placer_widget->width;
+        widget->screen_location.size.height = placer_widget->rel_height * parent->screen_location.size.height + placer_widget->height;
+
 }
 
 
@@ -75,6 +80,7 @@ void ei_placer_runfunc(ei_widget_t* widget){
                                 y = 0;
                 }
                 compute_spot(current, parent, x, y);
+                compute_size(current, parent);
         }
 }
 
