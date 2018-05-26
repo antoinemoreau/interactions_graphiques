@@ -87,6 +87,7 @@ void ei_app_run() {
                         case ei_ev_mouse_buttonup:
                         case ei_ev_mouse_move:
                                 widget = ei_widget_pick(&mouse_where);
+                                printf("widget mouse event : %d     %s\n", widget->pick_id, widget->wclass->name);
                                 need_drawing = handle_event(event_list, event, widget);
                                 break;
 

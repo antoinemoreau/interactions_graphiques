@@ -18,7 +18,9 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                 new_rect->next = *list_rects;
                 *list_rects = new_rect;
                 draw_all_widgets(widget->children_head, root_surface, pick_surface, widget->content_rect, list_rects);
-                draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->content_rect, list_rects);
+                if(widget->next_sibling != NULL){
+                        draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->parent->content_rect, list_rects);
+                }
                 // }
         }
 }

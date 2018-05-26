@@ -97,10 +97,8 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 }
         }
 
-        printf("topleft x : %d\n", button->widget.screen_location.top_left.x);
         ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-
         button->widget.screen_location.size.width = inter.size.width;
         button->widget.screen_location.size.height = inter.size.height;
         button->widget.screen_location.top_left.x = inter.top_left.x;
@@ -169,7 +167,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 2);
-                ei_draw_polygon(pick_surface,pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
+                ei_draw_polygon(pick_surface, pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
 
         }
 
@@ -179,6 +177,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(button->text_anchor, &size_texte,&inter,&aqui);
                 ei_draw_text(surface, &aqui, button->text, NULL, button->text_color, &inter);
+
 
         }
 }

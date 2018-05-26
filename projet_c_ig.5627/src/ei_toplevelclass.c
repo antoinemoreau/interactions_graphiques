@@ -57,7 +57,6 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         ei_button_configure(button_widget, &requested_size, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
                             NULL, NULL, NULL, NULL, NULL);
-
         //Création d'un bouton avant le texte pour fermer la fenêtre
         //ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
         // button_widget->screen_location.size = requested_size;
@@ -172,9 +171,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                 toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + (toplevel->border_width)*2;
                 toplevel->close_button->widget.screen_location.size.width = 20;
                 toplevel->close_button->widget.screen_location.size.height = 20;
-                ei_widget_t* button_widget = (ei_widget_t*)toplevel->close_button;
-                // widget->children_tail->next_sibling = button_widget;
-                // widget->children_tail = button_widget;
+                ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
                 ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
 
         }
