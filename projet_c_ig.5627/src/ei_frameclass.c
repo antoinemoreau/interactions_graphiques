@@ -12,9 +12,11 @@ void* ei_frame_allocfunc () {
 
 
 void ei_frame_releasefunc (struct ei_widget_t* widget) {
-        free(widget->pick_color);
-        free(widget->wclass);
-        free(widget);
+        ei_frame_t* frame = (ei_frame_t*)widget;
+        if (frame->text)
+                free(frame->text);
+        if (frame->img_rect)
+                free(frame->img_rect);
 }
 
 void ei_frame_drawfunc      (ei_widget_t*	widget,
