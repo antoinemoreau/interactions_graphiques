@@ -97,9 +97,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 }
         }
 
-        printf("topleft x : %d\n", button->widget.screen_location.top_left.x);
         ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
-        printf("clipper w : %d, h : %d, x : %d, y:%d \n",  clipper->size.width, clipper->size.height, clipper->top_left.x, clipper->top_left.y);
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
         button->widget.screen_location.size.width = inter.size.width;
         button->widget.screen_location.size.height = inter.size.height;
@@ -109,7 +107,6 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         button->widget.content_rect->size.height = inter.size.height;
         button->widget.content_rect->top_left.x = inter.top_left.x;
         button->widget.content_rect->top_left.y = inter.top_left.y;
-        printf("screen_location w : %d, h : %d, x : %d, y:%d \n", button->widget.screen_location.size.width, button->widget.screen_location.size.height, button->widget.screen_location.top_left.x, button->widget.screen_location.top_left.y);
 
         int border = button->border_width;
 
