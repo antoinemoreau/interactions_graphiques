@@ -45,8 +45,10 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
                 return widget;
         }
         if(strcmp(widget->wclass->name,"toplevel") == 0) {
-                ei_widget_t* close_button = ei_find_widget(pick_id, ((ei_widget_t*)(((ei_toplevel_t*)widget)->close_button)));
-                return close_button;
+                ei_widget_t* close_button = ((ei_widget_t*)(((ei_toplevel_t*)widget)->close_button));
+                if(pick_id == close_button->pick_id){
+                        return close_button;
+                }
         }
         ei_widget_t* child = widget->children_head;
         while (child) {
@@ -60,7 +62,6 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
 }
 
 ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
-        printf("pointeur sur sunken dans unpress %p\n", sunken_button);
         if(sunken_button){
                 //ei_button_t* button = sunken_button;
                 sunken_button->relief = ei_relief_raised;
@@ -72,9 +73,7 @@ ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event,
 }
 
 ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
-        printf(" adresse du widget %p\n", widget );
         sunken_button = (ei_button_t*)widget;
-        printf("pointeur sur sunken %p \n", sunken_button);
         sunken_button->relief = ei_relief_sunken;
         drawing = EI_TRUE;
         return EI_FALSE;
@@ -82,7 +81,6 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
 
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(sunken_button && widget->pick_id != sunken_button->widget.pick_id){
-                printf("dans getout pointeur sur sunken %p \n", sunken_button);
                 return unpressbutton_animation(widget, event, user_param);
         }
         return EI_FALSE;

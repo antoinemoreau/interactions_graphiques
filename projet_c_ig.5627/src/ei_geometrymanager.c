@@ -96,7 +96,7 @@ void ei_place (ei_widget_t* widget,
 		placer->height = *height;
 	}
 	else{	//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
-		if (rel_width == NULL){
+		if (rel_height == NULL){
 			placer->height = (widget->requested_size).height;
 		}
 		else{
