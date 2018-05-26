@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "ei_event_utils.h"
-#include "ei_button.h"
+#include "ei_toplevel.h"
 #include "ei_application.h"
 
 ei_linked_event_t* listed_events;
@@ -43,6 +43,10 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
         printf("%d\n", pick_id);
         if (pick_id == widget->pick_id) {
                 return widget;
+        }
+        if(strcmp(widget->wclass->name,"toplevel") == 0){
+                ei_widget_t* close_button = ei_find_widget(pick_id, ((ei_widget_t*)(((ei_toplevel_t*)widget)->close_button)));
+                return close_button;
         }
         ei_widget_t* child = widget->children_head;
         while (child) {

@@ -50,7 +50,10 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 		//id incremente a chaque instanciation de widget
 		widget->pick_color = inc_pick_color();
+		printf(" widget create r: %d, g ; %d, b : %d, a : %d\n", widget->pick_color->red, widget->pick_color->green, widget->pick_color->blue, widget->pick_color->alpha);
 		widget->pick_id = ei_map_rgba(ei_app_pick_surface(), widget->pick_color);
+		printf(" widget create r: %d, g ; %d, b : %d, a : %d\n", widget->pick_color->red, widget->pick_color->green, widget->pick_color->blue, widget->pick_color->alpha);
+
 
 		//affectation du widget parent
 		widget->parent = parent;
@@ -80,6 +83,10 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->content_rect->size.width = 0;
 		widget->content_rect->size.height = 0;
 		widgetclass->setdefaultsfunc(widget);
+		if(strcmp("toplevel",class_name) == 0){
+			printf(" apres le setdefault r: %d, g ; %d, b : %d, a : %d\n", ((ei_toplevel_t*)widget)->close_button->color->red, ((ei_toplevel_t*)widget)->close_button->color->green, ((ei_toplevel_t*)widget)->close_button->color->blue, ((ei_toplevel_t*)widget)->close_button->color->alpha);
+		}
+
 		return widget;
 	}
 	return NULL;

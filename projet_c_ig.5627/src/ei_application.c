@@ -77,10 +77,10 @@ void ei_app_run() {
 
                         case ei_ev_mouse_buttondown:
                         case ei_ev_mouse_buttonup:
+                        case ei_ev_mouse_move:
                                 widget = ei_widget_pick(&mouse_where);
                                 need_drawing = handle_event(event_list, event, widget);
                                 break;
-                        case ei_ev_mouse_move:
 
                         case ei_ev_last:
                                 break;
