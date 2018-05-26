@@ -167,8 +167,8 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         if (closable == EI_TRUE) {
                 //Dessin du bouton en haut à gauche du toplevel
-                toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + (toplevel->border_width);
-                toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + (toplevel->border_width)*2;
+                toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + (toplevel->border_width + toplevel->close_button->border_width*3);
+                toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + (toplevel->border_width)*2 + toplevel->close_button->border_width*2 ;
                 toplevel->close_button->widget.screen_location.size.width = 20;
                 toplevel->close_button->widget.screen_location.size.height = 20;
                 ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;

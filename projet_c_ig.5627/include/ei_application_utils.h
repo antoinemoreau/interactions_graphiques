@@ -16,8 +16,7 @@ ei_surface_t pick_surface;
 void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_surface_t           root_surface,
                                          ei_surface_t           pick_surface,
-                                         ei_rect_t*             content_rect,
-                                         ei_linked_rect_t**     list_rects);
+                                         ei_rect_t*             content_rect);
 
 
 /**
@@ -26,7 +25,7 @@ void            draw_all_widgets        (ei_widget_t*           widget,
 void            redraw                  (ei_surface_t           root_surface,
                                          ei_surface_t           pick_surface,
                                          ei_widget_t*           widget,
-                                         ei_linked_rect_t**     rect_list);
+                                         ei_linked_rect_t*      rect_list);
 
 ei_bool_t       handle_event            (ei_linked_event_t*     event_list,
                                          ei_event_t*            event,

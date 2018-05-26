@@ -6,6 +6,7 @@
 #include "ei_toplevel.h"
 #include "ei_application.h"
 
+ei_bool_t drawing = EI_FALSE;
 ei_linked_event_t* listed_events;
 
 ei_linked_event_t* get_list_events (){
@@ -59,23 +60,29 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
 }
 
 ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
+        printf("pointeur sur sunken dans unpress %p\n", sunken_button);
         if(sunken_button){
-                ei_button_t* button = sunken_button;
-                button->relief = ei_relief_raised;
+                //ei_button_t* button = sunken_button;
+                sunken_button->relief = ei_relief_raised;
                 sunken_button = NULL;
-                return EI_TRUE;
+                drawing = EI_TRUE;
+                // return EI_TRUE
         }
         return EI_FALSE;
 }
 
 ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
+        printf(" adresse du widget %p\n", widget );
         sunken_button = (ei_button_t*)widget;
+        printf("pointeur sur sunken %p \n", sunken_button);
         sunken_button->relief = ei_relief_sunken;
+        drawing = EI_TRUE;
         return EI_FALSE;
 }
 
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(sunken_button && widget->pick_id != sunken_button->widget.pick_id){
+                printf("dans getout pointeur sur sunken %p \n", sunken_button);
                 return unpressbutton_animation(widget, event, user_param);
         }
         return EI_FALSE;

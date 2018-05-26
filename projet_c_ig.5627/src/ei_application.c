@@ -59,7 +59,7 @@ void ei_app_run() {
         main_clipper = hw_surface_get_rect(root_surface);
         hw_surface_lock(pick_surface);
         //on dessine tout les widgets en premier lieu
-        draw_all_widgets(root, root_surface, pick_surface, &main_clipper, &rect_list);
+        draw_all_widgets(root, root_surface, pick_surface, &main_clipper);
         hw_surface_unlock(pick_surface);
         hw_surface_unlock(root_surface);
         hw_surface_update_rects(root_surface, NULL);
@@ -68,8 +68,6 @@ void ei_app_run() {
 
         while (!quit_app) {
                 ei_widget_t* widget;
-                ei_bool_t need_drawing = EI_FALSE;
-
                 hw_event_wait_next(event);
 
                 ei_point_t mouse_where = event->param.mouse.where;
@@ -80,7 +78,8 @@ void ei_app_run() {
                         case ei_ev_keydown:
                         case ei_ev_keyup:
                                 widget = NULL;
-                                need_drawing = handle_event(event_list, event, widget);
+                                handle_event(event_list, event, widget);
+                                drawing = EI_FALSE;
                                 break;
 
                         case ei_ev_mouse_buttondown:
@@ -88,7 +87,7 @@ void ei_app_run() {
                         case ei_ev_mouse_move:
                                 widget = ei_widget_pick(&mouse_where);
                                 printf("widget mouse event : %d     %s\n", widget->pick_id, widget->wclass->name);
-                                need_drawing = handle_event(event_list, event, widget);
+                                handle_event(event_list, event, widget);
                                 break;
 
                         case ei_ev_last:
@@ -97,8 +96,13 @@ void ei_app_run() {
                         default:
                                 break;
                 }
-                if (need_drawing)
-                        redraw(root_surface, pick_surface, widget, &rect_list);
+                if(drawing){
+                        ei_linked_rect_t* new_rect = calloc(1, sizeof(ei_linked_rect_t));
+                        new_rect->rect = widget->screen_location;
+                        new_rect->next = rect_list;
+                        rect_list = new_rect;
+                        redraw(root_surface, pick_surface, widget, rect_list);
+                }
 
                 release_rect_list(&rect_list);
         }

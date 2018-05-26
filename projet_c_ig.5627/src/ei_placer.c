@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y){
-        printf("pickid : %d, %d, %d\n", widget->pick_id, x, y);
         ei_placer_t* placer_widget = (ei_placer_t*) widget->geom_params;
         if (parent != NULL){
                 ei_placer_t* placer_parent = (ei_placer_t*) parent->geom_params;

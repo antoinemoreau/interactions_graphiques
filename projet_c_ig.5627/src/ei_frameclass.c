@@ -32,10 +32,9 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
         frame->widget.screen_location.top_left.x = inter.top_left.x;
         frame->widget.screen_location.top_left.y = inter.top_left.y;
         frame->widget.content_rect->top_left.x = inter.top_left.x;
+        frame->widget.content_rect->top_left.y = inter.top_left.y;
         frame->widget.content_rect->size.width = inter.size.width;
         frame->widget.content_rect->size.height = inter.size.height;
-        frame->widget.content_rect->top_left.y = inter.top_left.y;
-
 
         if (frame->border_width >0) {
 
