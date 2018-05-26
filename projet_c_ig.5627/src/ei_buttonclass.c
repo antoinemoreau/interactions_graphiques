@@ -99,8 +99,8 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         printf("topleft x : %d\n", button->widget.screen_location.top_left.x);
         ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
+        printf("clipper w : %d, h : %d, x : %d, y:%d \n",  clipper->size.width, clipper->size.height, clipper->top_left.x, clipper->top_left.y);
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-
         button->widget.screen_location.size.width = inter.size.width;
         button->widget.screen_location.size.height = inter.size.height;
         button->widget.screen_location.top_left.x = inter.top_left.x;
@@ -109,6 +109,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         button->widget.content_rect->size.height = inter.size.height;
         button->widget.content_rect->top_left.x = inter.top_left.x;
         button->widget.content_rect->top_left.y = inter.top_left.y;
+        printf("screen_location w : %d, h : %d, x : %d, y:%d \n", button->widget.screen_location.size.width, button->widget.screen_location.size.height, button->widget.screen_location.top_left.x, button->widget.screen_location.top_left.y);
 
         int border = button->border_width;
 
@@ -169,16 +170,16 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 2);
-                ei_draw_polygon(pick_surface,pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
+                ei_draw_polygon(pick_surface, pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
 
         }
 
         if (button->text && strcmp(button->text, "") != 0) {
                 ei_point_t aqui;
                 ei_size_t size_texte;
-                hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
-                ei_anchor_spot(button->text_anchor, &size_texte,&inter,&aqui);
-                ei_draw_text(surface,&aqui,button->text,NULL, *(button->text_color),&inter);
+                hw_text_compute_size(button->text, button->text_font, &(size_texte.width), &(size_texte.height));
+                ei_anchor_spot(button->text_anchor, &size_texte,&inter, &aqui);
+                ei_draw_text(surface, &aqui, button->text, button->text_font, *(button->text_color), &inter);
 
         }
 }

@@ -17,8 +17,11 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                 new_rect->rect = *(widget->content_rect);
                 new_rect->next = *list_rects;
                 *list_rects = new_rect;
+                printf("content_rect w : %d, h : %d, x : %d, y:%d \n",   widget->content_rect->size.width,  widget->content_rect->size.height, widget->content_rect->top_left.x, widget->content_rect->top_left.y);
                 draw_all_widgets(widget->children_head, root_surface, pick_surface, widget->content_rect, list_rects);
-                draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->content_rect, list_rects);
+                if(widget->next_sibling != NULL){
+                        draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->parent->content_rect, list_rects);
+                }
                 // }
         }
 }

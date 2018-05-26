@@ -65,8 +65,6 @@ int ei_main(int argc, char** argv)
 
         toplevel = ei_widget_create("toplevel", ei_app_root_widget());
         button = ei_widget_create("button", toplevel);
-        printf("apres la creaction du deuxieem bouton top level r: %d, g ; %d, b : %d, a : %d\n", ((ei_toplevel_t*)toplevel)->close_button->color->red, ((ei_toplevel_t*)toplevel)->close_button->color->green, ((ei_toplevel_t*)toplevel)->close_button->color->blue, ((ei_toplevel_t*)toplevel)->close_button->color->alpha);
-        printf("le deuxieme bouton pick color: r: %d, g: %d, b: %d, a: %d\n", button->pick_color->red,button->pick_color->green, button->pick_color->blue, button->pick_color->alpha);
 
 
         ei_toplevel_configure(toplevel, &window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);

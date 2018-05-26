@@ -57,8 +57,6 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         ei_button_configure(button_widget, &requested_size, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
                             NULL, NULL, NULL, NULL, NULL);
-        printf(" a la creation r: %d, g ; %d, b : %d, a : %d\n", button->color->red, button->color->green, button->color->blue, button->color->alpha);
-
         //Création d'un bouton avant le texte pour fermer la fenêtre
         //ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
         // button_widget->screen_location.size = requested_size;
@@ -174,9 +172,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                 toplevel->close_button->widget.screen_location.size.width = 20;
                 toplevel->close_button->widget.screen_location.size.height = 20;
                 ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
-                printf(" dans le top level r: %d, g ; %d, b : %d, a : %d\n", toplevel->close_button->color->red, toplevel->close_button->color->green, toplevel->close_button->color->blue, toplevel->close_button->color->alpha);
-                // widget->children_tail->next_sibling = button_widget;
-                // widget->children_tail = button_widget;
                 ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
 
         }
@@ -208,7 +203,6 @@ void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         toplevel->min_size->width = 160;
         toplevel->min_size->height = 120;
         toplevel->close_button = closing_button(toplevel);
-        printf("Dans le setdefault de top level r: %d, g ; %d, b : %d, a : %d\n", toplevel->close_button->color->red, toplevel->close_button->color->green, toplevel->close_button->color->blue, toplevel->close_button->color->alpha);
 }
 
 void ei_toplevel_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect){
