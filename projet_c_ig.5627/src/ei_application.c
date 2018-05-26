@@ -39,7 +39,15 @@ void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
 }
 
 void ei_app_free() {
+        // TODO :       - release le app_create
+        //              - release widget_create
+        //              - release place
+        //              - release event binds
+        //              - release app_run
 
+        //destroy rootwidget
+        //unbind traitants internes
+        //autres
 }
 
 void ei_app_run() {

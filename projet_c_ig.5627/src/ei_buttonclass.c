@@ -116,8 +116,8 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         int nb_points = 10;
         ei_color_t light_color;
         ei_color_t dark_color;
-        ei_compute_color(*(button->color),&light_color,1.2);
-        ei_compute_color(*(button->color),&dark_color,0.5);
+        ei_compute_color(button->color, &light_color, 1.2);
+        ei_compute_color(button->color, &dark_color, 0.5);
 
         ei_point_t point_top_right_big_square = {inter.top_left.x + inter.size.width - inter.size.height/2, \
                                         inter.top_left.y + inter.size.height/2};
@@ -164,7 +164,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
 
         //Dessin de la totalité de l'interieur du bouton
         ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
-        ei_draw_polygon(surface, all_part, *(button->color), &inter);
+        ei_draw_polygon(surface, all_part, button->color, &inter);
 
 
         if (pick_surface) {
@@ -178,21 +178,21 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_size_t size_texte;
                 hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(button->text_anchor, &size_texte,&inter,&aqui);
-                ei_draw_text(surface,&aqui,button->text,NULL, *(button->text_color),&inter);
+                ei_draw_text(surface, &aqui, button->text, NULL, button->text_color, &inter);
 
         }
 }
 
 void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {
-        ei_button_t* button = (ei_button_t*) widget;
+        ei_button_t* button = (ei_button_t*)widget;
         button->widget = *widget;
-        button->color = (ei_color_t*)&ei_default_background_color;
+        button->color = ei_default_background_color;
         button->border_width = k_default_button_border_width;
         button->corner_radius = k_default_button_corner_radius;
         button->relief = ei_relief_raised;
         button->text = NULL;
         button->text_font = ei_default_font;
-        button->text_color = (ei_color_t*)&ei_font_default_color;
+        button->text_color = ei_font_default_color;
         button->text_anchor = ei_anc_center;
         button->img = NULL;
         button->img_rect = NULL;
