@@ -36,7 +36,7 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         int             toplevel_border_width   = toplevel->border_width;
 
         //Définition des paramètres du bouton
-        int             radius                  = 6;
+        int             radius                  = 8;
         int             diameter                = 2 * radius;
 
         int             button_border_width     = 1;
@@ -167,10 +167,10 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         if (closable == EI_TRUE) {
                 //Dessin du bouton en haut à gauche du toplevel
-                toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + (toplevel->border_width + toplevel->close_button->border_width*3);
-                toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + (toplevel->border_width)*2 + toplevel->close_button->border_width*2 ;
-                toplevel->close_button->widget.screen_location.size.width = 20;
-                toplevel->close_button->widget.screen_location.size.height = 20;
+                toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + toplevel->border_width + toplevel->close_button->border_width*5;
+                toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + toplevel->border_width*2 + toplevel->close_button->border_width*5 ;
+                toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t*)toplevel->close_button)->requested_size.width;
+                toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t*)toplevel->close_button)->requested_size.height;
                 ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
                 ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
 
