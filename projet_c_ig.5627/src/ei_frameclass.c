@@ -12,7 +12,9 @@ void* ei_frame_allocfunc () {
 
 
 void ei_frame_releasefunc (struct ei_widget_t* widget) {
-        //free(widget);
+        free(widget->pick_color);
+        free(widget->wclass);
+        free(widget);
 }
 
 void ei_frame_drawfunc      (ei_widget_t*	widget,
@@ -37,8 +39,8 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 
                 ei_color_t light_color;
                 ei_color_t dark_color;
-                ei_compute_color(*frame->color,&light_color,1.2);
-                ei_compute_color(*frame->color,&dark_color,0.5);
+                ei_compute_color(frame->color,&light_color,1.2);
+                ei_compute_color(frame->color,&dark_color,0.5);
                 ei_point_t top_first = inter.top_left;
                 ei_point_t top_right = {top_first.x + inter.size.width,top_first.y};
                 ei_point_t right = {top_right.x - frame->border_width, top_right.y + frame->border_width};
@@ -62,7 +64,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_linked_point_t bot_poly_right_in = {right,&bot_poly_right};
                 ei_linked_point_t bot_poly_first = {bot_in,&bot_poly_right_in};
                 if (frame->relief == ei_relief_none) {
-                        ei_fill(surface,frame->color,&inter);
+                        ei_fill(surface,&frame->color,&inter);
                 }else if (frame->relief == ei_relief_raised) {
                         ei_draw_polygon(surface,&top_poly_first,light_color,&inter);
                         ei_draw_polygon(surface,&bot_poly_first,dark_color,&inter);
@@ -74,7 +76,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                         frame->widget.content_rect->size.width = inter.size.width;
                         frame->widget.content_rect->size.height = inter.size.height;
                         frame->widget.content_rect->top_left.y = inter.top_left.y;
-                        ei_fill(surface, frame->color, &inter);
+                        ei_fill(surface, &frame->color, &inter);
                 }else if(frame->relief == ei_relief_sunken){
                         ei_draw_polygon(surface,&top_poly_first,dark_color,&inter);
                         ei_draw_polygon(surface,&bot_poly_first,light_color,&inter);
@@ -86,10 +88,10 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                         frame->widget.content_rect->size.width = inter.size.width;
                         frame->widget.content_rect->size.height = inter.size.height;
                         frame->widget.content_rect->top_left.y = inter.top_left.y;
-                        ei_fill(surface, frame->color, &inter);
+                        ei_fill(surface, &frame->color, &inter);
                 }
         }else{
-                ei_fill(surface, frame->color, &inter);
+                ei_fill(surface, &frame->color, &inter);
         }
         if (pick_surface) {
                 ei_point_t top_first = inter.top_left;
@@ -109,7 +111,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_size_t size_texte = {0,0};
                 hw_text_compute_size(frame->text,frame->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(frame->text_anchor, &size_texte, &inter, &aqui);
-                ei_draw_text(surface,&aqui,frame->text,NULL, *(frame->text_color),&inter);
+                ei_draw_text(surface,&aqui,frame->text,NULL, frame->text_color,&inter);
         }else{
                 if(frame->img){
                         // ei_point_t aqui_image;
@@ -122,12 +124,12 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
 void ei_frame_setdefaultsfunc (ei_widget_t* widget) {
         ei_frame_t* frame = (ei_frame_t*) widget;
         frame->widget = *widget;
-        frame->color = (ei_color_t*)&ei_default_background_color;
+        frame->color = ei_default_background_color;
         frame->border_width = 0;
         frame->relief = ei_relief_none;
         frame->text = NULL;
         frame->text_font = ei_default_font;
-        frame->text_color = (ei_color_t*)&ei_font_default_color;
+        frame->text_color = ei_font_default_color;
         frame->text_anchor = ei_anc_center;
         frame->img = NULL;
         frame->img_rect = NULL;

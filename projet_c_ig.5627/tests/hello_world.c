@@ -50,8 +50,8 @@ int ei_main(int argc, char** argv)
 
         ei_size_t       window_size     = {400,400};
         char*           window_title    = "Hello World !";
-        ei_color_t      window_color    = {0xA0,0xA0,0xA0, 0xff};
-        int             window_border_width    = 10; // Valeur de départ : 2
+        ei_color_t      window_color    = {0x3d,0x4c,0x70, 0xff};
+        int             window_border_width    = 2;
         ei_bool_t       closable        = EI_TRUE;
         ei_axis_set_t   window_resizable = ei_axis_both;
         ei_point_t	window_position	 = {30, 10};
@@ -65,9 +65,6 @@ int ei_main(int argc, char** argv)
 
         toplevel = ei_widget_create("toplevel", ei_app_root_widget());
         button = ei_widget_create("button", toplevel);
-        printf("apres la creaction du deuxieem bouton top level r: %d, g ; %d, b : %d, a : %d\n", ((ei_toplevel_t*)toplevel)->close_button->color->red, ((ei_toplevel_t*)toplevel)->close_button->color->green, ((ei_toplevel_t*)toplevel)->close_button->color->blue, ((ei_toplevel_t*)toplevel)->close_button->color->alpha);
-        printf("le deuxieme bouton pick color: r: %d, g: %d, b: %d, a: %d\n", button->pick_color->red,button->pick_color->green, button->pick_color->blue, button->pick_color->alpha);
-
 
         ei_toplevel_configure(toplevel, &window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
         ei_button_configure(button, NULL, &button_color,

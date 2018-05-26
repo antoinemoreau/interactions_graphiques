@@ -4,6 +4,7 @@
 #include "ei_toplevel.h"
 #include "ei_geometrymanager.h"
 #include "ei_application_utils.h"
+#include "ei_application.h"
 #include "ei_draw.h"
 #include "ei_event.h"
 #include <stdlib.h>
@@ -83,9 +84,6 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->content_rect->size.width = 0;
 		widget->content_rect->size.height = 0;
 		widgetclass->setdefaultsfunc(widget);
-		if(strcmp("toplevel",class_name) == 0){
-			printf(" apres le setdefault r: %d, g ; %d, b : %d, a : %d\n", ((ei_toplevel_t*)widget)->close_button->color->red, ((ei_toplevel_t*)widget)->close_button->color->green, ((ei_toplevel_t*)widget)->close_button->color->blue, ((ei_toplevel_t*)widget)->close_button->color->alpha);
-		}
 
 		return widget;
 	}
@@ -136,9 +134,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	ei_frame_t* frame = (ei_frame_t*)widget;
 
 	if (color != NULL)
-		frame->color = color;
-	else if (frame->color == NULL)
-		frame->color = &ei_default_background_color;
+		frame->color = *color;
 
 	if (border_width != NULL)
 		frame->border_width = *border_width;
@@ -152,22 +148,20 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 
 	if (text != NULL) {
 		if (frame->text == NULL) {
-			frame->text = malloc(strlen(text)+1);
+			frame->text = malloc(strlen(*text)+1);
 		} else {
-			frame->text = realloc(frame->text, strlen(text)+1);
+			frame->text = realloc(frame->text, strlen(*text)+1);
 		}
 		strcpy(frame->text, *text);
 	}
 
 	if (text_font != NULL)
-		frame->text_font = text_font;
-	else if (frame->text_font == NULL)
+		frame->text_font = *text_font;
+	else if (!frame->text_font)
 		frame->text_font = ei_default_font;
 
 	if (text_color != NULL)
-		frame->text_color = text_color;
-	else if (frame->text_color == NULL)
-		frame->text_color = (ei_color_t*)&ei_font_default_color;
+		frame->text_color = *text_color;
 
 	if (text_anchor != NULL)
 		frame->text_anchor = *text_anchor;
@@ -175,10 +169,10 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 		frame->text_anchor = ei_anc_center;
 
 	if (img != NULL)
-		frame->img = img;
+		frame->img = *img;
 
 	if (img_rect != NULL)
-		frame->img_rect = img_rect;
+		frame->img_rect = *img_rect;
 
 	if (img_anchor != NULL)
 		frame->img_anchor = *img_anchor;
@@ -208,9 +202,7 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	ei_button_t* button = (ei_button_t*)widget;
 
 	if (color != NULL)
-		button->color = color;
-	else if (button->color == NULL)
-		button->color = &ei_default_background_color;
+		button->color = *color;
 
 	if (border_width != NULL)
 		button->border_width = *border_width;
@@ -229,22 +221,20 @@ void			ei_button_configure		(ei_widget_t*		widget,
 
 	if (text != NULL) {
 		if (button->text == NULL) {
-			button->text = malloc(strlen(text)+1);
+			button->text = malloc(strlen(*text)+1);
 		} else {
-			button->text = realloc(button->text, strlen(text)+1);
+			button->text = realloc(button->text, strlen(*text)+1);
 		}
 		strcpy(button->text, *text);
 	}
 
 	if (text_font != NULL)
-		button->text_font = text_font;
-	else if (button->text_font == NULL)
+		button->text_font = *text_font;
+	else if (!button->text_font)
 		button->text_font = ei_default_font;
 
 	if (text_color != NULL)
-		button->text_color = text_color;
-	else if (button->text_color == NULL)
-		button->text_color = (ei_color_t*)&ei_font_default_color;
+		button->text_color = *text_color;
 
 	if (text_anchor != NULL)
 		button->text_anchor = *text_anchor;
@@ -252,10 +242,10 @@ void			ei_button_configure		(ei_widget_t*		widget,
 		button->text_anchor = ei_anc_center;
 
 	if (img != NULL)
-		button->img = img;
+		button->img = *img;
 
 	if (img_rect != NULL)
-		button->img_rect = img_rect;
+		button->img_rect = *img_rect;
 
 	if (img_anchor != NULL)
 		button->img_anchor = *img_anchor;
@@ -289,9 +279,7 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
 
 	if (color != NULL)
-		toplevel->color = color;
-	else if (!toplevel->color)
-		toplevel->color = &ei_default_background_color;
+		toplevel->color = *color;
 
 	if (border_width != NULL)
 		toplevel->border_width = *border_width;
@@ -299,7 +287,7 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 		toplevel->border_width = 4;
 
 	if (title != NULL) {
-		toplevel->title = realloc(toplevel->title, strlen(title)+1);
+		toplevel->title = realloc(toplevel->title, strlen(*title)+1);
 		strcpy(toplevel->title, *title);
 	}
 
