@@ -85,7 +85,7 @@ void ei_app_run() {
                         case ei_ev_mouse_buttonup:
                         case ei_ev_mouse_move:
                                 widget = ei_widget_pick(&mouse_where);
-                                printf("widget mouse event : %d     %s\n", widget->pick_id, widget->wclass->name);
+                                //printf("widget mouse event : %d     %s\n", widget->pick_id, widget->wclass->name);
                                 handle_event(event_list, event, widget);
                                 break;
 
@@ -97,12 +97,24 @@ void ei_app_run() {
                 }
                 ei_linked_rect_t** rect_list = get_rect_list();
                 if(drawing){
-                        rect_list_add(rect_list, widget->screen_location);
+                        ei_rect_t new_rect;
+                        ei_rect_t* clipper = &(root->screen_location);
+
+                        if (destroy) {
+                                widget = widget->parent;
+                                destroy = EI_FALSE;
+                        }
+
+                        if (widget->parent)
+                                clipper = &(widget->parent->screen_location);
+
+                        ei_intersection_rectangle(clipper, &(widget->screen_location), &new_rect);
+                        rect_list_add(rect_list, new_rect);
+                        printf("type widget a dessiner : %s\n", widget->wclass->name);
                         redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
                 }
                 release_rect_list(rect_list);
-
         }
         hw_surface_free(pick_surface);
         free(event);

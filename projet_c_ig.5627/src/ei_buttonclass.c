@@ -10,7 +10,15 @@ void*           ei_button_allocfunc             () {
 }
 
 void            ei_button_releasefunc           (ei_widget_t* widget) {
-        free(widget);
+        ei_button_t* button = (ei_button_t*)widget;
+        if (button->text)
+                free(button->text);
+        if (button->text_font)
+                hw_text_font_free(button->text_font);
+        if (button->img_rect)
+                free(button->img_rect);
+        if (button->img)
+                hw_surface_free(button->img);
 }
 
 ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, int partie){

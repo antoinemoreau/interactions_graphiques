@@ -90,7 +90,20 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 
 void ei_widget_destroy (ei_widget_t* widget) {
+	if (widget != NULL) {
+		widget->parent->children_head = NULL;
+		widget->parent->children_tail = NULL;
 
+		return;
+		
+                widget->wclass->releasefunc(widget);
+                ei_widget_destroy(widget->children_head);
+                if(widget->next_sibling != NULL){
+                        ei_widget_destroy(widget->next_sibling);
+                }
+		//widget->geom_params->manager->releasefunc(widget);
+		free(widget);
+        }
 }
 
 ei_widget_t* ei_widget_pick (ei_point_t* where) {

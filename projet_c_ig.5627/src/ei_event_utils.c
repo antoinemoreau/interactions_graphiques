@@ -7,6 +7,7 @@
 #include "ei_application.h"
 
 ei_bool_t drawing = EI_FALSE;
+ei_bool_t destroy = EI_FALSE;
 ei_linked_event_t* listed_events;
 
 ei_linked_event_t* get_list_events (){
@@ -56,12 +57,12 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
         if (pick_id == widget->pick_id) {
                 return widget;
         }
-        if(strcmp(widget->wclass->name,"toplevel") == 0) {
-                ei_widget_t* close_button = ((ei_widget_t*)(((ei_toplevel_t*)widget)->close_button));
-                if(pick_id == close_button->pick_id){
-                        return close_button;
-                }
-        }
+        // if(strcmp(widget->wclass->name,"toplevel") == 0) {
+        //         ei_widget_t* close_button = ((ei_widget_t*)(((ei_toplevel_t*)widget)->close_button));
+        //         if(pick_id == close_button->pick_id){
+        //                 return close_button;
+        //         }
+        // }
         ei_widget_t* child = widget->children_head;
         while (child) {
                 ei_widget_t* pick = ei_find_widget(pick_id, child);
@@ -111,7 +112,7 @@ ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, v
 ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (moving_toplevel) {
                 ei_linked_rect_t** rect_list = get_rect_list();
-                rect_list_add(rect_list, widget->parent->screen_location);
+                rect_list_add(rect_list, widget->screen_location);
 
                 widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;

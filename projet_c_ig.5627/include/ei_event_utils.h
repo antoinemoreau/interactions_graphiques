@@ -10,6 +10,7 @@ typedef struct ei_linked_event_t {
 } ei_linked_event_t;
 
 extern ei_bool_t drawing;
+extern ei_bool_t destroy;
 
 ei_linked_event_t* get_list_events();
 
