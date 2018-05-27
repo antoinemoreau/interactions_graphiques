@@ -115,6 +115,7 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
                 mouse_pos = event->param.mouse.where;
                 // Il doit surement falloir faire un geomnotify ici pour mettre a jout la position des enfants.
+                //ou une boucle de parcours des enfants et on met à jour leur positions non ?
 
                 drawing = EI_TRUE;
         }

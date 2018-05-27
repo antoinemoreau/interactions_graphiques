@@ -29,7 +29,6 @@ void            redraw                  (ei_surface_t           root_surface,
                 hw_surface_lock(root_surface);
                 hw_surface_lock(pick_surface);
                 draw_all_widgets(widget, root_surface, pick_surface, &(widget->screen_location));
-                //printf("%p");
                 hw_surface_unlock(pick_surface);
                 hw_surface_unlock(root_surface);
                 hw_surface_update_rects(root_surface, rect_list);
