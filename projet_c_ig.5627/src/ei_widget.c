@@ -195,8 +195,8 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
 	} else {
-		widget->requested_size.width = 20;
-		widget->requested_size.height = 20;
+		widget->requested_size.width = 32;
+		widget->requested_size.height = 32;
 	}
 
 	ei_button_t* button = (ei_button_t*)widget;

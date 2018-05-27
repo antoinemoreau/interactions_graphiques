@@ -58,7 +58,7 @@ int ei_main(int argc, char** argv)
 	ei_color_t	button_color2		= {0x0, 0x88, 0x88, 0xff};
 
 	ei_anchor_t	text_anchor 		= ei_anc_center;
-	char*		button_title		= "Mon premier Bouton !";
+	char*		button_title		= "Mon premier Bouton qui sort des deux cotés";
 	ei_color_t	button_text_color	= {0x00, 0x00, 0x00, 0xff};
 	int		button_corner_radius	= 20;
 	ei_relief_t	button_relief		= ei_relief_raised;
