@@ -7,6 +7,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param){
+        //on peut faire l'inverse et l'appeller dans pressbutton
+        pressbutton_animation(widget, event, user_param);
+        //faut appeller destroyer widget
+        printf("FeRmEtuReUh 2 la feunaitre !\n");
+        drawing = EI_TRUE;
+        return EI_FALSE;
+}
+
 static ei_linked_point_t* points_list (ei_rect_t rectangle){
 
         ei_linked_point_t* bot_left = calloc(1, sizeof(ei_linked_point_t));
@@ -48,6 +57,7 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         int		button_y	        = 0; //toplevel_border_width;
         ei_relief_t     relief                  = ei_relief_raised;
         ei_size_t       requested_size          = {diameter, diameter}; // On les défini en dur mais faut changer
+        ei_callback_t   button_closing          = closing;
 
         //Création et configuration du bouton suivant les paramètres
         ei_widget_t*    button_widget           = ei_widget_create ("button", NULL);
@@ -56,7 +66,7 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
 
         ei_button_configure(button_widget, &requested_size, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
-                            NULL, NULL, NULL, NULL, NULL);
+                            NULL, NULL, NULL, &button_closing, NULL);
         //Création d'un bouton avant le texte pour fermer la fenêtre
         //ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
         // button_widget->screen_location.size = requested_size;

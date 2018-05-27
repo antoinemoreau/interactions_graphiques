@@ -3,9 +3,13 @@
 #include "ei_types.h"
 #include "hw_interface.h"
 #include "ei_draw.h"
+#include "ei_event_utils.h"
+
 #include "ei_widget.h"
 #include "ei_widgetclass.h"
 #include "ei_geometrymanager.h"
+
+ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param);
 
 void* ei_toplevel_allocfunc ();
 

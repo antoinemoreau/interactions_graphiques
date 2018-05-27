@@ -31,7 +31,6 @@ void ei_init_list_events (){
         ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&getoutofbutton_animation, NULL);
         ei_bind(ei_ev_mouse_buttondown, NULL, "button", (ei_callback_t)&pressbutton_animation, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "button", (ei_callback_t)&unpressbutton_animation, NULL);
-        ei_bind(ei_ev_mouse_buttondown, NULL, "button", (ei_callback_t)&closing, NULL); // on peut peut-etre le faire à la création du widget
 
         // Déplacement toplevel
         ei_bind(ei_ev_mouse_buttondown, NULL, "toplevel", (ei_callback_t)&click_toplevel_header, NULL);
@@ -99,17 +98,7 @@ ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event
         return EI_FALSE;
 }
 //fonctions de callback des toplevels
-ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param){
-        if(widget->pick_id == (widget->parent->pick_id + 1) && strcmp(widget->parent->wclass->name,"toplevel") == 0){
-                //on peut faire l'inverse et l'appeller dans pressbutton
-                pressbutton_animation(widget, event, user_param);
-                //faut appeller destroyer widget
-                printf("FeRmEtuReUh 2 la feunaitre !\n");
-                drawing = EI_TRUE;
 
-        }
-        return EI_FALSE;
-}
 
 ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (event->param.mouse.where.y < widget->content_rect->top_left.y) {
