@@ -95,13 +95,13 @@ void ei_app_run() {
                         default:
                                 break;
                 }
+                ei_linked_rect_t** rect_list = get_rect_list();
                 if(drawing){
-                        ei_linked_rect_t** rect_list = get_rect_list();
                         rect_list_add(rect_list, widget->screen_location);
                         redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
-                        release_rect_list(rect_list);
                 }
+                release_rect_list(rect_list);
 
         }
         hw_surface_free(pick_surface);
