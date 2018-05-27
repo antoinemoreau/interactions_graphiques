@@ -106,13 +106,13 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
 
         //titre
-        ei_point_t text_spot = {toplevel_spot.x + border_width + 25, toplevel_spot.y + border_width};
+        ei_point_t text_spot = {toplevel_spot.x + border_width + 2*(toplevel->close_button->widget.requested_size.width), toplevel_spot.y + border_width};
         ei_size_t text_size;
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
         //Calcul de la position du rectangle sous le titre et de la taille du toplevel
         ei_point_t frame_spot = {toplevel_spot.x + border_width, toplevel_spot.y + 2 * border_width + text_size.height};
-        ei_size_t toplevel_size = {frame_size.width + 2 * border_width, frame_size.height + text_size.height + 3 * border_width};
+        ei_size_t toplevel_size = {frame_size.width + 2 * border_width, frame_size.height + text_size.height + 2 * border_width};
 
         //Clipping de la toplevel en fonction du parent
         toplevel->widget.screen_location.size = toplevel_size;

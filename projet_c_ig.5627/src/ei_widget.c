@@ -95,7 +95,7 @@ void ei_widget_destroy (ei_widget_t* widget) {
 		widget->parent->children_tail = NULL;
 
 		return;
-		
+
                 widget->wclass->releasefunc(widget);
                 ei_widget_destroy(widget->children_head);
                 if(widget->next_sibling != NULL){
@@ -294,9 +294,14 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	if (color != NULL)
 		toplevel->color = *color;
 
-	if (border_width != NULL)
+	if (border_width != NULL){
 		toplevel->border_width = *border_width;
-	else if (!toplevel->border_width)
+		int texte_width;
+		int texte_height;
+		hw_text_compute_size(title, ei_default_font, &texte_width, &texte_height);
+		widget->content_rect->top_left.x = *border_width;
+		widget->content_rect->top_left.y = texte_height + *border_width;
+	} else if (!toplevel->border_width)
 		toplevel->border_width = 4;
 
 	if (title != NULL) {
@@ -327,4 +332,5 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	if (widget->content_rect->size.height < widget->requested_size.height){
 		widget->content_rect->size.height = widget->requested_size.height;
 	}
+
 }

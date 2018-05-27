@@ -37,14 +37,9 @@ void 		ei_draw_text			(ei_surface_t		surface,
 	}
 	ei_surface_t surface_texte = hw_text_create_surface(text, font_text, color);
 	hw_surface_lock(surface_texte);//on lock la surface du text
+	hw_surface_set_origin(surface_texte, *where);
 	ei_rect_t rect_text = hw_surface_get_rect(surface_texte);//on recupere le rectangle de la surface de texte
 	ei_bool_t alpha = hw_surface_has_alpha(surface_texte);
-	//ei_rect_t rect_dest = {*where,rect_text.size};
-	ei_rect_t rect_dest;
-	rect_dest.top_left.x = where->x;
-	rect_dest.size.width = rect_text.size.width;
-	rect_dest.top_left.y = where->y;
-	rect_dest.size.height = rect_text.size.height;
 	ei_rect_t clipper_new;
 	if (clipper) {
 		ei_intersection_rectangle(&rect_surface, (ei_rect_t*)clipper, &clipper_new);
@@ -52,9 +47,8 @@ void 		ei_draw_text			(ei_surface_t		surface,
 		clipper_new = rect_surface;
 	}
 	ei_rect_t dest_maj;
-	ei_intersection_rectangle(&clipper_new, &rect_dest, &dest_maj);
-	rect_text.size = dest_maj.size;
-	ei_copy_surface(surface, &dest_maj, surface_texte, &rect_text, alpha);
+	ei_intersection_rectangle(&clipper_new, &rect_text, &dest_maj);
+	ei_copy_surface(surface, &dest_maj, surface_texte, &dest_maj, alpha);
 	hw_surface_unlock(surface_texte);
 	hw_surface_free(surface_texte);
 }
