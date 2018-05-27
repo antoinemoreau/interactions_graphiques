@@ -97,12 +97,18 @@ void ei_app_run() {
                 }
                 ei_linked_rect_t** rect_list = get_rect_list();
                 if(drawing){
-                        rect_list_add(rect_list, widget->screen_location);
+                        ei_rect_t new_rect;
+                        ei_rect_t* clipper = &(root->screen_location);
+
+                        if (widget->parent)
+                                clipper = &(widget->parent->screen_location);
+
+                        ei_intersection_rectangle(clipper, &(widget->screen_location), &new_rect);
+                        rect_list_add(rect_list, new_rect);
                         redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
                 }
                 release_rect_list(rect_list);
-
         }
         hw_surface_free(pick_surface);
         free(event);

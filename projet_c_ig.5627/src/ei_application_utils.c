@@ -31,6 +31,7 @@ void            redraw                  (ei_surface_t           root_surface,
                 draw_all_widgets(widget, root_surface, pick_surface, &(widget->screen_location));
                 hw_surface_unlock(pick_surface);
                 hw_surface_unlock(root_surface);
+                printf("list rect : %p\n", rect_list);
                 hw_surface_update_rects(root_surface, rect_list);
         }
 }
@@ -69,8 +70,8 @@ void            rect_list_add           (ei_linked_rect_t**      rect_list,
                                          ei_rect_t               rect) {
         ei_linked_rect_t* new_rect = calloc(1, sizeof(ei_linked_rect_t));
         new_rect->rect = rect;
-        new_rect->next = rect_list;
-        rect_list = new_rect;
+        new_rect->next = *rect_list;
+        *rect_list = new_rect;
 }
 
 void            release_rect_list       (ei_linked_rect_t**      rect_list) {

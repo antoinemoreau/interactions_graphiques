@@ -122,7 +122,7 @@ ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, v
 ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (moving_toplevel) {
                 ei_linked_rect_t** rect_list = get_rect_list();
-                rect_list_add(rect_list, widget->parent->screen_location);
+                rect_list_add(rect_list, widget->screen_location);
 
                 widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
