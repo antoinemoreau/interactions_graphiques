@@ -2,6 +2,7 @@
 #include "ei_application.h"
 #include "ei_toplevel.h"
 
+ei_linked_rect_t* rect_list = NULL;
 
 void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_surface_t           root_surface,
@@ -59,6 +60,18 @@ ei_bool_t       handle_event            (ei_linked_event_t*     event_list,
                 current_event = current_event->next;
         }
         return no_callback;
+}
+
+ei_linked_rect_t**       get_rect_list   () {
+        return &rect_list;
+}
+
+void            rect_list_add           (ei_linked_rect_t**      rect_list,
+                                         ei_rect_t               rect) {
+        ei_linked_rect_t* new_rect = calloc(1, sizeof(ei_linked_rect_t));
+        new_rect->rect = rect;
+        new_rect->next = rect_list;
+        rect_list = new_rect;
 }
 
 void            release_rect_list       (ei_linked_rect_t**      rect_list) {

@@ -31,6 +31,11 @@ ei_bool_t       handle_event            (ei_linked_event_t*     event_list,
                                          ei_event_t*            event,
                                          ei_widget_t*           widget) ;
 
+ei_linked_rect_t**       get_rect_list   ();
+
+void            rect_list_add           (ei_linked_rect_t**      rect_list,
+                                         ei_rect_t               rect);
+
 void            release_rect_list       (ei_linked_rect_t**      rect_list);
 
 ei_surface_t    ei_app_pick_surface     ();

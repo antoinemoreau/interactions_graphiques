@@ -14,7 +14,6 @@
 ei_widget_t *root;
 ei_surface_t root_surface;
 ei_bool_t quit_app = EI_FALSE;
-ei_linked_rect_t* rect_list = NULL;
 
 void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
         hw_init();
@@ -97,15 +96,13 @@ void ei_app_run() {
                                 break;
                 }
                 if(drawing){
-                        ei_linked_rect_t* new_rect = calloc(1, sizeof(ei_linked_rect_t));
-                        new_rect->rect = widget->screen_location;
-                        new_rect->next = rect_list;
-                        rect_list = new_rect;
-                        redraw(root_surface, pick_surface, widget, rect_list);
+                        ei_linked_rect_t** rect_list = get_rect_list();
+                        rect_list_add(rect_list, widget->screen_location);
+                        redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
+                        release_rect_list(rect_list);
                 }
 
-                release_rect_list(&rect_list);
         }
         hw_surface_free(pick_surface);
         free(event);
