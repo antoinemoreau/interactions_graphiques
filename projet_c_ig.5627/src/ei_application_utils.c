@@ -36,7 +36,7 @@ void            redraw                  (ei_surface_t           root_surface,
         }
 }
 
-ei_bool_t       handle_event            (ei_linked_event_t*     event_list,
+void       handle_event            (ei_linked_event_t*          event_list,
                                          ei_event_t*            event,
                                          ei_widget_t*           widget) {
         ei_bool_t no_callback = EI_FALSE;
@@ -44,6 +44,7 @@ ei_bool_t       handle_event            (ei_linked_event_t*     event_list,
 
         while (!no_callback && current_event) {
                 if (current_event->eventtype == event->type) {
+                        printf("eventtype : %d\n", event->type);
                         if(current_event->tag){
                                 if (strcmp(current_event->tag,"all") == 0) {
                                         no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
@@ -54,12 +55,12 @@ ei_bool_t       handle_event            (ei_linked_event_t*     event_list,
                                 }
                         } else if (current_event->widget == widget) {
                                 no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
+                                printf("no callback ? : %d\n", no_callback);
                                 drawing = EI_TRUE;
                         }
                 }
                 current_event = current_event->next;
         }
-        return no_callback;
 }
 
 ei_linked_rect_t**       get_rect_list   () {

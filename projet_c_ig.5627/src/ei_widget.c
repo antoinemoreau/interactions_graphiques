@@ -91,12 +91,17 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 
 void ei_widget_destroy (ei_widget_t* widget) {
 	if (widget != NULL) {
+		widget->parent->children_head = NULL;
+		widget->parent->children_tail = NULL;
+
+		return;
+		
                 widget->wclass->releasefunc(widget);
                 ei_widget_destroy(widget->children_head);
                 if(widget->next_sibling != NULL){
                         ei_widget_destroy(widget->next_sibling);
                 }
-		widget->geom_params->releasefunc(widget);
+		//widget->geom_params->manager->releasefunc(widget);
 		free(widget);
         }
 }
@@ -203,8 +208,8 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
 	} else {
-		widget->requested_size.width = 20;
-		widget->requested_size.height = 20;
+		widget->requested_size.width = 32;
+		widget->requested_size.height = 32;
 	}
 
 	ei_button_t* button = (ei_button_t*)widget;

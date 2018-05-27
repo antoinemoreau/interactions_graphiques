@@ -9,11 +9,11 @@
 
 ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param){
         //on peut faire l'inverse et l'appeller dans pressbutton
-        pressbutton_animation(widget, event, user_param);
-        //faut appeller destroyer widget
+        //pressbutton_animation(widget, event, user_param);
+        ei_widget_destroy(ei_find_widget(widget->pick_id-1, widget->parent));
+        destroy = EI_TRUE;
         printf("FeRmEtuReUh 2 la feunaitre !\n");
-        drawing = EI_TRUE;
-        return EI_FALSE;
+        return EI_TRUE;
 }
 
 static ei_linked_point_t* points_list (ei_rect_t rectangle){
@@ -60,8 +60,8 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         ei_callback_t   button_closing          = closing;
 
         //Création et configuration du bouton suivant les paramètres
-        ei_widget_t*    button_widget           = ei_widget_create ("button", NULL);
-        button_widget->parent = (ei_widget_t*) toplevel;
+        ei_widget_t*    button_widget           = ei_widget_create ("button", toplevel->widget.parent);
+        //button_widget->parent = (ei_widget_t*) toplevel;
         ei_button_t*    button                  = (ei_button_t*) button_widget;
 
         ei_button_configure(button_widget, &requested_size, &button_color,
