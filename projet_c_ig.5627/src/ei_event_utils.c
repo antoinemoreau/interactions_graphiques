@@ -12,7 +12,13 @@ ei_linked_event_t* listed_events;
 ei_linked_event_t* get_list_events (){
         return listed_events;
 }
+
+// Animation bouton
 ei_button_t* sunken_button;
+
+// Déplacement toplevel
+ei_toplevel_t* moving_toplevel;
+ei_point_t mouse_pos;
 
 void set_list_events (ei_linked_event_t* list) {
         listed_events = list;
@@ -20,10 +26,16 @@ void set_list_events (ei_linked_event_t* list) {
 
 //faut un fonction pour def les events /bind de base, genre une init qu'on va appeller dans le ei_app_create
 void ei_init_list_events (){
+
         // Animation de pression sur bouton
+        ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&getoutofbutton_animation, NULL);
         ei_bind(ei_ev_mouse_buttondown, NULL, "button", (ei_callback_t)&pressbutton_animation, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "button", (ei_callback_t)&unpressbutton_animation, NULL);
-        ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&getoutofbutton_animation, NULL);
+
+        // Déplacement toplevel
+        ei_bind(ei_ev_mouse_buttondown, NULL, "toplevel", (ei_callback_t)&click_toplevel_header, NULL);
+        ei_bind(ei_ev_mouse_move, NULL, "toplevel", (ei_callback_t)&move_toplevel, NULL);
+        ei_bind(ei_ev_mouse_buttonup, NULL, "toplevel", (ei_callback_t)&unclick_toplevel, NULL);
 }
 
 ei_linked_event_t* find_event(ei_widget_t* widget, ei_eventtype_t eventtype, ei_tag_t tag, ei_callback_t callback){
@@ -82,6 +94,32 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(sunken_button && widget->pick_id != sunken_button->widget.pick_id){
                 return unpressbutton_animation(widget, event, user_param);
+        }
+        return EI_FALSE;
+}
+
+ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
+        if (event->param.mouse.where.y < widget->content_rect->top_left.y) {
+                moving_toplevel = (ei_toplevel_t*)widget;
+                mouse_pos = event->param.mouse.where;
+        }
+        return EI_FALSE;
+}
+
+ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
+        if (moving_toplevel) {
+                widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
+                widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
+                mouse_pos = event->param.mouse.where;
+                // Il doit surement falloir faire un geomnotify ici pour mettre a jout la position des enfants.
+                drawing = EI_TRUE;
+        }
+        return EI_FALSE;
+}
+
+ei_bool_t unclick_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
+        if (moving_toplevel) {
+                moving_toplevel = NULL;
         }
         return EI_FALSE;
 }

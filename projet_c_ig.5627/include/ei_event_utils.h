@@ -25,5 +25,11 @@ ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event,
 
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
 
+ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
+
+ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
+
+ei_bool_t unclick_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
+
 
 ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget);

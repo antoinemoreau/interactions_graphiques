@@ -102,6 +102,7 @@ void ei_app_run() {
                         new_rect->next = rect_list;
                         rect_list = new_rect;
                         redraw(root_surface, pick_surface, widget, rect_list);
+                        drawing = EI_FALSE;
                 }
 
                 release_rect_list(&rect_list);
