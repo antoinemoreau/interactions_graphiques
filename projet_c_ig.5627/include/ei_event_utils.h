@@ -23,8 +23,6 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
 
 ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
 
-ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param);
-
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
 
 ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
