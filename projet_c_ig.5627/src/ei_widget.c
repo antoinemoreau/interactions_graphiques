@@ -64,6 +64,13 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 				parent->children_tail->next_sibling = widget;
 				parent->children_tail = widget;
 			}
+			widget->screen_location.top_left.x = parent->content_rect->top_left.x;
+			widget->screen_location.top_left.y = parent->content_rect->top_left.y;
+
+		}
+		else{
+			widget->screen_location.top_left.x = 0;
+			widget->screen_location.top_left.y = 0;
 		}
 		widget->children_head = NULL;
 		widget->children_tail = NULL;
@@ -72,13 +79,11 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 		widget->geom_params = NULL;
 		widget->requested_size.width = 0;
 		widget->requested_size.height = 0;
-		widget->screen_location.top_left.x = 0;
-		widget->screen_location.top_left.y = 0;
 		widget->screen_location.size.width = 0;
 		widget->screen_location.size.height = 0;
 		widget->content_rect = malloc(sizeof(ei_rect_t));
-		widget->content_rect->top_left.x = 0;
-		widget->content_rect->top_left.y = 0;
+		widget->content_rect->top_left.x = widget->screen_location.top_left.x;
+		widget->content_rect->top_left.y = widget->screen_location.top_left.y;
 		widget->content_rect->size.width = 0;
 		widget->content_rect->size.height = 0;
 		widgetclass->setdefaultsfunc(widget);

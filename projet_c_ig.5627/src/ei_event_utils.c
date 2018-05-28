@@ -125,7 +125,6 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_rect_t intersection;
                 ei_intersection_rectangle(&moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection);
-                printf("coucou\n");
                 rect_list_add(rect_list, intersection);
                 moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;

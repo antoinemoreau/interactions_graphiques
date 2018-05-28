@@ -14,11 +14,13 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                         widget->screen_location.top_left.x = placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x - x;
                         widget->screen_location.top_left.y = placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y - y;
 
-                } else {   /*On calcule la place d'un des pixels du widget dans le référentiel du placer_parent
-                          Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
+                } else {
+                        /*
+                        On calcule la place d'un des pixels du widget dans le référentiel absolu
+                        Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
                         */
-                        widget->screen_location.top_left.x = parent->screen_location.top_left.x + parent->content_rect->top_left.x + placer_widget->rel_x * placer_parent->width + placer_widget->x - x;
-                        widget->screen_location.top_left.y = parent->screen_location.top_left.y + parent->content_rect->top_left.y + placer_widget->rel_y * placer_parent->height + placer_widget->y - y;
+                        widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * parent->content_rect->size.width + placer_widget->x - x;
+                        widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
                 }
         }
 }
