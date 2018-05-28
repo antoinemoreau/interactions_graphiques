@@ -19,7 +19,7 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                         */
                         widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * placer_parent->width + placer_widget->x - x;
                         widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * placer_parent->height + placer_widget->y - y;
-                        printf("merde x : %d y : %d \n", widget->screen_location.top_left.x, widget->screen_location.top_left.y);
+                        printf("screen location top left: %d \n", widget->screen_location.top_left.y);
                 }
         }
 }
