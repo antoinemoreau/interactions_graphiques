@@ -122,9 +122,12 @@ ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, v
 ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (moving_toplevel) {
                 ei_linked_rect_t** rect_list = get_rect_list();
-                rect_list_add(rect_list, widget->screen_location);
+                ei_rect_t intersection;
+                ei_intersection_rectangle(&widget->parent->content_rect ,&widget->screen_location, &intersection);
+                rect_list_add(rect_list, intersection);
                 widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
+
                 mouse_pos = event->param.mouse.where;
                 ei_widget_t* current = widget->children_head;
                 while (current) {
