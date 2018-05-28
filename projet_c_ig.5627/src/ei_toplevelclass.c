@@ -11,6 +11,7 @@ ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param){
         //on peut faire l'inverse et l'appeller dans pressbutton
         //pressbutton_animation(widget, event, user_param);
         ei_widget_destroy(ei_find_widget(widget->pick_id-1, widget->parent));
+        ei_widget_destroy(widget);
         destroy = EI_TRUE;
         return EI_TRUE;
 }
@@ -110,6 +111,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
         //Clipping de la toplevel en fonction du parent
+
         toplevel->widget.screen_location.size.width = toplevel->widget.content_rect->size.width + 2 * toplevel->border_width;
         toplevel->widget.screen_location.size.height = toplevel->widget.content_rect->size.height + text_size.height + 2 * border_width;
         ei_rect_t intersection = {toplevel->widget.screen_location.top_left,toplevel->widget.screen_location.size};

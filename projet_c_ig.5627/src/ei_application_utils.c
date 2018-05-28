@@ -9,15 +9,11 @@ void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_surface_t           pick_surface,
                                          ei_rect_t*             content_rect) {
         if (widget != NULL) {
-                // if (widget != ei_app_root_widget() && strcmp(widget->parent->wclass->name, "toplevel") == 0 && ((ei_toplevel_t*)widget)->closable == EI_TRUE) {
-                //         widget->wclass->drawfunc(widget, root_surface, pick_surface, ei_app_root_widget()->content_rect);
-                // } else {
                 widget->wclass->drawfunc(widget, root_surface, pick_surface, content_rect);
                 draw_all_widgets(widget->children_head, root_surface, pick_surface, widget->content_rect);
                 if(widget->next_sibling != NULL){
                         draw_all_widgets(widget->next_sibling, root_surface, pick_surface, widget->parent->content_rect);
                 }
-                // }
         }
 }
 
@@ -28,10 +24,14 @@ void            redraw                  (ei_surface_t           root_surface,
         if (widget != NULL) {
                 hw_surface_lock(root_surface);
                 hw_surface_lock(pick_surface);
+                if (strcmp(widget->wclass->name, "toplevel") == 0) {
+                        widget = widget->parent;
+
+                }
                 draw_all_widgets(widget, root_surface, pick_surface, &(widget->screen_location));
                 hw_surface_unlock(pick_surface);
                 hw_surface_unlock(root_surface);
-                hw_surface_update_rects(root_surface, rect_list);
+                hw_surface_update_rects(root_surface, NULL); // Ne plus passer NULL, mais la liste de rectangles a mettre à jour.
         }
 }
 
@@ -53,7 +53,6 @@ void       handle_event            (ei_linked_event_t*          event_list,
                                 }
                         } else if (current_event->widget == widget) {
                                 no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
-                                printf("no callback ? : %d\n", no_callback);
                                 drawing = EI_TRUE;
                         }
                 }
