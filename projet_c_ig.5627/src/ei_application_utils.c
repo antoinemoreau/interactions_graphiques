@@ -1,5 +1,5 @@
 #include "ei_application_utils.h"
-#include "ei_application.h"
+
 #include "ei_toplevel.h"
 
 ei_linked_rect_t* rect_list = NULL;
