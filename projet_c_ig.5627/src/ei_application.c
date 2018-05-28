@@ -90,6 +90,7 @@ void ei_app_run() {
                         case ei_ev_mouse_move:
                                 widget = ei_widget_pick(&mouse_where);
                                 parent = widget->parent;
+
                                 handle_event(event_list, event, widget);
                                 break;
 

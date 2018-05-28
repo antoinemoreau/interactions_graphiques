@@ -31,7 +31,7 @@ void            redraw                  (ei_surface_t           root_surface,
                 draw_all_widgets(widget, root_surface, pick_surface, &(widget->screen_location));
                 hw_surface_unlock(pick_surface);
                 hw_surface_unlock(root_surface);
-                hw_surface_update_rects(root_surface, NULL);
+                hw_surface_update_rects(root_surface, NULL); // Ne plus passer NULL, mais la liste de rectangles a mettre à jour.
         }
 }
 
@@ -43,7 +43,6 @@ void       handle_event            (ei_linked_event_t*          event_list,
 
         while (!no_callback && current_event) {
                 if (current_event->eventtype == event->type) {
-                        printf("eventtype : %d\n", event->type);
                         if(current_event->tag){
                                 if (strcmp(current_event->tag,"all") == 0) {
                                         no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
@@ -54,7 +53,6 @@ void       handle_event            (ei_linked_event_t*          event_list,
                                 }
                         } else if (current_event->widget == widget) {
                                 no_callback = (*(current_event->callback))(widget, event, current_event->user_param);
-                                printf("no callback ? : %d\n", no_callback);
                                 drawing = EI_TRUE;
                         }
                 }
