@@ -123,14 +123,19 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
         if (moving_toplevel) {
                 ei_linked_rect_t** rect_list = get_rect_list();
                 rect_list_add(rect_list, widget->screen_location);
-
                 widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
                 mouse_pos = event->param.mouse.where;
-                ei_placer_runfunc(widget->children_head);
-                // Il doit surement falloir faire un geomnotify ici pour mettre a jout la position des enfants.
-                //ou une boucle de parcours des enfants et on met à jour leur positions non ?
-
+                ei_widget_t* current = widget->children_head;
+                while (current) {
+                        ei_placer_runfunc(current);
+                        ei_widget_t* current_bro = current->next_sibling;
+                        while (current_bro) {
+                                ei_placer_runfunc(current_bro);
+                                current_bro = current_bro->next_sibling;
+                        }
+                        current = current->children_head;
+                }
                 drawing = EI_TRUE;
         }
         return EI_FALSE;

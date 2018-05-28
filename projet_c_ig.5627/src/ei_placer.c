@@ -64,8 +64,6 @@ void ei_placer_runfunc(ei_widget_t* widget){
                 case ei_anc_southeast:
                         x = widget->screen_location.size.width;
                         y = widget->screen_location.size.height;
-                        printf("mdr l'anchor x : %d y : %d \n", x, y);
-
                         break;
                 case ei_anc_south:
                         x = widget->screen_location.size.width/2;
