@@ -44,6 +44,9 @@ void ei_app_free() {
         //              - release event binds
         //              - release app_run
 
+        ei_widget_destroy(root);
+        hw_surface_free(root_surface);
+        hw_surface_free(pick_surface);
         //destroy rootwidget
         //unbind traitants internes
         //autres
@@ -87,9 +90,7 @@ void ei_app_run() {
                         case ei_ev_mouse_move:
                                 widget = ei_widget_pick(&mouse_where);
                                 parent = widget->parent;
-                                //printf("widget mouse event : %d     %s\n", widget->pick_id, widget->wclass->name);
                                 handle_event(event_list, event, widget);
-                                printf("apres handle event : %p\n", widget);
                                 break;
 
                         case ei_ev_last:
@@ -104,7 +105,6 @@ void ei_app_run() {
                         ei_rect_t* clipper = &(root->screen_location);
 
                         if (destroy) {
-                                printf("destruction\n");
                                 widget = parent;
                                 destroy = EI_FALSE;
                         }
@@ -114,7 +114,6 @@ void ei_app_run() {
 
                         ei_intersection_rectangle(clipper, &(widget->screen_location), &new_rect);
                         rect_list_add(rect_list, new_rect);
-                        printf("type widget a dessiner : %s\n", widget->wclass->name);
                         redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
                 }

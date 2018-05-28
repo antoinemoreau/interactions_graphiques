@@ -40,7 +40,7 @@ void ei_init_list_events (){
 
         // Déplacement toplevel
         ei_bind(ei_ev_mouse_buttondown, NULL, "toplevel", (ei_callback_t)&click_toplevel_header, NULL);
-        ei_bind(ei_ev_mouse_move, NULL, "toplevel", (ei_callback_t)&move_toplevel, NULL);
+        ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&move_toplevel, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "toplevel", (ei_callback_t)&unclick_toplevel, NULL);
 
         //resize_toplevel
@@ -121,15 +121,17 @@ ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, v
 
 ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (moving_toplevel) {
+                ei_widget_t* moving_widget = (ei_widget_t*)moving_toplevel;
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_rect_t intersection;
-                ei_intersection_rectangle(&widget->parent->content_rect ,&widget->screen_location, &intersection);
+                ei_intersection_rectangle(&moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection);
+                printf("coucou\n");
                 rect_list_add(rect_list, intersection);
-                widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
-                widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
+                moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
+                moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
 
                 mouse_pos = event->param.mouse.where;
-                ei_widget_t* current = widget->children_head;
+                ei_widget_t* current = moving_widget->children_head;
                 while (current) {
                         ei_placer_runfunc(current);
                         ei_widget_t* current_bro = current->next_sibling;

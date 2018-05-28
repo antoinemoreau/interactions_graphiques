@@ -53,12 +53,11 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
         ei_extreme_linked_points_t* extreme_points_bot_left_low = arc(center_bot_left, rayon, 225.0, 270.0, nb_points/2);
         ei_extreme_linked_points_t* extreme_points_bot_right = arc(center_bot_right, rayon, 270.0, 360.0, nb_points);
 
-
         //On déclare le premier point de la liste qu'on renvoie
         ei_linked_point_t* first_point = calloc(1, sizeof(ei_linked_point_t));
 
         //On relie tous les points dans l'ordre selon la partie sélectionnée
-        if (partie == 2){
+        if (partie == 2) {
                 extreme_points_top_left->tail_point->next = extreme_points_bot_left_high->head_point;
                 extreme_points_bot_left_high->tail_point->next = extreme_points_bot_left_low->head_point;
                 extreme_points_bot_left_low->tail_point->next = extreme_points_bot_right->head_point;
@@ -66,14 +65,12 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
                 extreme_points_top_right_low->tail_point->next = extreme_points_top_right_high->head_point;
                 extreme_points_top_right_high->tail_point->next = NULL;
                 first_point = extreme_points_top_left->head_point;
-        }
-        else if (partie == 0){
+        } else if (partie == 0) {
                 extreme_points_bot_left_low->tail_point->next = extreme_points_bot_right->head_point;
                 extreme_points_bot_right->tail_point->next = extreme_points_top_right_low->head_point;
                 extreme_points_top_right_low->tail_point->next = NULL;
                 first_point = extreme_points_bot_left_low->head_point;
-        }
-        else{
+        } else {  
                 extreme_points_top_right_high->tail_point->next = extreme_points_top_left->head_point;
                 extreme_points_top_left->tail_point->next = extreme_points_bot_left_high->head_point;
                 extreme_points_bot_left_high->tail_point->next = NULL;
