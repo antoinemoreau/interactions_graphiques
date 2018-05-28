@@ -11,14 +11,14 @@ void*           ei_button_allocfunc             () {
 
 void            ei_button_releasefunc           (ei_widget_t* widget) {
         ei_button_t* button = (ei_button_t*)widget;
-        if (button->text)
-                free(button->text);
-        if (button->text_font)
-                //hw_text_font_free(button->text_font);
-        if (button->img_rect)
-                free(button->img_rect);
-        if (button->img)
-                hw_surface_free(button->img);
+        // if (button->text)
+        //         free(button->text);
+        // if (button->text_font)
+        //         //hw_text_font_free(button->text_font);
+        // if (button->img_rect)
+        //         free(button->img_rect);
+        // if (button->img)
+        //         hw_surface_free(button->img);
 }
 
 ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, int partie){
@@ -196,9 +196,13 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
                 ei_rect_t rect_surface_img = hw_surface_get_rect(button->img);
 
-                ei_rect_t dest_img;
-                ei_intersection_rectangle(&inter, &rect_surface_img, &dest_img);
-                ei_copy_surface(surface, &dest_img, button->img, &dest_img, alpha_img);
+                ei_rect_t clipper_img;
+                ei_intersection_rectangle(&inter, &rect_surface_img, &clipper_img);
+
+                ei_rect_t dest_final;
+                ei_intersection_rectangle(&clipper_img, button->img_rect, &dest_final);
+
+                ei_copy_surface(surface, &dest_final, button->img, &dest_final, alpha_img);
                 hw_surface_unlock(button->img);
         }
 }
