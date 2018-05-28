@@ -17,9 +17,8 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                 } else {   /*On calcule la place d'un des pixels du widget dans le référentiel du placer_parent
                           Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
                         */
-                        widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * placer_parent->width + placer_widget->x - x;
-                        widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * placer_parent->height + placer_widget->y - y;
-
+                        widget->screen_location.top_left.x = parent->screen_location.top_left.x + parent->content_rect->top_left.x + placer_widget->rel_x * placer_parent->width + placer_widget->x - x;
+                        widget->screen_location.top_left.y = parent->screen_location.top_left.y + parent->content_rect->top_left.y + placer_widget->rel_y * placer_parent->height + placer_widget->y - y;
                 }
         }
 }
@@ -63,8 +62,6 @@ void ei_placer_runfunc(ei_widget_t* widget){
                 case ei_anc_southeast:
                         x = widget->screen_location.size.width;
                         y = widget->screen_location.size.height;
-                        printf("mdr l'anchor x : %d y : %d \n", x, y);
-
                         break;
                 case ei_anc_south:
                         x = widget->screen_location.size.width/2;

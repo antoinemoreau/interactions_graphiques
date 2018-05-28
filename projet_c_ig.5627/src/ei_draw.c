@@ -48,6 +48,7 @@ void 		ei_draw_text			(ei_surface_t		surface,
 	}
 	ei_rect_t dest_maj;
 	ei_intersection_rectangle(&clipper_new, &rect_text, &dest_maj);
+	//rect_text.size = dest_maj.size;
 	ei_copy_surface(surface, &dest_maj, surface_texte, &dest_maj, alpha);
 	hw_surface_unlock(surface_texte);
 	hw_surface_free(surface_texte);

@@ -138,7 +138,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
 	}
-	else{
+	else if (widget->requested_size.width == 0 && widget->requested_size.height == 0){
 		widget->requested_size = widget->content_rect->size;
 	}
 	ei_frame_t* frame = (ei_frame_t*)widget;
@@ -207,7 +207,7 @@ void			ei_button_configure		(ei_widget_t*		widget,
 							 void**			user_param) {
 	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
-	} else {
+	} else if (widget->requested_size.width == 0 && widget->requested_size.height == 0){
 		widget->requested_size.width = 32;
 		widget->requested_size.height = 32;
 	}
@@ -285,7 +285,7 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	 if (requested_size != NULL){
  		widget->requested_size = *requested_size;
  	}
- 	else {
+ 	else if (widget->requested_size.width == 0 && widget->requested_size.height == 0){
  		widget->requested_size.height = 320;
  		widget->requested_size.width = 240;
  	}
@@ -304,7 +304,6 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	hw_text_compute_size(*title, ei_default_font, &texte_width, &texte_height);
 	widget->content_rect->top_left.x = widget->screen_location.top_left.x + toplevel->border_width;
 	widget->content_rect->top_left.y = widget->screen_location.top_left.y + texte_height + 2 * (toplevel->border_width);
-	fprintf(stdout, "content rect : x=%d y=%d \n", 	widget->content_rect->top_left.x , 	widget->content_rect->top_left.y);
 	if (title != NULL) {
 		toplevel->title = realloc(toplevel->title, strlen(*title)+1);
 		strcpy(toplevel->title, *title);

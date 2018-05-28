@@ -122,14 +122,23 @@ ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, v
 ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (moving_toplevel) {
                 ei_linked_rect_t** rect_list = get_rect_list();
-                rect_list_add(rect_list, widget->screen_location);
-
+                ei_rect_t intersection;
+                ei_intersection_rectangle(&widget->parent->content_rect ,&widget->screen_location, &intersection);
+                rect_list_add(rect_list, intersection);
                 widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
-                mouse_pos = event->param.mouse.where;
-                // Il doit surement falloir faire un geomnotify ici pour mettre a jout la position des enfants.
-                //ou une boucle de parcours des enfants et on met à jour leur positions non ?
 
+                mouse_pos = event->param.mouse.where;
+                ei_widget_t* current = widget->children_head;
+                while (current) {
+                        ei_placer_runfunc(current);
+                        ei_widget_t* current_bro = current->next_sibling;
+                        while (current_bro) {
+                                ei_placer_runfunc(current_bro);
+                                current_bro = current_bro->next_sibling;
+                        }
+                        current = current->children_head;
+                }
                 drawing = EI_TRUE;
         }
         return EI_FALSE;
@@ -144,9 +153,9 @@ ei_bool_t unclick_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* 
 
 ei_bool_t click_resize_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param){
         if ((widget->screen_location.top_left.y + widget->screen_location.size.height - 4 * ((ei_toplevel_t*)widget)->border_width) < event->param.mouse.where.y &&  event->param.mouse.where.y < (widget->screen_location.top_left.y + widget->screen_location.size.height) &&\
-                (widget->screen_location.top_left.x + widget->screen_location.size.width - 4 * ((ei_toplevel_t*)widget)->border_width) < event->param.mouse.where.x && event->param.mouse.where.x < (widget->screen_location.top_left.x + widget->screen_location.size.width)) {
-                resized_toplevel = (ei_toplevel_t*)widget;
+        (widget->screen_location.top_left.x + widget->screen_location.size.width - 4 * ((ei_toplevel_t*)widget)->border_width) < event->param.mouse.where.x && event->param.mouse.where.x < (widget->screen_location.top_left.x + widget->screen_location.size.width)) {
                 new_size = event->param.mouse.where;
+                resized_toplevel = (ei_toplevel_t*)widget;
         }
         return EI_FALSE;
 }
@@ -155,12 +164,22 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
         if(resized_toplevel){
                 ei_linked_rect_t** rect_list = get_rect_list();
                 rect_list_add(rect_list, widget->screen_location);
-                widget->screen_location.size.width -= event->param.mouse.where.x - mouse_pos.x;
-                widget->screen_location.size.height -= event->param.mouse.where.y - mouse_pos.y;
-                mouse_pos = event->param.mouse.where;
+                if(ei_axis_none){
+                        resized_toplevel = NULL;
+                } else if(ei_axis_both) {
+                        widget->screen_location.size.width -= mouse_pos.x - event->param.mouse.where.x;
+                        widget->screen_location.size.height -= mouse_pos.y - event->param.mouse.where.y;
+                        mouse_pos = event->param.mouse.where;
+                } else if(ei_axis_x) {
+                        widget->screen_location.size.width -= mouse_pos.x - event->param.mouse.where.x;
+                        mouse_pos = event->param.mouse.where;
+                } else {
+                        widget->screen_location.size.height -= mouse_pos.y - event->param.mouse.where.y;
+                        mouse_pos = event->param.mouse.where;
+                }
                 rect_list_add(rect_list, widget->screen_location);
         }
-
+        return EI_FALSE;
 }
 
 ei_bool_t stop_resize(ei_widget_t* widget, struct ei_event_t* event, void* user_param){
