@@ -90,9 +90,9 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 static void ei_widget_destroy_recurs (ei_widget_t* widget) {
 	if (widget != NULL) {
                 widget->wclass->releasefunc(widget);
-                ei_widget_destroy(widget->children_head);
+                ei_widget_destroy_recurs(widget->children_head);
                 if(widget->next_sibling != NULL){
-                        ei_widget_destroy(widget->next_sibling);
+                        ei_widget_destroy_recurs(widget->next_sibling);
                 }
 		//widget->geom_params->manager->releasefunc(widget);
 		free(widget);
@@ -116,6 +116,7 @@ void ei_widget_destroy (ei_widget_t* widget) {
 					current->next_sibling = widget->next_sibling;
 				}
 			}
+			widget->next_sibling = NULL;
 			widget->parent = NULL;
 		}
 		ei_widget_destroy_recurs(widget);
