@@ -87,15 +87,8 @@ ei_widget_t*		ei_widget_create		(ei_widgetclass_name_t	class_name,
 	return NULL;
 }
 
-
-
-void ei_widget_destroy (ei_widget_t* widget) {
+static void ei_widget_destroy_recurs (ei_widget_t* widget) {
 	if (widget != NULL) {
-		widget->parent->children_head = NULL;
-		widget->parent->children_tail = NULL;
-
-		return;
-		
                 widget->wclass->releasefunc(widget);
                 ei_widget_destroy(widget->children_head);
                 if(widget->next_sibling != NULL){
@@ -104,6 +97,29 @@ void ei_widget_destroy (ei_widget_t* widget) {
 		//widget->geom_params->manager->releasefunc(widget);
 		free(widget);
         }
+}
+
+void ei_widget_destroy (ei_widget_t* widget) {
+	if (widget != NULL) {
+		if (widget->parent != NULL) {
+			ei_widget_t* parent = widget->parent;
+			ei_widget_t* current = parent->children_head;
+			if (parent->children_head == widget) {
+				parent->children_head = widget->next_sibling;
+				if (parent->children_tail == widget)
+					parent->children_tail = parent->children_head;
+			} else {
+				while (current->next_sibling != NULL && current->next_sibling != widget) {
+					current = current->next_sibling;
+				}
+				if (current->next_sibling == widget) {
+					current->next_sibling = widget->next_sibling;
+				}
+			}
+			widget->parent = NULL;
+		}
+		ei_widget_destroy_recurs(widget);
+	}
 }
 
 ei_widget_t* ei_widget_pick (ei_point_t* where) {
@@ -208,8 +224,8 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	if (requested_size != NULL){
 		widget->requested_size = *requested_size;
 	} else {
-		widget->requested_size.width = 32;
-		widget->requested_size.height = 32;
+		widget->requested_size.width = 36;
+		widget->requested_size.height = 36;
 	}
 
 	ei_button_t* button = (ei_button_t*)widget;

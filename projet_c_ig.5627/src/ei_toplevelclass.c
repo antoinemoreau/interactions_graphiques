@@ -11,6 +11,7 @@ ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param){
         //on peut faire l'inverse et l'appeller dans pressbutton
         //pressbutton_animation(widget, event, user_param);
         ei_widget_destroy(ei_find_widget(widget->pick_id-1, widget->parent));
+        ei_widget_destroy(widget);
         destroy = EI_TRUE;
         printf("FeRmEtuReUh 2 la feunaitre !\n");
         return EI_TRUE;

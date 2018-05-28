@@ -14,7 +14,7 @@ void            ei_button_releasefunc           (ei_widget_t* widget) {
         if (button->text)
                 free(button->text);
         if (button->text_font)
-                hw_text_font_free(button->text_font);
+                //hw_text_font_free(button->text_font);
         if (button->img_rect)
                 free(button->img_rect);
         if (button->img)
@@ -185,8 +185,8 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(button->text_anchor, &size_texte,&inter,&pos_texte);
                 if(button->relief == ei_relief_sunken){
-                        pos_texte.x += border;
-                        pos_texte.y += border;
+                        pos_texte.x += border/2;
+                        pos_texte.y += border/2;
                 }
 
                 ei_draw_text(surface, &pos_texte, button->text, NULL, button->text_color, &inter);
