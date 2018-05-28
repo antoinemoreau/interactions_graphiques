@@ -119,7 +119,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
 
         toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + border_width;
-        toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + 2 * border_width;
+        toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + 1 * border_width;
 
         //frame_rect.size = toplevel->widget.content_rect->size;
         ei_rect_t interieur;
@@ -180,7 +180,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                 toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t*)toplevel->close_button)->requested_size.width;
                 toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t*)toplevel->close_button)->requested_size.height;
                 ei_widget_t* button_widget = (ei_widget_t*) toplevel->close_button;
-                ei_button_drawfunc(button_widget, surface, pick_surface, clipper);
+                ei_button_drawfunc(button_widget, surface, pick_surface, &(widget->screen_location));
 
         }
 
@@ -188,7 +188,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
                 ei_rect_t title_rect = {text_spot, text_size};
                 ei_point_t aqui;
                 ei_anchor_spot(ei_anc_none, &text_size,&title_rect,&aqui);
-                ei_draw_text(surface,&aqui,toplevel->title,ei_default_font, ei_font_default_color, clipper);
+                ei_draw_text(surface,&aqui,toplevel->title,ei_default_font, ei_font_default_color, &(widget->screen_location));
 
         }
 
@@ -202,7 +202,7 @@ void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         toplevel->widget = *widget;
         toplevel->color = ei_default_background_color;
         toplevel->border_width = 4;
-        toplevel->title = malloc(8); // 8 caracteres
+        toplevel->title = malloc(sizeof("Toplevel"));
         strcpy(toplevel->title, "Toplevel");
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
