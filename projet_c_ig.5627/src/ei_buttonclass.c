@@ -70,7 +70,7 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
                 extreme_points_bot_right->tail_point->next = extreme_points_top_right_low->head_point;
                 extreme_points_top_right_low->tail_point->next = NULL;
                 first_point = extreme_points_bot_left_low->head_point;
-        } else {  
+        } else {
                 extreme_points_top_right_high->tail_point->next = extreme_points_top_left->head_point;
                 extreme_points_top_left->tail_point->next = extreme_points_bot_left_high->head_point;
                 extreme_points_bot_left_high->tail_point->next = NULL;
@@ -186,6 +186,20 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                         pos_texte.y += border/2;
                 }
                 ei_draw_text(surface, &pos_texte, button->text, button->text_font, button->text_color, &inter);
+        } else if(button->img) {
+                ei_point_t pos_img;
+                ei_size_t size_img = button->img_rect->size;
+                ei_anchor_spot(button->img_anchor, &size_img, &inter, &pos_img);
+
+                hw_surface_lock(button->img);
+                hw_surface_set_origin(button->img, pos_img);
+                ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
+                ei_rect_t rect_surface_img = hw_surface_get_rect(button->img);
+
+                ei_rect_t dest_img;
+                ei_intersection_rectangle(&inter, &rect_surface_img, &dest_img);
+                ei_copy_surface(surface, &dest_img, button->img, &dest_img, alpha_img);
+                hw_surface_unlock(button->img);
         }
 }
 
