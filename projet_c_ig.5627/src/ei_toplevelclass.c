@@ -113,6 +113,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         //ei_point_t frame_spot = {toplevel_spot.x + border_width, toplevel_spot.y + 2 * border_width + text_size.height};
 
         //Clipping de la toplevel en fonction du parent
+
         toplevel->widget.screen_location.size.width = toplevel->widget.content_rect->size.width + 2 * toplevel->border_width;
         toplevel->widget.screen_location.size.height = toplevel->widget.content_rect->size.height + text_size.height + 2 * toplevel->border_width;
         ei_rect_t intersection = {toplevel->widget.screen_location.top_left,toplevel->widget.screen_location.size};
@@ -129,7 +130,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         //Calcul du clipper de la toplevel
         toplevel->widget.content_rect->top_left = interieur.top_left;
         toplevel->widget.content_rect->size = interieur.size;
-        printf("w: %d, h : %d \n", toplevel->widget.content_rect->size.width, toplevel->widget.content_rect->size.height);
 
         //Création du polygone exterieur en arrondissant le haut
         int nb_points = 10;

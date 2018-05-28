@@ -85,7 +85,6 @@ void ei_app_run() {
                         case ei_ev_mouse_buttonup:
                         case ei_ev_mouse_move:
                                 widget = ei_widget_pick(&mouse_where);
-                                //printf("widget mouse event : %d     %s\n", widget->pick_id, widget->wclass->name);
                                 handle_event(event_list, event, widget);
                                 break;
 
@@ -110,7 +109,6 @@ void ei_app_run() {
 
                         ei_intersection_rectangle(clipper, &(widget->screen_location), &new_rect);
                         rect_list_add(rect_list, new_rect);
-                        printf("type widget a dessiner : %s\n", widget->wclass->name);
                         redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
                 }
