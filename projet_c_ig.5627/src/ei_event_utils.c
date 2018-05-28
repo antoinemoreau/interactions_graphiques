@@ -108,9 +108,8 @@ ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event
         }
         return EI_FALSE;
 }
+
 //fonctions de callback des toplevels
-
-
 ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (event->param.mouse.where.y < widget->content_rect->top_left.y) {
                 moving_toplevel = (ei_toplevel_t*)widget;
