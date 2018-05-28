@@ -63,6 +63,7 @@ int ei_main(int argc, char** argv)
 	ei_app_create(&screen_size, EI_FALSE);
         ei_frame_configure(ei_app_root_widget(), NULL, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
+
         toplevel = ei_widget_create("toplevel", ei_app_root_widget());
         button = ei_widget_create("button", toplevel);
 

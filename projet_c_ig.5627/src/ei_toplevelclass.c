@@ -12,7 +12,6 @@ ei_bool_t closing(ei_widget_t* widget, ei_event_t* event, void* user_param){
         //pressbutton_animation(widget, event, user_param);
         ei_widget_destroy(ei_find_widget(widget->pick_id-1, widget->parent));
         destroy = EI_TRUE;
-        printf("FeRmEtuReUh 2 la feunaitre !\n");
         return EI_TRUE;
 }
 
@@ -106,38 +105,42 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
 
         //titre
-        ei_point_t text_spot = {toplevel_spot.x + border_width + 2*(toplevel->close_button->widget.requested_size.width), toplevel_spot.y + border_width};
+        ei_point_t text_spot = {toplevel->widget.screen_location.top_left.x + toplevel->border_width + 2*(toplevel->close_button->widget.requested_size.width), toplevel->widget.screen_location.top_left.y + toplevel->border_width};
         ei_size_t text_size;
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
         //Calcul de la position du rectangle sous le titre et de la taille du toplevel
-        ei_point_t frame_spot = {toplevel_spot.x + border_width, toplevel_spot.y + 2 * border_width + text_size.height};
-        ei_size_t toplevel_size = {frame_size.width + 2 * border_width, frame_size.height + text_size.height + 2 * border_width};
+        //ei_point_t frame_spot = {toplevel_spot.x + border_width, toplevel_spot.y + 2 * border_width + text_size.height};
 
         //Clipping de la toplevel en fonction du parent
-        toplevel->widget.screen_location.size = toplevel_size;
+        toplevel->widget.screen_location.size.width = toplevel->widget.content_rect->size.width + 2 * toplevel->border_width;
+        toplevel->widget.screen_location.size.height = toplevel->widget.content_rect->size.height + text_size.height + 2 * toplevel->border_width;
         ei_rect_t intersection = {toplevel->widget.screen_location.top_left,toplevel->widget.screen_location.size};
-        ei_intersection_rectangle(clipper, &toplevel->widget.screen_location, &intersection);
+        ei_intersection_rectangle(clipper, &(toplevel->widget.screen_location), &intersection);
 
         //Calcul du clipper du rectangle sous le titre
-        ei_rect_t frame_rect = {frame_spot, frame_size};
-        ei_rect_t interieur = frame_rect;
-        ei_intersection_rectangle(clipper, &frame_rect, &interieur); // Peut etre changer clipper avec intersection
+        //ei_rect_t frame_rect;
+        toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + border_width;
+        toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + toplevel->border_width;
+        //frame_rect.size = toplevel->widget.content_rect->size;
+        ei_rect_t interieur;
+        ei_intersection_rectangle(clipper, toplevel->widget.content_rect, &interieur); // Peut etre changer clipper avec intersection
 
         //Calcul du clipper de la toplevel
         toplevel->widget.content_rect->top_left = interieur.top_left;
         toplevel->widget.content_rect->size = interieur.size;
+        printf("w: %d, h : %d \n", toplevel->widget.content_rect->size.width, toplevel->widget.content_rect->size.height);
 
         //Création du polygone exterieur en arrondissant le haut
         int nb_points = 10;
         int rayon = 20;
-        ei_point_t center_top_left = {toplevel_spot.x + rayon, toplevel_spot.y + rayon};
-        ei_point_t center_top_right = {toplevel_spot.x - rayon + toplevel_size.width, toplevel_spot.y + rayon};
+        ei_point_t center_top_left = {toplevel->widget.screen_location.top_left.x + rayon,toplevel->widget.screen_location.top_left.y + rayon};
+        ei_point_t center_top_right = {toplevel->widget.screen_location.top_left.x - rayon + toplevel->widget.screen_location.size.width, toplevel->widget.screen_location.top_left.y + rayon};
         ei_extreme_linked_points_t* arc_top_left = arc(center_top_left, rayon, 90.0, 180.0, nb_points);
         ei_extreme_linked_points_t* arc_top_right = arc(center_top_right, rayon, 0.0, 90.0, nb_points);
 
-        ei_point_t point_bot_left = {toplevel_spot.x, toplevel_spot.y + toplevel_size.height};
-        ei_point_t point_bot_right = {toplevel_spot.x + toplevel_size.width, toplevel_spot.y + toplevel_size.height};
+        ei_point_t point_bot_left = {toplevel->widget.screen_location.top_left.x, toplevel->widget.screen_location.top_left.y + toplevel->widget.screen_location.size.height};
+        ei_point_t point_bot_right = {toplevel->widget.screen_location.top_left.x + toplevel->widget.screen_location.size.width, toplevel->widget.screen_location.top_left.y + toplevel->widget.screen_location.size.height};
 
         ei_linked_point_t* bot_right = calloc(1, sizeof(ei_linked_point_t));
         bot_right->point = point_bot_right;
@@ -155,23 +158,20 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_color_t inter_color = {0xff, 0xff, 0xff, 0xff};
 
         //Création du polygone interieur (sous le titre)
-        ei_linked_point_t* inter_first_point = points_list(frame_rect);
+        ei_linked_point_t* inter_first_point = points_list(*(widget->content_rect));
         ei_draw_polygon(surface, inter_first_point, inter_color, &interieur);
 
         if (resizable != ei_axis_none){
                 //Création du polygone pour resize
-                int square_size = 4 * border_width;
                 ei_rect_t resize_rect;
-                resize_rect.top_left.x = toplevel_spot.x + toplevel_size.width - square_size;
-                resize_rect.top_left.y = toplevel_spot.y + toplevel_size.height - square_size;
-                resize_rect.size.width = square_size;
-                resize_rect.size.height = square_size;
-
+                resize_rect.top_left.x = toplevel->widget.screen_location.top_left.x + toplevel->widget.screen_location.size.width - 4 * border_width;
+                resize_rect.top_left.y = toplevel->widget.screen_location.top_left.y + toplevel->widget.screen_location.size.height - 4 * border_width;
+                resize_rect.size.width = 4 * border_width;
+                resize_rect.size.height = 4 * border_width;
                 ei_draw_polygon(surface, points_list(resize_rect), color, &intersection);
         }
 
         if (pick_surface) {
-                //ei_fill(pick_surface,widget->pick_color,clipper);
                 ei_draw_polygon(pick_surface, exter_first_point, *(widget->pick_color), &intersection);
         }
 
@@ -188,7 +188,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         if (toplevel->title && strcmp(toplevel->title,"") != 0) {
                 ei_rect_t title_rect = {text_spot, text_size};
-
                 ei_point_t aqui;
                 ei_anchor_spot(ei_anc_none, &text_size,&title_rect,&aqui);
                 ei_draw_text(surface,&aqui,toplevel->title,ei_default_font, ei_font_default_color, clipper);
