@@ -40,14 +40,15 @@ void 		ei_draw_text			(ei_surface_t		surface,
 	hw_surface_set_origin(surface_texte, *where);
 	ei_rect_t rect_text = hw_surface_get_rect(surface_texte);//on recupere le rectangle de la surface de texte
 	ei_bool_t alpha = hw_surface_has_alpha(surface_texte);
-	// ei_rect_t clipper_new;
-	// if (clipper) {
-	// 	ei_intersection_rectangle(&rect_surface, (ei_rect_t*)clipper, &clipper_new);
-	// } else {
-	// 	clipper_new = rect_surface;
-	// }
+	ei_rect_t clipper_new;
+	if (clipper) {
+		ei_intersection_rectangle(&rect_surface, (ei_rect_t*)clipper, &clipper_new);
+	} else {
+		clipper_new = rect_surface;
+	}
 	ei_rect_t dest_maj;
-	ei_intersection_rectangle(clipper, &rect_text, &dest_maj);
+	ei_intersection_rectangle(&clipper_new, &rect_text, &dest_maj);
+	//rect_text.size = dest_maj.size;
 	ei_copy_surface(surface, &dest_maj, surface_texte, &dest_maj, alpha);
 	hw_surface_unlock(surface_texte);
 	hw_surface_free(surface_texte);
