@@ -19,7 +19,7 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                         */
                         widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * placer_parent->width + placer_widget->x - x;
                         widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * placer_parent->height + placer_widget->y - y;
-                        printf("merde x : %d y : %d \n", widget->screen_location.top_left.x, widget->screen_location.top_left.y);
+
                 }
         }
 }
@@ -43,7 +43,6 @@ void ei_placer_runfunc(ei_widget_t* widget){
         compute_size(widget, parent);
         int x, y;
         ei_anchor_t anchor = placer->anchor;
-        printf("anchor %d \n", anchor);
         switch (anchor) {
                 case ei_anc_center:
                         x = widget->screen_location.size.width/2;
