@@ -176,6 +176,14 @@ frame_dans_frame : ${OBJDIR}/frame_dans_frame.o ${LIBEIBASE} ${LIBEI}
 ${OBJDIR}/frame_dans_frame.o : ${TESTS}/frame_dans_frame.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/frame_dans_frame.c -o ${OBJDIR}/frame_dans_frame.o
 
+#Toplevel dans toplevel
+
+toplevel_fils_de_toplevel : ${OBJDIR}/toplevel_fils_de_toplevel.o ${LIBEIBASE} ${LIBEI}
+	${LINK} -o toplevel_fils_de_toplevel ${OBJDIR}/toplevel_fils_de_toplevel.o ${LIBEI} ${LIBS}
+
+${OBJDIR}/toplevel_fils_de_toplevel.o : ${TESTS}/toplevel_fils_de_toplevel.c
+	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/toplevel_fils_de_toplevel.c -o ${OBJDIR}/toplevel_fils_de_toplevel.o
+
 # Building of the library libei
 
 ${LIBEI} : ${LIBEIOBJS}

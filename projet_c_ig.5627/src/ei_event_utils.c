@@ -129,7 +129,6 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 rect_list_add(rect_list, intersection1);
                 moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
-                // ei_place(moving_widget, NULL, &(moving_widget->screen_location.top_left.x), &(moving_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
                 mouse_pos = event->param.mouse.where;
                 ei_widget_t* current = moving_widget->children_head;
                 while (current) {

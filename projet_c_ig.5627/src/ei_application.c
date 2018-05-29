@@ -70,6 +70,7 @@ void ei_app_run() {
                 ei_widget_t* widget;
                 ei_widget_t* parent;
                 hw_event_wait_next(event);
+                printf("MODIFIEUR AU DEBUT : %d\n", event->param.key.modifier_mask);
 
                 ei_point_t mouse_where = event->param.mouse.where;
                 switch(event->type) {
