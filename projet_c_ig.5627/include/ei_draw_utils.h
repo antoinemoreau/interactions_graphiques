@@ -35,12 +35,12 @@ void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation);
  *
  * @param	rectangle			The rectangle that is linked to its parent with the @param anchor.
  *
- * @param	texte				The text inside the rectangle.
+ * @param	size				Size of the object to anchor.
  *
  * @param	anchor_position			The position of the anchor.
  */
 
-void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* texte, ei_rect_t* rectangle, ei_point_t* anchor_position);
+void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* size, ei_rect_t* rectangle, ei_point_t* anchor_position);
 
 /**
  * \brief	Computes the intersection between two rectangles

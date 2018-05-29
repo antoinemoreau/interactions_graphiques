@@ -49,24 +49,6 @@ static ei_rect_t* rectangle_ord_min(ei_rect_t* clipper, ei_rect_t* sec_rect){
         }
 }
 
-static int coordonnes_min(int x1, int x2){
-  if (x1 < x2){
-    return x1;
-  }
-  else{
-    return x2;
-  }
-}
-
-static int coordonnes_max(int x1, int x2){
-  if (x1 < x2){
-    return x2;
-  }
-  else{
-    return x1;
-  }
-}
-
 void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_t* dest){
         ei_rect_t* left_rect = rectangle_abs_min(clipper, sec_rect);
         ei_rect_t* right_rect = NULL;
@@ -117,7 +99,7 @@ void ei_intersection_rectangle(ei_rect_t* clipper, ei_rect_t* sec_rect, ei_rect_
         dest->size = dest_size;
 }
 
-void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* texte, ei_rect_t* rectangle, ei_point_t* anchor_position){
+void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* size, ei_rect_t* rectangle, ei_point_t* anchor_position){
 
         /*
         Renvoi la position du point choisi avec anchor_position
@@ -126,36 +108,36 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* texte, ei_rect_t* rectangle, 
         */
         switch (anchor) {
                 case ei_anc_center:
-                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2 - texte->width/2;
-                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2 - texte->height/2;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2 - size->width/2;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2 - size->height/2;
                         break;
                 case ei_anc_north:
-                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2 - texte->width/2;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2 - size->width/2;
                         (*anchor_position).y = rectangle->top_left.y;
                         break;
                 case ei_anc_northeast:
-                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width - texte->width;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width - size->width;
                         (*anchor_position).y = rectangle->top_left.y;
                         break;
                 case ei_anc_east:
-                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width - texte->width;
-                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2 - texte->height/2;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width - size->width;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2 - size->height/2;
                         break;
                 case ei_anc_southeast:
-                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width - texte->width;
-                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height - texte->height;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width - size->width;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height - size->height;
                         break;
                 case ei_anc_south:
-                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height - texte->height;
-                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2 - texte->width/2;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height - size->height;
+                        (*anchor_position).x = rectangle->top_left.x + rectangle->size.width/2 - size->width/2;
                         break;
                 case ei_anc_southwest:
-                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height - texte->height;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height - size->height;
                         (*anchor_position).x = rectangle->top_left.x;
                         break;
                 case ei_anc_west:
                         (*anchor_position).x = rectangle->top_left.x;
-                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2 - texte->height;
+                        (*anchor_position).y = rectangle->top_left.y + rectangle->size.height/2 - size->height;
                         break;
                 default:
                         (*anchor_position).x = rectangle->top_left.x;

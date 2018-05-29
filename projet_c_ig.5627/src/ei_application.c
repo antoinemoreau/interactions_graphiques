@@ -7,6 +7,7 @@
 #include "ei_event.h"
 #include "ei_draw.h"
 #include "ei_widget.h"
+#include "ei_draw_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
