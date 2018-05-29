@@ -59,20 +59,24 @@ int ei_main(int argc, char** argv)
 
         ei_widget_t*    button;
         ei_widget_t*    toplevel;
+        ei_widget_t*    toplevel2;
 
 	ei_app_create(&screen_size, EI_FALSE);
         ei_frame_configure(ei_app_root_widget(), NULL, &root_bgcol, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 
         toplevel = ei_widget_create("toplevel", ei_app_root_widget());
+        toplevel2 = ei_widget_create("toplevel", ei_app_root_widget());
         button = ei_widget_create("button", toplevel);
 
         ei_toplevel_configure(toplevel, &window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
+        ei_toplevel_configure(toplevel2, &window_size, &window_color, &window_border_width, &window_title, &closable, &window_resizable, NULL);
         ei_button_configure(button, NULL, &button_color,
                              &button_border_width, NULL, &relief, &button_title, NULL, &text_color, NULL,
                              NULL, NULL, NULL, &button_callback, NULL);
 
         ei_place(toplevel, NULL, &(window_position.x), &(window_position.y), NULL, NULL, NULL, NULL, NULL, NULL);
+        ei_place(toplevel2, NULL, &(window_position.x), &(window_position.y), NULL, NULL, NULL, NULL, NULL, NULL);
         ei_place(button, &button_anchor, &button_x, &button_y, NULL,NULL, &button_rel_x, &button_rel_y, &button_rel_size_x, NULL);
 
 	ei_bind(ei_ev_keydown, NULL, "all", process_key, NULL);
