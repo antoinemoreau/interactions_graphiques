@@ -168,13 +168,19 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         //Dessin de la totalité de l'interieur du bouton
         ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
         ei_draw_polygon(surface, all_part, button->color, &inter);
+        ei_free_polygon(&all_part);
 
 
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 2);
                 ei_draw_polygon(pick_surface, pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
-
+                ei_free_polygon(&pick_poly);
         }
+        
+        ei_free_polygon(&high_part);
+        ei_free_polygon(&low_part);
+        
+
 
         if (button->text && strcmp(button->text, "") != 0) {
                 ei_point_t pos_texte;
@@ -192,17 +198,17 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_anchor_spot(button->img_anchor, &size_img, &inter, &pos_img);
 
                 hw_surface_lock(button->img);
-                hw_surface_set_origin(button->img, pos_img);
+                //hw_surface_set_origin(button->img, pos_img);
                 ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
                 ei_rect_t rect_surface_img = hw_surface_get_rect(button->img);
+                ei_rect_t rect_img = {pos_img, size_img};
 
                 ei_rect_t clipper_img;
-                ei_intersection_rectangle(&inter, &rect_surface_img, &clipper_img);
+                ei_intersection_rectangle(&inter, button->img_rect, &clipper_img);
 
-                ei_rect_t dest_final;
-                ei_intersection_rectangle(&clipper_img, button->img_rect, &dest_final);
+                //ei_intersection_rectangle(&clipper_img, button->img_rect, &rect_img);
 
-                ei_copy_surface(surface, &dest_final, button->img, &dest_final, alpha_img);
+                ei_copy_surface(surface, &clipper_img, button->img, &clipper_img, alpha_img);
                 hw_surface_unlock(button->img);
         }
 }

@@ -7,16 +7,6 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
         if (parent != NULL) {
                 ei_placer_t* placer_parent = (ei_placer_t*) parent->geom_params;
 
-                if (placer_parent == NULL) {
-                        /*
-                        Si le parent est le widget root, on calcule simplement la position du widget
-                        */
-                        widget->screen_location.top_left.x = placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x - x;
-                        widget->screen_location.top_left.y = placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y - y;
-                        widget->content_rect->top_left.x +=  placer_widget->x;
-                        widget->content_rect->top_left.y +=  placer_widget->y;
-
-                } else {
                         /*
                         On calcule la place d'un des pixels du widget dans le référentiel absolu
                         Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
@@ -25,7 +15,7 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                         widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
                         widget->content_rect->top_left.x +=  placer_widget->x;
                         widget->content_rect->top_left.y +=  placer_widget->y;
-                }
+                
         }
 }
 
@@ -86,9 +76,9 @@ void ei_placer_runfunc(ei_widget_t* widget){
                         y = 0;
         }
         compute_spot(widget, parent, x, y);
-        for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
-                if (current->geom_params != NULL)
-                        current->geom_params->manager->runfunc(current);
+        for (ei_widget_t* child = widget->children_head; child != NULL; child = child->next_sibling){
+                if (child->geom_params != NULL)
+                        child->geom_params->manager->runfunc(child);
         }
 }
 
@@ -117,27 +107,6 @@ static void supress_widget_from_parent(ei_widget_t* widget){
 }
 
 void ei_placer_releasefunc(struct ei_widget_t* widget){
-        ei_widget_t* parent = widget->parent;
-        if (parent != NULL){
-                /*
-                On enlève les liens entre ce widget et ses enfants et son parent
-                */
-                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
-                        if (parent->children_tail != NULL){
-                                parent->children_tail->next_sibling = current;
-                                parent->children_tail = current;
-                        }
-                        else{
-                                parent->children_head = current;
-                                parent->children_tail = current;
-                                current->next_sibling = NULL;
-                        }
-                }
-                supress_widget_from_parent(widget);
-        }
-        else{
-                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
-                        current->parent = NULL;
-                }
-        }
+        // Pas de fonction release pour le placer
+        return;
 }

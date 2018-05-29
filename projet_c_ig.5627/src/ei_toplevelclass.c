@@ -50,9 +50,6 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
 
         int             button_border_width     = 1;
         ei_color_t      button_color            = {0xa9,0x11,0x01, 0xff};
-        // ei_anchor_t	button_anchor	        = ei_anc_northwest;
-        // float           button_rel_x            = 0.0;
-        // float           button_rel_y            = 0.0;
         int		button_x	        = 0; //toplevel_border_width;
         int		button_y	        = 0; //toplevel_border_width;
         ei_relief_t     relief                  = ei_relief_raised;
@@ -61,17 +58,11 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
 
         //Création et configuration du bouton suivant les paramètres
         ei_widget_t*    button_widget           = ei_widget_create ("button", toplevel->widget.parent);
-        //button_widget->parent = (ei_widget_t*) toplevel;
         ei_button_t*    button                  = (ei_button_t*) button_widget;
 
         ei_button_configure(button_widget, &requested_size, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
                             NULL, NULL, NULL, &button_closing, NULL);
-        //Création d'un bouton avant le texte pour fermer la fenêtre
-        //ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
-        // button_widget->screen_location.size = requested_size;
-        // button_widget->screen_location.top_left.x = button_x;
-        // button_widget->screen_location.top_left.y = button_y;
 
         return button;
 }
@@ -100,8 +91,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_color_t              color                 = toplevel->color;
         int                     border_width          = toplevel->border_width;
 
-        ei_point_t              toplevel_spot         = toplevel->widget.screen_location.top_left;
-        ei_size_t               frame_size            = toplevel->widget.content_rect->size;
 
 
         //titre
@@ -109,13 +98,14 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_size_t text_size;
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
+        widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
+        widget->screen_location.size.height = widget->requested_size.height + text_size.height + 2 * toplevel->border_width;
+
         //Clipping de la toplevel en fonction du parent
-
-        toplevel->widget.screen_location.size.width = toplevel->widget.content_rect->size.width + 2 * toplevel->border_width;
-        toplevel->widget.screen_location.size.height = toplevel->widget.content_rect->size.height + text_size.height + 2 * border_width;
-        ei_rect_t intersection = {toplevel->widget.screen_location.top_left,toplevel->widget.screen_location.size};
+        toplevel->widget.content_rect->size.width = toplevel->widget.screen_location.size.width - 2 * toplevel->border_width;
+        toplevel->widget.content_rect->size.height = toplevel->widget.screen_location.size.height - text_size.height - 2 * border_width;
+        ei_rect_t intersection = {toplevel->widget.screen_location.top_left, toplevel->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(toplevel->widget.screen_location), &intersection);
-
 
         toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + border_width;
         toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + border_width;
@@ -171,7 +161,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         if (pick_surface) {
                 ei_draw_polygon(pick_surface, exter_first_point, *(widget->pick_color), &intersection);
         }
-
         if (closable == EI_TRUE) {
                 //Dessin du bouton en haut à gauche du toplevel
                 toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + toplevel->border_width + toplevel->close_button->border_width*5;

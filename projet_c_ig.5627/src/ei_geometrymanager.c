@@ -154,7 +154,7 @@ void ei_geometrymanager_unmap(ei_widget_t* widget){
 	après l'avoir enlevé de l'écran
 	*/
 	if (widget->geom_params){
-		ei_placer_releasefunc(widget);
+		widget->geom_params->manager->releasefunc(widget);
 		free( (ei_placer_t*)(widget->geom_params) );
 	}
 }

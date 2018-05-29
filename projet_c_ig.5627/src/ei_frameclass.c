@@ -119,9 +119,30 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_draw_text(surface,&aqui,frame->text,NULL, frame->text_color,&inter);
         }else{
                 if(frame->img){
-                        // ei_point_t aqui_image;
-                        // ei_anchor_spot(frame->img_anchor,&(frame->widget),&aqui_image);
-                        // ei_copy_surface(surface,frame->img_rect,frame->img,frame->img_rect,EI_FALSE);
+                        ei_point_t pos_img;
+                        ei_size_t size_img;
+                        ei_rect_t rect_surface_img;
+                        if(frame->img_rect){
+                                size_img = frame->img_rect->size;
+                                rect_surface_img = *(frame->img_rect);
+                        } else {
+                                rect_surface_img = hw_surface_get_rect(frame->img);
+                                size_img = rect_surface_img.size;
+                        }
+                        ei_anchor_spot(frame->img_anchor, &size_img, &inter, &pos_img);
+
+                        hw_surface_lock(frame->img);
+                        hw_surface_set_origin(frame->img, pos_img);
+                        ei_bool_t alpha_img = hw_surface_has_alpha(frame->img);
+
+                        ei_rect_t dest_final;
+                        ei_intersection_rectangle(&inter, &rect_surface_img, &dest_final);
+
+                        // ei_rect_t dest_final;
+                        // ei_intersection_rectangle(&clipper_img, &rect_surface_img, &dest_final);
+
+                        ei_copy_surface(surface, &dest_final, frame->img, &dest_final, alpha_img);
+                        hw_surface_unlock(frame->img);
                 }
         }
 }

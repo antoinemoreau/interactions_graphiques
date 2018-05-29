@@ -38,20 +38,15 @@ void ei_app_create(ei_size_t* main_window_size, ei_bool_t fullscreen) {
 }
 
 void ei_app_free() {
-        // TODO :       - release le app_create
-        //              - release widget_create
-        //              - release placeru
-        //              - release event binds
-        //              - release app_run
-
-        // On détruit récursivement tous les widgets à partir du root_widget
+        // Destruction de l'arborescence de widgets
         ei_widget_destroy(root);
+
+        // Destruction de la liste d'événements
+        free_list_events();
+
+        // Libération des surfaces
         hw_surface_free(root_surface);
         hw_surface_free(pick_surface);
-
-        //destroy rootwidget
-        //unbind traitants internes
-        //autres
 }
 
 void ei_app_run() {
