@@ -348,13 +348,9 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 		(*(toplevel->min_size)).height = 120;
 	}
 
-	if (widget->screen_location.size.width < widget->requested_size.width){
-		widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
+	if (widget->content_rect->size.width < widget->requested_size.width)
 		widget->content_rect->size.width = widget->requested_size.width;
-	}
-	if (widget->screen_location.size.height < widget->requested_size.height){
-		widget->screen_location.size.height = widget->requested_size.height + texte_height + 2 * toplevel->border_width;
-		widget->content_rect->size.height = widget->requested_size.height;
-	}
 
+	if (widget->content_rect->size.height < widget->requested_size.height)
+		widget->content_rect->size.height = widget->requested_size.height;
 }

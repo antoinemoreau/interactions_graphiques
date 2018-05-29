@@ -100,8 +100,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_color_t              color                 = toplevel->color;
         int                     border_width          = toplevel->border_width;
 
-        ei_point_t              toplevel_spot         = toplevel->widget.screen_location.top_left;
-        ei_size_t               frame_size            = toplevel->widget.content_rect->size;
 
 
         //titre
