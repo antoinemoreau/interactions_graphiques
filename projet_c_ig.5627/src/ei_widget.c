@@ -200,6 +200,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 		frame->img = *img;
 
 	if (img_rect != NULL)
+		// frame->img_rect = malloc(sizeof(ei_rect_t));
 		frame->img_rect = *img_rect;
 
 	if (img_anchor != NULL)
@@ -275,8 +276,12 @@ void			ei_button_configure		(ei_widget_t*		widget,
 	if (img != NULL)
 		button->img = *img;
 
-	if (img_rect != NULL)
-		button->img_rect = *img_rect;
+	if (img_rect != NULL){
+		button->img_rect = malloc(sizeof(ei_rect_t));
+		button->img_rect->size = (*img_rect)->size;
+		button->img_rect->top_left.x = (*img_rect)->top_left.x;
+		button->img_rect->top_left.y = (*img_rect)->top_left.y;
+	}
 
 	if (img_anchor != NULL)
 		button->img_anchor = *img_anchor;
