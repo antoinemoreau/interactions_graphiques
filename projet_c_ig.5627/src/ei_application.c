@@ -113,6 +113,7 @@ void ei_app_run() {
 
                         ei_intersection_rectangle(clipper, &(widget->screen_location), &new_rect);
                         rect_list_add(rect_list, new_rect);
+                        //printf("coucou le redraw\n");
                         redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
                 }

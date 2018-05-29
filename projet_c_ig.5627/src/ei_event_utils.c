@@ -164,6 +164,7 @@ ei_bool_t click_resize_toplevel(ei_widget_t* widget, struct ei_event_t* event, v
                 < event->param.mouse.where.x && event->param.mouse.where.x < \
                 (widget->screen_location.top_left.x + widget->screen_location.size.width) \
                 && event->param.mouse.button_number == 1) {
+
                 new_size = event->param.mouse.where;
                 resized_toplevel = (ei_toplevel_t*)widget;
         }
@@ -195,6 +196,7 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                                 resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
                                 new_size = event->param.mouse.where;
                         }
+                        
                         //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
                         ei_rect_t intersection2;
                         ei_intersection_rectangle(&resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
