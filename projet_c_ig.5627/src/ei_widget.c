@@ -199,10 +199,12 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 	if (img != NULL)
 		frame->img = *img;
 
-	if (img_rect != NULL)
+	if (img_rect != NULL){
 		frame->img_rect = malloc(sizeof(ei_rect_t));
-		frame->img_rect = *img_rect;
-
+		frame->img_rect->size = (*img_rect)->size;
+		frame->img_rect->top_left.x = (*img_rect)->top_left.x;
+		frame->img_rect->top_left.y = (*img_rect)->top_left.y;
+	}
 	if (img_anchor != NULL)
 		frame->img_anchor = *img_anchor;
 	else if (!frame->img_anchor)
