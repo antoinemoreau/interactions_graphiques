@@ -85,7 +85,6 @@ void* ei_toplevel_allocfunc () {
 
 void ei_toplevel_releasefunc(ei_widget_t* widget){
         ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
-        free(toplevel);
 }
 
 void ei_toplevel_drawfunc (struct ei_widget_t* widget,
@@ -119,7 +118,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
 
         toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + border_width;
-        toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + 1 * border_width;
+        toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + border_width;
 
         //frame_rect.size = toplevel->widget.content_rect->size;
         ei_rect_t interieur;

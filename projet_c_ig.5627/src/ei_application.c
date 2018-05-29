@@ -122,6 +122,7 @@ void ei_app_run() {
                 }
                 release_rect_list(rect_list);
         }
+        //hw_surface_free(pick_surface);
         free(event);
 }
 

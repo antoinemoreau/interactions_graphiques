@@ -5,6 +5,7 @@
 #include "ei_event_utils.h"
 #include "ei_toplevel.h"
 #include "ei_application.h"
+#include "ei_geometrymanager.h"
 
 ei_bool_t drawing = EI_FALSE;
 ei_bool_t destroy = EI_FALSE;
@@ -127,14 +128,14 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 rect_list_add(rect_list, intersection);
                 moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
-
+                // ei_place(moving_widget, NULL, &(moving_widget->screen_location.top_left.x), &(moving_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
                 mouse_pos = event->param.mouse.where;
                 ei_widget_t* current = moving_widget->children_head;
                 while (current) {
-                        ei_placer_runfunc(current);
+                        current->geom_params->manager->runfunc(current);
                         ei_widget_t* current_bro = current->next_sibling;
                         while (current_bro) {
-                                ei_placer_runfunc(current_bro);
+                                current_bro->geom_params->manager->runfunc(current_bro);
                                 current_bro = current_bro->next_sibling;
                         }
                         current = current->children_head;
@@ -178,13 +179,14 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                         resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
                         new_size = event->param.mouse.where;
                 }
+                //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
                 rect_list_add(rect_list, resized_widget->content_rect);
                 ei_widget_t* current = resized_widget->children_head;
                 while (current) {
-                        ei_placer_runfunc(current);
+                        current->geom_params->manager->runfunc(current);
                         ei_widget_t* current_bro = current->next_sibling;
                         while (current_bro) {
-                                ei_placer_runfunc(current_bro);
+                                current_bro->geom_params->manager->runfunc(current_bro);
                                 current_bro = current_bro->next_sibling;
                         }
                         current = current->children_head;

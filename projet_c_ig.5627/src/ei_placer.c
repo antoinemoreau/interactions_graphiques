@@ -13,6 +13,8 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                         */
                         widget->screen_location.top_left.x = placer_widget->rel_x * parent->screen_location.size.width + placer_widget->x - x;
                         widget->screen_location.top_left.y = placer_widget->rel_y * parent->screen_location.size.height + placer_widget->y - y;
+                        widget->content_rect->top_left.x +=  placer_widget->x;
+                        widget->content_rect->top_left.y +=  placer_widget->y;
 
                 } else {
                         /*
@@ -21,6 +23,8 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                         */
                         widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * parent->content_rect->size.width + placer_widget->x - x;
                         widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
+                        widget->content_rect->top_left.x +=  placer_widget->x;
+                        widget->content_rect->top_left.y +=  placer_widget->y;
                 }
         }
 }
@@ -82,6 +86,10 @@ void ei_placer_runfunc(ei_widget_t* widget){
                         y = 0;
         }
         compute_spot(widget, parent, x, y);
+        for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
+                if (current->geom_params != NULL)
+                        current->geom_params->manager->runfunc(current);
+        }
 }
 
 static void supress_widget_from_parent(ei_widget_t* widget){
