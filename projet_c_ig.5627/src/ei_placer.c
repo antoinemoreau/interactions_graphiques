@@ -7,15 +7,15 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
         if (parent != NULL) {
                 ei_placer_t* placer_parent = (ei_placer_t*) parent->geom_params;
 
-                        /*
-                        On calcule la place d'un des pixels du widget dans le référentiel absolu
-                        Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
-                        */
-                        widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * parent->content_rect->size.width + placer_widget->x - x;
-                        widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
-                        widget->content_rect->top_left.x +=  placer_widget->x;
-                        widget->content_rect->top_left.y +=  placer_widget->y;
-                
+                /*
+                On calcule la place d'un des pixels du widget dans le référentiel absolu
+                Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
+                */
+                widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * parent->content_rect->size.width + placer_widget->x - x;
+                widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
+                widget->content_rect->top_left.x +=  placer_widget->x;
+                widget->content_rect->top_left.y +=  placer_widget->y;
+
         }
 }
 
