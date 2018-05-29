@@ -125,7 +125,7 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 ei_widget_t* moving_widget = (ei_widget_t*)moving_toplevel;
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_rect_t intersection1;
-                ei_intersection_rectangle(&moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection1);
+                ei_intersection_rectangle(moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
                 moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
@@ -142,7 +142,7 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                         current = current->children_head;
                 }
                 ei_rect_t intersection2;
-                ei_intersection_rectangle(&moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection2);
+                ei_intersection_rectangle(moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection2);
                 rect_list_add(rect_list, intersection2);
         }
         return EI_FALSE;
@@ -175,7 +175,7 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_widget_t* resized_widget = (ei_widget_t*)resized_toplevel;
                 ei_rect_t intersection1;
-                ei_intersection_rectangle(&resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection1);
+                ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
                 int diff_x = resized_widget->requested_size.width - new_size.x + event->param.mouse.where.x;
                 int diff_y = resized_widget->requested_size.height - new_size.y + event->param.mouse.where.y;
@@ -197,7 +197,7 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                         }
                         //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
                         ei_rect_t intersection2;
-                        ei_intersection_rectangle(&resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
+                        ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);
                         ei_widget_t* current = resized_widget->children_head;
                         while (current) {

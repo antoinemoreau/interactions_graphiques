@@ -41,8 +41,6 @@ static ei_linked_point_t* points_list (ei_rect_t rectangle){
 }
 
 static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
-        //Récupération de la border_width du toplevel
-        int             toplevel_border_width   = toplevel->border_width;
 
         //Définition des paramètres du bouton
         int             radius                  = 8;
@@ -50,8 +48,6 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
 
         int             button_border_width     = 1;
         ei_color_t      button_color            = {0xa9,0x11,0x01, 0xff};
-        int		button_x	        = 0; //toplevel_border_width;
-        int		button_y	        = 0; //toplevel_border_width;
         ei_relief_t     relief                  = ei_relief_raised;
         ei_size_t       requested_size          = {diameter, diameter}; // On les défini en dur mais faut changer
         ei_callback_t   button_closing          = closing;
@@ -75,7 +71,7 @@ void* ei_toplevel_allocfunc () {
 }
 
 void ei_toplevel_releasefunc(ei_widget_t* widget){
-        ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
+        //ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
 }
 
 void ei_toplevel_drawfunc (struct ei_widget_t* widget,
