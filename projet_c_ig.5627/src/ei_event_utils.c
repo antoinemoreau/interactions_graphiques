@@ -6,6 +6,8 @@
 #include "ei_toplevel.h"
 #include "ei_application.h"
 #include "ei_geometrymanager.h"
+#include "ei_application_utils.h"
+#include "ei_draw_utils.h"
 
 ei_bool_t drawing = EI_FALSE;
 ei_bool_t destroy = EI_FALSE;
@@ -71,7 +73,6 @@ ei_linked_event_t* find_event(ei_widget_t* widget, ei_eventtype_t eventtype, ei_
 }
 
 ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget) {
-        ei_widget_t* picked_widget = NULL;
         if (pick_id == widget->pick_id) {
                 return widget;
         }
@@ -79,20 +80,17 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget) {
         while (child) {
                 ei_widget_t* pick = ei_find_widget(pick_id, child);
                 if(pick){
-                        picked_widget = pick;
-                        return picked_widget;
+                        return pick;
                 }
                 child = child->next_sibling;
         }
+        return NULL;
 }
 //fonctions de callbacks des boutons
 ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(sunken_button && event->param.mouse.button_number == 1){
-                //ei_button_t* button = sunken_button;
                 sunken_button->relief = ei_relief_raised;
                 sunken_button = NULL;
-                drawing = EI_TRUE;
-                // return EI_TRUE
         }
         return EI_FALSE;
 }
@@ -101,20 +99,19 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
         if (event->param.mouse.button_number == 1) {
                 sunken_button = (ei_button_t*)widget;
                 sunken_button->relief = ei_relief_sunken;
-                drawing = EI_TRUE;
-                return EI_FALSE;
         }
+        return EI_FALSE;
 }
 
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(sunken_button && widget->pick_id != sunken_button->widget.pick_id){
-                return unpressbutton_animation(widget, event, user_param);
+                sunken_button->relief = ei_relief_raised;
+                sunken_button = NULL;
         }
         return EI_FALSE;
 }
+
 //fonctions de callback des toplevels
-
-
 ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if (event->param.mouse.where.y < widget->content_rect->top_left.y && event->param.mouse.button_number == 1) {
                 moving_toplevel = (ei_toplevel_t*)widget;
@@ -128,7 +125,7 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 ei_widget_t* moving_widget = (ei_widget_t*)moving_toplevel;
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_rect_t intersection1;
-                ei_intersection_rectangle(&moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection1);
+                ei_intersection_rectangle(moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
                 moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
@@ -145,9 +142,8 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                         current = current->children_head;
                 }
                 ei_rect_t intersection2;
-                ei_intersection_rectangle(&moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection2);
+                ei_intersection_rectangle(moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection2);
                 rect_list_add(rect_list, intersection2);
-                drawing = EI_TRUE;
         }
         return EI_FALSE;
 }
@@ -179,7 +175,7 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_widget_t* resized_widget = (ei_widget_t*)resized_toplevel;
                 ei_rect_t intersection1;
-                ei_intersection_rectangle(&resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection1);
+                ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
                 int diff_x = resized_widget->screen_location.size.width - new_size.x + event->param.mouse.where.x;
                 int diff_y = resized_widget->screen_location.size.height - new_size.y + event->param.mouse.where.y;
@@ -201,7 +197,7 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                         }
                         //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
                         ei_rect_t intersection2;
-                        ei_intersection_rectangle(&resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
+                        ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);
                         ei_widget_t* current = resized_widget->children_head;
                         while (current) {

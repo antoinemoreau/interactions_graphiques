@@ -165,7 +165,7 @@ ei_geometrymanager_t* ei_geometrymanager_from_name(ei_geometrymanager_name_t nam
 	NULL sinon
 	*/
 	for (ei_geometrymanager_t* current = geometrymanager_list; current != NULL; current = current->next){
-		if (strcmp(current->name, name)==0){
+		if (strcmp(current->name, name) == 0){
 			return current;
 		}
 	}

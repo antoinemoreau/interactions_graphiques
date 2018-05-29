@@ -10,7 +10,7 @@ void*           ei_button_allocfunc             () {
 }
 
 void            ei_button_releasefunc           (ei_widget_t* widget) {
-        ei_button_t* button = (ei_button_t*)widget;
+        //ei_button_t* button = (ei_button_t*)widget;
         // if (button->text)
         //         free(button->text);
         // if (button->text_font)
@@ -197,6 +197,8 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_size_t size_img = button->img_rect->size;
                 ei_anchor_spot(button->img_anchor, &size_img, &inter, &pos_img);
 
+                ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
+
                 hw_surface_lock(button->img);
                 //hw_surface_set_origin(button->img, pos_img);
                 ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
@@ -204,11 +206,12 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_rect_t rect_img = {pos_img, size_img};
 
                 ei_rect_t clipper_img;
-                ei_intersection_rectangle(&inter, button->img_rect, &clipper_img);
+                ei_intersection_rectangle(&surface_rect, button->img_rect, &clipper_img);
+                ei_rect_t dest;
+                ei_intersection_rectangle(&clipper_img, &inter, &dest);
 
-                //ei_intersection_rectangle(&clipper_img, button->img_rect, &rect_img);
-
-                ei_copy_surface(surface, &clipper_img, button->img, &clipper_img, alpha_img);
+                button->img_rect->size = clipper_img.size;
+                ei_copy_surface(surface, &clipper_img, button->img, button->img_rect, alpha_img);
                 hw_surface_unlock(button->img);
         }
 }
