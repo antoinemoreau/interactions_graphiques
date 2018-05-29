@@ -24,10 +24,10 @@ void            redraw                  (ei_surface_t           root_surface,
         if (widget != NULL) {
                 hw_surface_lock(root_surface);
                 hw_surface_lock(pick_surface);
-                if (screen_loc_before_event.top_left.x != widget->screen_location.top_left.x \
+                if (widget->parent && (screen_loc_before_event.top_left.x != widget->screen_location.top_left.x \
                         || screen_loc_before_event.top_left.y != widget->screen_location.top_left.y \
                         || screen_loc_before_event.size.width != widget->screen_location.size.width \
-                        || screen_loc_before_event.size.height != widget->screen_location.size.height) {
+                        || screen_loc_before_event.size.height != widget->screen_location.size.height)) {
 
                         widget = widget->parent;
                         rect_list_add(&rect_list, widget->screen_location);

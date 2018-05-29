@@ -62,7 +62,8 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
 
         ei_button_configure(button_widget, &requested_size, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
-                            NULL, NULL, NULL, &button_closing, NULL);
+                            NULL, NULL, NULL, NULL, NULL);
+        ei_bind(ei_ev_mouse_buttonup, button_widget, NULL, button_closing, NULL);
 
         return button;
 }
