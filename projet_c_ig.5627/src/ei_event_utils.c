@@ -141,6 +141,9 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                         }
                         current = current->children_head;
                 }
+                ei_rect_t intersection2;
+                ei_intersection_rectangle(&moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection2);
+                rect_list_add(rect_list, intersection2);
                 drawing = EI_TRUE;
         }
         return EI_FALSE;
@@ -166,6 +169,9 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
         if(resized_toplevel){
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_widget_t* resized_widget = (ei_widget_t*)resized_toplevel;
+                ei_rect_t intersection1;
+                ei_intersection_rectangle(&resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection1);
+                rect_list_add(rect_list, intersection1);
                 rect_list_add(rect_list, widget->content_rect);
                 if(ei_axis_none){
                         resized_toplevel = NULL;
@@ -181,7 +187,9 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                         new_size = event->param.mouse.where;
                 }
                 //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
-                rect_list_add(rect_list, resized_widget->content_rect);
+                ei_rect_t intersection2;
+                ei_intersection_rectangle(&resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection2);
+                rect_list_add(rect_list, intersection2);
                 ei_widget_t* current = resized_widget->children_head;
                 while (current) {
                         current->geom_params->manager->runfunc(current);
