@@ -44,4 +44,6 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
 
 ei_bool_t stop_resize(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
 
+ei_bool_t move_foreground(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
+
 #endif

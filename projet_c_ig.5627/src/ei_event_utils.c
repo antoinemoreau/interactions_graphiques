@@ -53,10 +53,13 @@ void ei_init_list_events (){
         ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&move_toplevel, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "toplevel", (ei_callback_t)&unclick_toplevel, NULL);
 
-        //resize_toplevel
+        // resize_toplevel
         ei_bind(ei_ev_mouse_buttondown, NULL, "toplevel", (ei_callback_t)&click_resize_toplevel, NULL);
         ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&resizing_toplevel, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "toplevel", (ei_callback_t)&stop_resize, NULL);
+
+        // Faire passer un widget au premier plan
+        //ei_bind(ei_ev_mouse_buttondown, NULL, "all", (ei_callback_t)&move_foreground, NULL);
 }
 
 ei_linked_event_t* find_event(ei_widget_t* widget, ei_eventtype_t eventtype, ei_tag_t tag, ei_callback_t callback) {
@@ -217,4 +220,31 @@ ei_bool_t stop_resize(ei_widget_t* widget, struct ei_event_t* event, void* user_
                 resized_toplevel = NULL;
         }
         return EI_FALSE;
+}
+
+ei_bool_t move_foreground(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
+        // On fait passer le widget et tous ses ancêtres à la fin de leur
+        // listes de frères respectives
+
+        // ei_widget_t* previous = NULL;
+        // ei_bool_t is_toplevel = strcmp(widget->wclass->name, "toplevel") == 0);
+
+        // if (!widget->parent) {
+        //         return EI_FALSE;
+        // }
+
+        // // Si il est déjà en queue on passe directement au père
+        // if (!widget->next_sibling || (is_toplevel && widget->next_)
+
+        // // On passe par le parent et on itère sur le fils jusqu'a trouver le fils précédent
+        
+        // while()
+
+        // if (!widget->next_sibling) {
+        //         move_foreground(widget->parent, event, user_param);
+        // } else ( {
+
+        // }
+
+        
 }
