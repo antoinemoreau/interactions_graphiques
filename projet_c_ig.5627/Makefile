@@ -61,7 +61,7 @@ else
 	PLATDIR		= _x11
 	INCFLAGS	:= ${INCFLAGS} -I/usr/include/SDL
 
-	LINK		= ${CC} #${VFLAGS}
+	LINK		= ${CC} ${VFLAGS}
 	LIBEI		= ${OBJDIR}/libei.a
 #	ARCH	        = 32
 	ARCH	        = 64
@@ -167,6 +167,14 @@ minesweeper : ${OBJDIR}/minesweeper.o ${LIBEIBASE} ${LIBEI}
 
 ${OBJDIR}/minesweeper.o : ${TESTS}/minesweeper.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/minesweeper.c -o ${OBJDIR}/minesweeper.o
+
+#Une frame dans une frame
+
+frame_dans_frame : ${OBJDIR}/frame_dans_frame.o ${LIBEIBASE} ${LIBEI}
+	${LINK} -o frame_dans_frame ${OBJDIR}/frame_dans_frame.o ${LIBEI} ${LIBS}
+
+${OBJDIR}/frame_dans_frame.o : ${TESTS}/frame_dans_frame.c
+	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/frame_dans_frame.c -o ${OBJDIR}/frame_dans_frame.o
 
 # Building of the library libei
 
