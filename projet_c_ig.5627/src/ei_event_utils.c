@@ -86,7 +86,7 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget){
 }
 //fonctions de callbacks des boutons
 ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
-        if(sunken_button){
+        if(sunken_button && event->param.mouse.button_number == 1){
                 //ei_button_t* button = sunken_button;
                 sunken_button->relief = ei_relief_raised;
                 sunken_button = NULL;
@@ -97,10 +97,12 @@ ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event,
 }
 
 ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
-        sunken_button = (ei_button_t*)widget;
-        sunken_button->relief = ei_relief_sunken;
-        drawing = EI_TRUE;
-        return EI_FALSE;
+        if (event->param.mouse.button_number == 1) {
+                sunken_button = (ei_button_t*)widget;
+                sunken_button->relief = ei_relief_sunken;
+                drawing = EI_TRUE;
+                return EI_FALSE;
+        }
 }
 
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
@@ -113,7 +115,7 @@ ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event
 
 
 ei_bool_t click_toplevel_header(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
-        if (event->param.mouse.where.y < widget->content_rect->top_left.y) {
+        if (event->param.mouse.where.y < widget->content_rect->top_left.y && event->param.mouse.button_number == 1) {
                 moving_toplevel = (ei_toplevel_t*)widget;
                 mouse_pos = event->param.mouse.where;
         }
@@ -150,15 +152,21 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
 }
 
 ei_bool_t unclick_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
-        if (moving_toplevel) {
+        if (moving_toplevel && event->param.mouse.button_number == 1) {
                 moving_toplevel = NULL;
         }
         return EI_FALSE;
 }
 
 ei_bool_t click_resize_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param){
-        if ((widget->screen_location.top_left.y + widget->screen_location.size.height - 4 * ((ei_toplevel_t*)widget)->border_width) < event->param.mouse.where.y &&  event->param.mouse.where.y < (widget->screen_location.top_left.y + widget->screen_location.size.height) &&\
-        (widget->screen_location.top_left.x + widget->screen_location.size.width - 4 * ((ei_toplevel_t*)widget)->border_width) < event->param.mouse.where.x && event->param.mouse.where.x < (widget->screen_location.top_left.x + widget->screen_location.size.width)) {
+        if ((widget->screen_location.top_left.y + widget->screen_location.size.height - \
+                4 * ((ei_toplevel_t*)widget)->border_width) < event->param.mouse.where.y \
+                &&  event->param.mouse.where.y < (widget->screen_location.top_left.y + \
+                widget->screen_location.size.height) && (widget->screen_location.top_left.x \
+                + widget->screen_location.size.width - 4 * ((ei_toplevel_t*)widget)->border_width) \
+                < event->param.mouse.where.x && event->param.mouse.where.x < \
+                (widget->screen_location.top_left.x + widget->screen_location.size.width) \
+                && event->param.mouse.button_number == 1) {
                 new_size = event->param.mouse.where;
                 resized_toplevel = (ei_toplevel_t*)widget;
         }
