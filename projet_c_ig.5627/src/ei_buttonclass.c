@@ -168,13 +168,19 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         //Dessin de la totalité de l'interieur du bouton
         ei_linked_point_t* all_part = rounded_frame(inter, button->corner_radius, nb_points, 2);
         ei_draw_polygon(surface, all_part, button->color, &inter);
+        ei_free_polygon(&all_part);
 
 
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 2);
                 ei_draw_polygon(pick_surface, pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
-
+                ei_free_polygon(&pick_poly);
         }
+        
+        ei_free_polygon(&high_part);
+        ei_free_polygon(&low_part);
+        
+
 
         if (button->text && strcmp(button->text, "") != 0) {
                 ei_point_t pos_texte;

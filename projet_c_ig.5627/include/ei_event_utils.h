@@ -16,6 +16,8 @@ ei_linked_event_t* get_list_events();
 
 void set_list_events (ei_linked_event_t* list);
 
+void free_list_events ();
+
 void ei_init_list_events();
 
 ei_linked_event_t* find_event(ei_widget_t* widget, ei_eventtype_t eventtype, ei_tag_t tag, ei_callback_t callback);

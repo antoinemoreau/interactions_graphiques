@@ -50,9 +50,6 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
 
         int             button_border_width     = 1;
         ei_color_t      button_color            = {0xa9,0x11,0x01, 0xff};
-        // ei_anchor_t	button_anchor	        = ei_anc_northwest;
-        // float           button_rel_x            = 0.0;
-        // float           button_rel_y            = 0.0;
         int		button_x	        = 0; //toplevel_border_width;
         int		button_y	        = 0; //toplevel_border_width;
         ei_relief_t     relief                  = ei_relief_raised;
@@ -61,17 +58,11 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
 
         //Création et configuration du bouton suivant les paramètres
         ei_widget_t*    button_widget           = ei_widget_create ("button", toplevel->widget.parent);
-        //button_widget->parent = (ei_widget_t*) toplevel;
         ei_button_t*    button                  = (ei_button_t*) button_widget;
 
         ei_button_configure(button_widget, &requested_size, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
                             NULL, NULL, NULL, &button_closing, NULL);
-        //Création d'un bouton avant le texte pour fermer la fenêtre
-        //ei_place(button_widget, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL);
-        // button_widget->screen_location.size = requested_size;
-        // button_widget->screen_location.top_left.x = button_x;
-        // button_widget->screen_location.top_left.y = button_y;
 
         return button;
 }
@@ -199,7 +190,7 @@ void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
         toplevel->widget = *widget;
         toplevel->color = ei_default_background_color;
         toplevel->border_width = 4;
-        toplevel->title = malloc(8); // 8 caracteres
+        toplevel->title = malloc(sizeof("Toplevel"));
         strcpy(toplevel->title, "Toplevel");
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
