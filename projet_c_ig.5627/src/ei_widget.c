@@ -11,12 +11,8 @@
 #include <stdio.h>
 
 static ei_color_t pick_color = {0x00, 0x00, 0x00, 0xff};
-//static uint32_t pick_id = 0;
 
 static ei_color_t* inc_pick_color () {
-	// if (pick_color.alpha < 0xff){
-	// 	pick_color.alpha++;
-	// } else {
 	if (pick_color.blue < 0xff) {
 		pick_color.blue++;
 	} else {
@@ -99,7 +95,7 @@ static void ei_widget_destroy_recurs (ei_widget_t* widget) {
                 if(widget->next_sibling != NULL){
                         ei_widget_destroy_recurs(widget->next_sibling);
                 }
-		//widget->geom_params->manager->releasefunc(widget);
+		ei_geometrymanager_unmap(widget);
 		free(widget);
         }
 }
@@ -324,8 +320,8 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	int texte_width;
 	int texte_height;
 	hw_text_compute_size(*title, ei_default_font, &texte_width, &texte_height);
-	widget->content_rect->top_left.x = widget->screen_location.top_left.x + toplevel->border_width;
-	widget->content_rect->top_left.y = widget->screen_location.top_left.y + texte_height + toplevel->border_width;
+	toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + toplevel->border_width;
+        toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + texte_height + toplevel->border_width;
 	if (title != NULL) {
 		toplevel->title = realloc(toplevel->title, strlen(*title)+1);
 		strcpy(toplevel->title, *title);

@@ -107,27 +107,6 @@ static void supress_widget_from_parent(ei_widget_t* widget){
 }
 
 void ei_placer_releasefunc(struct ei_widget_t* widget){
-        ei_widget_t* parent = widget->parent;
-        if (parent != NULL){
-                /*
-                On enlève les liens entre ce widget et ses enfants et son parent
-                */
-                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
-                        if (parent->children_tail != NULL){
-                                parent->children_tail->next_sibling = current;
-                                parent->children_tail = current;
-                        }
-                        else{
-                                parent->children_head = current;
-                                parent->children_tail = current;
-                                current->next_sibling = NULL;
-                        }
-                }
-                supress_widget_from_parent(widget);
-        }
-        else{
-                for (ei_widget_t* current = widget->children_head; current != NULL; current = current->next_sibling){
-                        current->parent = NULL;
-                }
-        }
+        // Pas de fonction release pour le placer
+        return;
 }

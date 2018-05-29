@@ -214,3 +214,14 @@ ei_extreme_linked_points_t* arc(ei_point_t center, int rayon, float angle_depart
         current->next = NULL;
         return extreme_points;
 }
+
+void ei_free_polygon(ei_linked_point_t** poly) {
+        if (poly != NULL) {
+                ei_linked_point_t* del = *poly;
+                while (*poly != NULL) {
+                        *poly = (*poly)->next;
+                        free(del);
+                        del = *poly;
+                }
+        }
+}
