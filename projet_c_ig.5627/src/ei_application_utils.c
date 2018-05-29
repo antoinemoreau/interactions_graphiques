@@ -1,8 +1,8 @@
 #include "ei_application_utils.h"
-
 #include "ei_toplevel.h"
 
 ei_linked_rect_t* rect_list = NULL;
+ei_rect_t screen_loc_before_event;
 
 void            draw_all_widgets        (ei_widget_t*           widget,
                                          ei_surface_t           root_surface,
@@ -24,14 +24,18 @@ void            redraw                  (ei_surface_t           root_surface,
         if (widget != NULL) {
                 hw_surface_lock(root_surface);
                 hw_surface_lock(pick_surface);
-                if (strcmp(widget->wclass->name, "toplevel") == 0) {
+                if (screen_loc_before_event.top_left.x != widget->screen_location.top_left.x \
+                        || screen_loc_before_event.top_left.y != widget->screen_location.top_left.y \
+                        || screen_loc_before_event.size.width != widget->screen_location.size.width \
+                        || screen_loc_before_event.size.height != widget->screen_location.size.height) {
+
                         widget = widget->parent;
                         rect_list_add(&rect_list, widget->screen_location);
                 }
                 draw_all_widgets(widget, root_surface, pick_surface, &(widget->screen_location));
                 hw_surface_unlock(pick_surface);
                 hw_surface_unlock(root_surface);
-                hw_surface_update_rects(root_surface, rect_list); // Ne plus passer NULL, mais la liste de rectangles a mettre à jour.
+                hw_surface_update_rects(root_surface, rect_list);
         }
 }
 
@@ -40,6 +44,9 @@ void       handle_event            (ei_linked_event_t*          event_list,
                                          ei_widget_t*           widget) {
         ei_bool_t no_callback = EI_FALSE;
         ei_linked_event_t* current_event = event_list;
+        
+        if (widget)
+                screen_loc_before_event = widget->screen_location;
 
         while (!no_callback && current_event) {
                 if (current_event->eventtype == event->type) {
