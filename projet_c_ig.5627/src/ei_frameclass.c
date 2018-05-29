@@ -108,8 +108,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_linked_point_t right_exter = {top_right,&top_exter};
                 ei_linked_point_t bot_exter = {bot_bot,&right_exter};
                 ei_linked_point_t left_exter = { bot_last,&bot_exter};
-                ei_draw_polygon(pick_surface,&left_exter,*(frame->widget.pick_color),&inter);
-                //ei_fill(pick_surface, frame->widget.pick_color, &inter);
+                ei_draw_polygon(pick_surface, &left_exter, *(frame->widget.pick_color), &inter);
         }
         if (frame->text && strcmp(frame->text,"") != 0) {
                 ei_point_t aqui;

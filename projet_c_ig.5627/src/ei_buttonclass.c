@@ -170,47 +170,49 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         ei_draw_polygon(surface, all_part, button->color, &inter);
         ei_free_polygon(&all_part);
 
-
+        //Update of the picking surface
         if (pick_surface) {
                 ei_linked_point_t* pick_poly = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 2);
                 ei_draw_polygon(pick_surface, pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
                 ei_free_polygon(&pick_poly);
         }
-
+        //freeing the polygons used for the drawings
         ei_free_polygon(&high_part);
         ei_free_polygon(&low_part);
 
-
-
-        // printf("button imag rect x: %d, y:%d \n", button->img_rect->top_left.x, button->img_rect->top_left.y);
+        //Display of the button text, if it have one
         if (button->text && strcmp(button->text, "") != 0) {
                 ei_point_t pos_texte;
                 ei_size_t size_texte;
                 hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(button->text_anchor, &size_texte, &inter, &pos_texte);
-                if(button->relief == ei_relief_sunken){
+                if(button->relief == ei_relief_sunken) {
                         pos_texte.x += border/2;
                         pos_texte.y += border/2;
                 }
                 ei_draw_text(surface, &pos_texte, button->text, button->text_font, button->text_color, &inter);
-        } else if(button->img) {
+        //If the button does not have a text but have an image we display it
+        } else if (button->img) {
                 ei_point_t pos_img;
                 ei_size_t size_img;
                 ei_rect_t rect_surface_img;
-                if(button->img_rect){
+                //checking if the user have provide us the recangle corresponding to the image
+                //if not we set it according to the rectangle of the image surface
+                if (button->img_rect) {
                         rect_surface_img = *(button->img_rect);
                         size_img = button->img_rect->size;
                 } else {
                         rect_surface_img = hw_surface_get_rect(button->img);
                         size_img = rect_surface_img.size;
                 }
+                //computing the postion of the image according to its anchor
                 ei_anchor_spot(button->img_anchor, &size_img, &inter, &pos_img);
                 ei_rect_t rect_img = {pos_img, size_img};
 
                 hw_surface_lock(button->img);
                 ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
                 ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
-
+                //
                 ei_rect_t clipper_img;
                 ei_intersection_rectangle(&inter, &surface_rect, &clipper_img);
 
