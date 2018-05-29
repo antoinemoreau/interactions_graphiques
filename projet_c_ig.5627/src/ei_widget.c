@@ -176,6 +176,7 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 
 	if (text != NULL) {
 		if (frame->text == NULL) {
+			printf(" je suis la %s \n", *text);
 			frame->text = malloc(strlen(*text)+1);
 		} else {
 			frame->text = realloc(frame->text, strlen(*text)+1);
