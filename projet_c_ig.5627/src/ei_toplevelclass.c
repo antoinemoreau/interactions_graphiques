@@ -170,7 +170,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         if (pick_surface) {
                 ei_draw_polygon(pick_surface, exter_first_point, *(widget->pick_color), &intersection);
         }
-
         if (closable == EI_TRUE) {
                 //Dessin du bouton en haut à gauche du toplevel
                 toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + toplevel->border_width + toplevel->close_button->border_width*5;
