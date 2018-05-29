@@ -124,9 +124,9 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
         if (moving_toplevel) {
                 ei_widget_t* moving_widget = (ei_widget_t*)moving_toplevel;
                 ei_linked_rect_t** rect_list = get_rect_list();
-                ei_rect_t intersection;
-                ei_intersection_rectangle(&moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection);
-                rect_list_add(rect_list, intersection);
+                ei_rect_t intersection1;
+                ei_intersection_rectangle(&moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection1);
+                rect_list_add(rect_list, intersection1);
                 moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
                 moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
                 // ei_place(moving_widget, NULL, &(moving_widget->screen_location.top_left.x), &(moving_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
@@ -170,35 +170,40 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                 ei_linked_rect_t** rect_list = get_rect_list();
                 ei_widget_t* resized_widget = (ei_widget_t*)resized_toplevel;
                 ei_rect_t intersection1;
-                ei_intersection_rectangle(&resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection1);
+                ei_intersection_rectangle(&resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
-                rect_list_add(rect_list, widget->content_rect);
-                if(ei_axis_none){
-                        resized_toplevel = NULL;
-                } else if(ei_axis_both) {
-                        resized_widget->content_rect->size.width -= new_size.x - event->param.mouse.where.x;
-                        resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
-                        new_size = event->param.mouse.where;
-                } else if(ei_axis_x) {
-                        resized_widget->content_rect->size.width -= new_size.x - event->param.mouse.where.x;
-                        new_size = event->param.mouse.where;
-                } else {
-                        resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
-                        new_size = event->param.mouse.where;
-                }
-                //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
-                ei_rect_t intersection2;
-                ei_intersection_rectangle(&resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection2);
-                rect_list_add(rect_list, intersection2);
-                ei_widget_t* current = resized_widget->children_head;
-                while (current) {
-                        current->geom_params->manager->runfunc(current);
-                        ei_widget_t* current_bro = current->next_sibling;
-                        while (current_bro) {
-                                current_bro->geom_params->manager->runfunc(current_bro);
-                                current_bro = current_bro->next_sibling;
+                int diff_x = resized_widget->screen_location.size.width - new_size.x + event->param.mouse.where.x;
+                int diff_y = resized_widget->screen_location.size.height - new_size.y + event->param.mouse.where.y;
+                if(diff_x > resized_toplevel->border_width && diff_y > 2 * resized_toplevel->border_width){
+                        if(ei_axis_none){
+                                resized_toplevel = NULL;
+                        } else if(ei_axis_both) {
+                                // resized_widget->content_rect->size.width -= new_size.x - event->param.mouse.where.x;
+                                // resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
+                                resized_widget->screen_location.size.width -= new_size.x - event->param.mouse.where.x;
+                                resized_widget->screen_location.size.height -= new_size.y - event->param.mouse.where.y;
+                                new_size = event->param.mouse.where;
+                        } else if(ei_axis_x) {
+                                resized_widget->content_rect->size.width -= new_size.x - event->param.mouse.where.x;
+                                new_size = event->param.mouse.where;
+                        } else {
+                                resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
+                                new_size = event->param.mouse.where;
                         }
-                        current = current->children_head;
+                        //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
+                        ei_rect_t intersection2;
+                        ei_intersection_rectangle(&resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
+                        rect_list_add(rect_list, intersection2);
+                        ei_widget_t* current = resized_widget->children_head;
+                        while (current) {
+                                current->geom_params->manager->runfunc(current);
+                                ei_widget_t* current_bro = current->next_sibling;
+                                while (current_bro) {
+                                        current_bro->geom_params->manager->runfunc(current_bro);
+                                        current_bro = current_bro->next_sibling;
+                                }
+                                current = current->children_head;
+                        }
                 }
         }
         return EI_FALSE;

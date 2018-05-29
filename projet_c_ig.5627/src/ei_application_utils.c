@@ -27,7 +27,6 @@ void            redraw                  (ei_surface_t           root_surface,
                 if (strcmp(widget->wclass->name, "toplevel") == 0) {
                         widget = widget->parent;
                         rect_list_add(&rect_list, widget->screen_location);
-
                 }
                 draw_all_widgets(widget, root_surface, pick_surface, &(widget->screen_location));
                 hw_surface_unlock(pick_surface);
