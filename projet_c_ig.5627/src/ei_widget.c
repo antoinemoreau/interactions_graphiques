@@ -175,12 +175,17 @@ void		ei_frame_configure		(ei_widget_t*		widget,
 		frame->relief = ei_relief_none;
 
 	if (text != NULL) {
-		if (frame->text == NULL) {
-			frame->text = malloc(strlen(*text)+1);
+		if (*text){
+			if (frame->text == NULL) {
+				frame->text = malloc(strlen(*text)+1);
+
+			} else {
+				frame->text = realloc(frame->text, strlen(*text)+1);
+			}
+			strcpy(frame->text, *text);
 		} else {
-			frame->text = realloc(frame->text, strlen(*text)+1);
+			frame->text = NULL;			
 		}
-		strcpy(frame->text, *text);
 	}
 
 	if (text_font != NULL)

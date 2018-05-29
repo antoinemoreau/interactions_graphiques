@@ -108,8 +108,7 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                 ei_linked_point_t right_exter = {top_right,&top_exter};
                 ei_linked_point_t bot_exter = {bot_bot,&right_exter};
                 ei_linked_point_t left_exter = { bot_last,&bot_exter};
-                ei_draw_polygon(pick_surface,&left_exter,*(frame->widget.pick_color),&inter);
-                //ei_fill(pick_surface, frame->widget.pick_color, &inter);
+                ei_draw_polygon(pick_surface, &left_exter, *(frame->widget.pick_color), &inter);
         }
         if (frame->text && strcmp(frame->text,"") != 0) {
                 ei_point_t aqui;
@@ -123,25 +122,29 @@ void ei_frame_drawfunc      (ei_widget_t*	widget,
                         ei_size_t size_img;
                         ei_rect_t rect_surface_img;
                         if(frame->img_rect){
-                                size_img = frame->img_rect->size;
                                 rect_surface_img = *(frame->img_rect);
+                                size_img = frame->img_rect->size;
                         } else {
                                 rect_surface_img = hw_surface_get_rect(frame->img);
                                 size_img = rect_surface_img.size;
                         }
                         ei_anchor_spot(frame->img_anchor, &size_img, &inter, &pos_img);
+                        ei_rect_t rect_img = {pos_img, size_img};
 
                         hw_surface_lock(frame->img);
-                        hw_surface_set_origin(frame->img, pos_img);
                         ei_bool_t alpha_img = hw_surface_has_alpha(frame->img);
+                        ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
+
+                        ei_rect_t clipper_img;
+                        ei_intersection_rectangle(&inter, &surface_rect, &clipper_img);
 
                         ei_rect_t dest_final;
-                        ei_intersection_rectangle(&inter, &rect_surface_img, &dest_final);
+                        ei_intersection_rectangle(&clipper_img, &rect_img, &dest_final);
 
-                        // ei_rect_t dest_final;
-                        // ei_intersection_rectangle(&clipper_img, &rect_surface_img, &dest_final);
-
-                        ei_copy_surface(surface, &dest_final, frame->img, &dest_final, alpha_img);
+                        rect_img.top_left.x = rect_surface_img.top_left.x + dest_final.top_left.x - pos_img.x;
+                        rect_img.top_left.y = rect_surface_img.top_left.y;
+                        rect_img.size = dest_final.size;
+                        ei_copy_surface(surface, &dest_final, frame->img, &rect_img, alpha_img);
                         hw_surface_unlock(frame->img);
                 }
         }
