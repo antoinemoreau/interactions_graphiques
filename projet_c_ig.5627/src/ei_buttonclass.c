@@ -186,6 +186,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_size_t size_texte;
                 hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
                 ei_anchor_spot(button->text_anchor, &size_texte, &inter, &pos_texte);
+                //
                 if(button->relief == ei_relief_sunken) {
                         pos_texte.x += border/2;
                         pos_texte.y += border/2;
@@ -212,16 +213,17 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 hw_surface_lock(button->img);
                 ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
                 ei_rect_t surface_rect = hw_surface_get_rect(ei_app_root_surface());
-                //
+
                 ei_rect_t clipper_img;
                 ei_intersection_rectangle(&inter, &surface_rect, &clipper_img);
 
                 ei_rect_t dest_final;
                 ei_intersection_rectangle(&clipper_img, &rect_img, &dest_final);
-
+                //settting the top_left point of the image rectangle at the right location
                 rect_img.top_left.x = rect_surface_img.top_left.x + dest_final.top_left.x - pos_img.x;
                 rect_img.top_left.y = rect_surface_img.top_left.y;
                 rect_img.size = dest_final.size;
+                //copying the rect image content on screen
                 ei_copy_surface(surface, &dest_final, button->img, &rect_img, alpha_img);
                 hw_surface_unlock(button->img);
         }
