@@ -182,7 +182,7 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                 rect_list_add(rect_list, intersection1);
                 int diff_x = resized_widget->screen_location.size.width - new_size.x + event->param.mouse.where.x;
                 int diff_y = resized_widget->screen_location.size.height - new_size.y + event->param.mouse.where.y;
-                if(diff_x > resized_toplevel->border_width && diff_y > 2 * resized_toplevel->border_width){
+                if(diff_x > resized_toplevel->min_size->width && diff_y > resized_toplevel->min_size->height){
                         if (ei_axis_none) {
                                 resized_toplevel = NULL;
                         } else if(ei_axis_both) {
@@ -196,7 +196,8 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                                 resized_widget->screen_location.size.height -= new_size.y - event->param.mouse.where.y;
                                 new_size = event->param.mouse.where;
                         }
-                        
+
+                        //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
                         ei_rect_t intersection2;
                         ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);
