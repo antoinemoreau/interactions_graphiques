@@ -211,4 +211,6 @@ void ei_toplevel_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect){
         widget->screen_location.size.height = rect.size.height + text_size.height + 2 * toplevel->border_width;
         widget->content_rect->size.width = widget->screen_location.size.width - 2 * toplevel->border_width;
         widget->content_rect->size.height = widget->screen_location.size.height - text_size.height - 2 * toplevel->border_width;
+        widget->content_rect->top_left.x =  widget->screen_location.top_left.x + toplevel->border_width;
+        widget->content_rect->top_left.y =  widget->screen_location.top_left.y + text_size.height + toplevel->border_width;
 }

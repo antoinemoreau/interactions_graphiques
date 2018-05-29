@@ -96,6 +96,7 @@ ei_bool_t handle_tile_press(ei_widget_t* widget, ei_event_t* event, void* user_p
 
 void create_puzzle_window(char* image_filename)
 {
+	printf("create new puzzle\n");
 	ei_widget_t*		toplevel;
 	ei_surface_t		image;
 	ei_size_t		image_size;
@@ -179,6 +180,7 @@ ei_bool_t handle_keydown(ei_widget_t* widget, ei_event_t* event, void* user_para
 	}
 
 	if (event->param.key.modifier_mask & cmd_mask) {
+	printf("handle keydown !\n");
 		if (event->param.key.key_sym == SDLK_n) {
 			create_puzzle_window(k_default_image_filename);
 			return EI_TRUE;

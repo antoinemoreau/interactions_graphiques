@@ -130,7 +130,7 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 ei_intersection_rectangle(moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
                 //Changement des paramètres du placer
-                ei_placer_t* placer = (ei_placer_t*) widget->geom_params;
+                ei_placer_t* placer = (ei_placer_t*) moving_widget->geom_params;
                 ei_point_t shift_position = ei_point_sub(event->param.mouse.where, mouse_pos);
                 int new_x = placer->x + shift_position.x;
                 int new_y = placer->y + shift_position.y;
@@ -184,26 +184,27 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                 ei_rect_t intersection1;
                 ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
-                int diff_x = resized_widget->screen_location.size.width - mouse_resize.x + event->param.mouse.where.x;
-                int diff_y = resized_widget->screen_location.size.height - mouse_resize.y + event->param.mouse.where.y;
-                if(diff_x > resized_toplevel->border_width && diff_y > 2 * resized_toplevel->border_width){
+                int width_loss = mouse_resize.x - event->param.mouse.where.x;
+                int height_loss = mouse_resize.y - event->param.mouse.where.y;
+                int diff_x = resized_widget->screen_location.size.width - width_loss;
+                int diff_y = resized_widget->screen_location.size.height - height_loss;
+                if(diff_x > resized_toplevel->min_size->width && diff_y > resized_toplevel->min_size->height){
                         if (ei_axis_none) {
                                 resized_toplevel = NULL;
-                        } else if(ei_axis_both) {
-                                // resized_widget->content_rect->size.width -= mouse_resize.x - event->param.mouse.where.x;
-                                // resized_widget->content_rect->size.height -= mouse_resize.y - event->param.mouse.where.y;
-                                resized_widget->screen_location.size.width -= mouse_resize.x - event->param.mouse.where.x;
-                                resized_widget->screen_location.size.height -= mouse_resize.y - event->param.mouse.where.y;
-                                mouse_resize = event->param.mouse.where;
-                        } else if(ei_axis_x) {
-                                resized_widget->content_rect->size.width -= mouse_resize.x - event->param.mouse.where.x;
-                                mouse_resize = event->param.mouse.where;
-                        } else {
-                                resized_widget->content_rect->size.height -= mouse_resize.y - event->param.mouse.where.y;
-                                mouse_resize = event->param.mouse.where;
+                                return EI_FALSE;
                         }
-                        
-                        ei_place(resized_widget, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+                        else if(ei_axis_y) {
+                                diff_x = 0;
+                        }
+                        else if(ei_axis_x) {
+                                diff_y = 0;
+                        }
+                        resized_widget->screen_location.size = ei_size(diff_x, diff_y);
+                        mouse_resize = event->param.mouse.where;
+                        ei_placer_t* placer = (ei_placer_t*) resized_widget->geom_params;
+                        int width_abs = placer->width - width_loss;
+                        int height_abs = placer->height - height_loss;
+                        ei_place(resized_widget, NULL, NULL, NULL, &width_abs, &height_abs, NULL, NULL, NULL, NULL);
                         ei_rect_t intersection2;
                         ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);
