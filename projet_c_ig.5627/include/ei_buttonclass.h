@@ -20,7 +20,7 @@ void ei_button_geomnotifyfunc (struct ei_widget_t* button, ei_rect_t rect);
  * \brief	Linkes points to draw the polygone built with the latter (according to the part chosen).
  *              Namely used to draw button' corners.
  *
-* @param	rectangle		The rectangle we are rounding the corners.
+ * @param	rectangle		The rectangle we are rounding the corners.
  *
  * @param	radius		        The radius of the corners.
  *
@@ -31,7 +31,7 @@ void ei_button_geomnotifyfunc (struct ei_widget_t* button, ei_rect_t rect);
  *                                       1 : rounds the top part
  *                                       2 : rounds every corners' rectangle)
  *
- * @return      
+ * @return
  */
 
 ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int radius, int nb_points, int part);

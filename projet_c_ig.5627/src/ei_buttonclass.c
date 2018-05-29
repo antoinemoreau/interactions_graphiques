@@ -10,7 +10,7 @@ void*           ei_button_allocfunc             () {
 }
 
 void            ei_button_releasefunc           (ei_widget_t* widget) {
-        ei_button_t* button = (ei_button_t*)widget;
+        //ei_button_t* button = (ei_button_t*)widget;
         // if (button->text)
         //         free(button->text);
         // if (button->text_font)
@@ -176,10 +176,10 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_draw_polygon(pick_surface, pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
                 ei_free_polygon(&pick_poly);
         }
-        
+
         ei_free_polygon(&high_part);
         ei_free_polygon(&low_part);
-        
+
 
 
         if (button->text && strcmp(button->text, "") != 0) {

@@ -1,3 +1,5 @@
+#ifndef EI_EVENT_UTILS_H
+#define EI_EVENT_UTILS_H
 #include "ei_event.h"
 
 typedef struct ei_linked_event_t {
@@ -41,3 +43,5 @@ ei_bool_t click_resize_toplevel(ei_widget_t* widget, struct ei_event_t* event, v
 ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
 
 ei_bool_t stop_resize(ei_widget_t* widget, struct ei_event_t* event, void* user_param);
+
+#endif
