@@ -4,6 +4,8 @@
 #include "ei_types.h"
 #include "ei_button.h"
 #include "ei_buttonclass.h"
+#include "ei_utils.h"
+#include "ei_placer.h"
 #include <stdlib.h>
 #include <stdio.h>
 

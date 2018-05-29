@@ -8,6 +8,8 @@
 #include "ei_geometrymanager.h"
 #include "ei_application_utils.h"
 #include "ei_draw_utils.h"
+#include "ei_placer.h"
+#include "ei_utils.h"
 
 ei_bool_t drawing = EI_FALSE;
 ei_bool_t destroy = EI_FALSE;
@@ -26,7 +28,7 @@ ei_point_t mouse_pos;
 
 //resize toplevel
 ei_toplevel_t* resized_toplevel;
-ei_point_t new_size;
+ei_point_t mouse_resize;
 
 void set_list_events (ei_linked_event_t* list) {
         listed_events = list;
@@ -127,9 +129,13 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 ei_rect_t intersection1;
                 ei_intersection_rectangle(moving_widget->parent->content_rect ,&moving_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
-                moving_widget->screen_location.top_left.x += event->param.mouse.where.x - mouse_pos.x;
-                moving_widget->screen_location.top_left.y += event->param.mouse.where.y - mouse_pos.y;
-                // ei_place(moving_widget, NULL, &(moving_widget->screen_location.top_left.x), &(moving_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
+                //Changement des paramètres du placer
+                ei_placer_t* placer = (ei_placer_t*) widget->geom_params;
+                ei_point_t shift_position = ei_point_sub(event->param.mouse.where, mouse_pos);
+                int new_x = placer->x + shift_position.x;
+                int new_y = placer->y + shift_position.y;
+                moving_widget->screen_location.top_left = ei_point_add(moving_widget->screen_location.top_left, shift_position);
+                ei_place(moving_widget, NULL, &new_x, &new_y, NULL, NULL, NULL, NULL, NULL, NULL);
                 mouse_pos = event->param.mouse.where;
                 ei_widget_t* current = moving_widget->children_head;
                 while (current) {
@@ -165,7 +171,7 @@ ei_bool_t click_resize_toplevel(ei_widget_t* widget, struct ei_event_t* event, v
                 (widget->screen_location.top_left.x + widget->screen_location.size.width) \
                 && event->param.mouse.button_number == 1) {
 
-                new_size = event->param.mouse.where;
+                mouse_resize = event->param.mouse.where;
                 resized_toplevel = (ei_toplevel_t*)widget;
         }
         return EI_FALSE;
@@ -178,26 +184,26 @@ ei_bool_t resizing_toplevel(ei_widget_t* widget, struct ei_event_t* event, void*
                 ei_rect_t intersection1;
                 ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
-                int diff_x = resized_widget->screen_location.size.width - new_size.x + event->param.mouse.where.x;
-                int diff_y = resized_widget->screen_location.size.height - new_size.y + event->param.mouse.where.y;
+                int diff_x = resized_widget->screen_location.size.width - mouse_resize.x + event->param.mouse.where.x;
+                int diff_y = resized_widget->screen_location.size.height - mouse_resize.y + event->param.mouse.where.y;
                 if(diff_x > resized_toplevel->border_width && diff_y > 2 * resized_toplevel->border_width){
                         if (ei_axis_none) {
                                 resized_toplevel = NULL;
                         } else if(ei_axis_both) {
-                                // resized_widget->content_rect->size.width -= new_size.x - event->param.mouse.where.x;
-                                // resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
-                                resized_widget->screen_location.size.width -= new_size.x - event->param.mouse.where.x;
-                                resized_widget->screen_location.size.height -= new_size.y - event->param.mouse.where.y;
-                                new_size = event->param.mouse.where;
+                                // resized_widget->content_rect->size.width -= mouse_resize.x - event->param.mouse.where.x;
+                                // resized_widget->content_rect->size.height -= mouse_resize.y - event->param.mouse.where.y;
+                                resized_widget->screen_location.size.width -= mouse_resize.x - event->param.mouse.where.x;
+                                resized_widget->screen_location.size.height -= mouse_resize.y - event->param.mouse.where.y;
+                                mouse_resize = event->param.mouse.where;
                         } else if(ei_axis_x) {
-                                resized_widget->content_rect->size.width -= new_size.x - event->param.mouse.where.x;
-                                new_size = event->param.mouse.where;
+                                resized_widget->content_rect->size.width -= mouse_resize.x - event->param.mouse.where.x;
+                                mouse_resize = event->param.mouse.where;
                         } else {
-                                resized_widget->content_rect->size.height -= new_size.y - event->param.mouse.where.y;
-                                new_size = event->param.mouse.where;
+                                resized_widget->content_rect->size.height -= mouse_resize.y - event->param.mouse.where.y;
+                                mouse_resize = event->param.mouse.where;
                         }
                         
-                        //ei_place(resized_widget, NULL, &(resized_widget->screen_location.top_left.x), &(resized_widget->screen_location.top_left.y), NULL, NULL, NULL, NULL, NULL, NULL);
+                        ei_place(resized_widget, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
                         ei_rect_t intersection2;
                         ei_intersection_rectangle(resized_widget->parent->content_rect ,&resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);

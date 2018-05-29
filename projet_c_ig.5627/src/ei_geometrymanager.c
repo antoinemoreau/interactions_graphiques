@@ -66,25 +66,26 @@ void ei_place (ei_widget_t* widget,
 	if (anchor != NULL){
 		placer->anchor = *anchor;
 	}
-	else{
+	else if (!placer->anchor){
 		placer->anchor = ei_anc_northwest;
 	}
 	if (x != NULL){
 		placer->x = *x;
 	}
-	else{
+	else if (!placer->x){
 		placer->x = 0;
 	}
 	if (y != NULL){
 		placer->y = *y;
 	}
-	else{
+	else if (!placer->y){
 		placer->y = 0;
 	}
 	if (width != NULL){
 		placer->width = *width;
 	}
-	else{	//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
+	else if (!placer->width){
+		//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
 		if (rel_width == NULL){
 			placer->width = (widget->requested_size).width;
 		}
@@ -95,7 +96,8 @@ void ei_place (ei_widget_t* widget,
 	if (height != NULL){
 		placer->height = *height;
 	}
-	else{	//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
+	else if (!placer->height){
+		//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
 		if (rel_height == NULL){
 			placer->height = (widget->requested_size).height;
 		}
@@ -106,25 +108,25 @@ void ei_place (ei_widget_t* widget,
 	if (rel_x != NULL){
 		placer->rel_x = *rel_x;
 	}
-	else{
+	else if (!placer->rel_x){
 		placer->rel_x = 0.0;
 	}
 	if (rel_y != NULL){
 		placer->rel_y = *rel_y;
 	}
-	else{
+	else if (!placer->rel_y){
 		placer->rel_y = 0.0;
 	}
 	if (rel_width != NULL){
 		placer->rel_width = *rel_width;
 	}
-	else{
+	else if (!placer->rel_width){
 		placer->rel_width = 0.0;
 	}
 	if (rel_height != NULL){
 		placer->rel_height = *rel_height;
 	}
-	else{
+	else if (placer->rel_height){
 		placer->rel_height = 0.0;
 	}
 
