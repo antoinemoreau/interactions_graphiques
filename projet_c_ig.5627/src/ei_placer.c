@@ -15,7 +15,7 @@ static void compute_spot(ei_widget_t* widget, ei_widget_t* parent, int x, int y)
                 widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
                 widget->content_rect->top_left.x +=  placer_widget->x;
                 widget->content_rect->top_left.y +=  placer_widget->y;
-
+                widget->wclass->geomnotifyfunc(widget, widget->screen_location);
         }
 }
 

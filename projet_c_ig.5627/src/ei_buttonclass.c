@@ -176,10 +176,10 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_draw_polygon(pick_surface, pick_poly, *(button->widget.pick_color), &button->widget.screen_location);
                 ei_free_polygon(&pick_poly);
         }
-        
+
         ei_free_polygon(&high_part);
         ei_free_polygon(&low_part);
-        
+
 
 
         if (button->text && strcmp(button->text, "") != 0) {
@@ -232,5 +232,5 @@ void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {
 }
 
 void            ei_button_geomnotifyfunc        (ei_widget_t* widget, ei_rect_t rect) {
-
+        return;
 }

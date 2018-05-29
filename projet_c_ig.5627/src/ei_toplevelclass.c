@@ -98,8 +98,8 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_size_t text_size;
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
-        widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
-        widget->screen_location.size.height = widget->requested_size.height + text_size.height + 2 * toplevel->border_width;
+        // widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
+        // widget->screen_location.size.height = widget->requested_size.height + text_size.height + 2 * toplevel->border_width;
 
         //Clipping de la toplevel en fonction du parent
         toplevel->widget.content_rect->size.width = toplevel->widget.screen_location.size.width - 2 * toplevel->border_width;
@@ -201,5 +201,9 @@ void ei_toplevel_setdefaultsfunc (struct ei_widget_t* widget){
 }
 
 void ei_toplevel_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect){
-
+        ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
+        ei_size_t text_size;
+        hw_text_compute_size(toplevel->title, ei_default_font, &text_size.width, &text_size.height);
+        widget->screen_location.size.width = rect.size.width + 2 * toplevel->border_width;
+        widget->screen_location.size.height = rect.size.height + text_size.height + 2 * toplevel->border_width;
 }
