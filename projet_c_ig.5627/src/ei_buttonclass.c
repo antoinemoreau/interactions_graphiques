@@ -195,7 +195,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 //hw_surface_set_origin(button->img, pos_img);
                 ei_bool_t alpha_img = hw_surface_has_alpha(button->img);
                 ei_rect_t rect_surface_img = hw_surface_get_rect(button->img);
-                ei_rect_t rect_img = {pos_img, button->img_rect->size};
+                ei_rect_t rect_img = {pos_img, size_img};
 
                 ei_rect_t clipper_img;
                 ei_intersection_rectangle(&inter, &rect_surface_img, &clipper_img);
@@ -203,7 +203,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 ei_rect_t dest_final;
                 ei_intersection_rectangle(&clipper_img, button->img_rect, &dest_final);
 
-                ei_copy_surface(surface, button->img_rect, button->img, button->img_rect, alpha_img);
+                ei_copy_surface(surface, &rect_img, button->img, &rect_img, alpha_img);
                 hw_surface_unlock(button->img);
         }
 }
