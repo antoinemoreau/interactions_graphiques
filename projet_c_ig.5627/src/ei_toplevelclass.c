@@ -147,6 +147,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         //Création du polygone interieur (sous le titre)
         ei_linked_point_t* inter_first_point = points_list(*(widget->content_rect));
         ei_draw_polygon(surface, inter_first_point, inter_color, &interieur);
+        ei_free_polygon(&inter_first_point);
 
         if (resizable != ei_axis_none){
                 //Création du polygone pour resize
@@ -160,6 +161,7 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
 
         if (pick_surface) {
                 ei_draw_polygon(pick_surface, exter_first_point, *(widget->pick_color), &intersection);
+                ei_free_polygon(&exter_first_point);
         }
         if (closable == EI_TRUE) {
                 //Dessin du bouton en haut à gauche du toplevel

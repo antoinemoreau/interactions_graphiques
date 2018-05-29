@@ -89,11 +89,8 @@ ei_widget_t* ei_find_widget(uint32_t pick_id, ei_widget_t* widget) {
 //fonctions de callbacks des boutons
 ei_bool_t unpressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(sunken_button && event->param.mouse.button_number == 1){
-                //ei_button_t* button = sunken_button;
                 sunken_button->relief = ei_relief_raised;
                 sunken_button = NULL;
-                drawing = EI_TRUE;
-                // return EI_TRUE
         }
         return EI_FALSE;
 }
@@ -102,14 +99,14 @@ ei_bool_t pressbutton_animation(ei_widget_t* widget, struct ei_event_t* event, v
         if (event->param.mouse.button_number == 1) {
                 sunken_button = (ei_button_t*)widget;
                 sunken_button->relief = ei_relief_sunken;
-                drawing = EI_TRUE;
-                return EI_FALSE;
         }
+        return EI_FALSE;
 }
 
 ei_bool_t getoutofbutton_animation(ei_widget_t* widget, struct ei_event_t* event, void* user_param) {
         if(sunken_button && widget->pick_id != sunken_button->widget.pick_id){
-                return unpressbutton_animation(widget, event, user_param);
+                sunken_button->relief = ei_relief_raised;
+                sunken_button = NULL;
         }
         return EI_FALSE;
 }
@@ -147,7 +144,6 @@ ei_bool_t move_toplevel(ei_widget_t* widget, struct ei_event_t* event, void* use
                 ei_rect_t intersection2;
                 ei_intersection_rectangle(&moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection2);
                 rect_list_add(rect_list, intersection2);
-                drawing = EI_TRUE;
         }
         return EI_FALSE;
 }
