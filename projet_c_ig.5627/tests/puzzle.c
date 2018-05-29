@@ -78,7 +78,7 @@ ei_bool_t handle_tile_press(ei_widget_t* widget, ei_event_t* event, void* user_p
 	ei_point_t	swap_pos;
 	ei_point_t	swap_coordinates;
 	int		i;
-	
+
 	for (i = 0; i < 4; i++) {
 		swap_pos	= ei_point_add(current, offsets[i]);
 		if (valid(puzzle, swap_pos) && tile_at(puzzle, swap_pos) == NULL) {
@@ -118,7 +118,7 @@ void create_puzzle_window(char* image_filename)
 	ei_rect_t		img_rect;
 	ei_rect_t*		img_rect_ptr		= &img_rect;
 	ei_callback_t		callback		= handle_tile_press;
-	
+
 	puzzle_t*		puzzle;
 	tile_t*			tile;
 
@@ -207,7 +207,7 @@ int ei_main(int argc, char* argv[])
 	ei_bind(ei_ev_keydown, NULL, "all", handle_keydown, NULL);
 
 	ei_app_run();
-	
+
 	ei_app_free();
 
 	return (EXIT_SUCCESS);
