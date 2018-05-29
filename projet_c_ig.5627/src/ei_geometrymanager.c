@@ -128,7 +128,7 @@ void ei_place (ei_widget_t* widget,
 		placer->rel_height = 0.0;
 	}
 
-	ei_placer_runfunc(widget);
+	widget->geom_params->manager->runfunc(widget);
 }
 
 

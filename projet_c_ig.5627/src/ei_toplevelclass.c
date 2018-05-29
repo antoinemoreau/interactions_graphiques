@@ -51,6 +51,10 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         ei_relief_t     relief                  = ei_relief_raised;
         ei_size_t       requested_size          = {diameter, diameter}; // On les défini en dur mais faut changer
         ei_callback_t   button_closing          = closing;
+        int             button_x                = toplevel->border_width + 5*button_border_width;
+        int             button_y                = 2*toplevel->border_width + 5*button_border_width;
+        int             button_width            = diameter;
+        int             button_height           = diameter;
 
         //Création et configuration du bouton suivant les paramètres
         ei_widget_t*    button_widget           = ei_widget_create ("button", toplevel->widget.parent);
@@ -59,6 +63,7 @@ static ei_button_t* closing_button (ei_toplevel_t* toplevel) {
         ei_button_configure(button_widget, &requested_size, &button_color,
                             &button_border_width, &radius, &relief, NULL, NULL, NULL, NULL,
                             NULL, NULL, NULL, NULL, NULL);
+        ei_place(button_widget, NULL, &button_x, &button_y, &button_width, &button_height, NULL, NULL, NULL, NULL);
         ei_bind(ei_ev_mouse_buttonup, button_widget, NULL, button_closing, NULL);
 
         return button;
@@ -95,9 +100,6 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_size_t text_size;
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
-        // widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
-        // widget->screen_location.size.height = widget->requested_size.height + text_size.height + 2 * toplevel->border_width;
-
         //Clipping de la toplevel en fonction du parent
         toplevel->widget.content_rect->size.width = toplevel->widget.screen_location.size.width - 2 * toplevel->border_width;
         toplevel->widget.content_rect->size.height = toplevel->widget.screen_location.size.height - text_size.height - 2 * border_width;
@@ -112,8 +114,8 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_intersection_rectangle(clipper, toplevel->widget.content_rect, &interieur); // Peut etre changer clipper avec intersection
 
         //Calcul du clipper de la toplevel
-        toplevel->widget.content_rect->top_left = interieur.top_left;
-        toplevel->widget.content_rect->size = interieur.size;
+        //toplevel->widget.content_rect->top_left = interieur.top_left;
+        //toplevel->widget.content_rect->size = interieur.size;
 
         //Création du polygone exterieur en arrondissant le haut
         int nb_points = 10;
@@ -205,4 +207,6 @@ void ei_toplevel_geomnotifyfunc (struct ei_widget_t* widget, ei_rect_t rect){
         hw_text_compute_size(toplevel->title, ei_default_font, &text_size.width, &text_size.height);
         widget->screen_location.size.width = rect.size.width + 2 * toplevel->border_width;
         widget->screen_location.size.height = rect.size.height + text_size.height + 2 * toplevel->border_width;
+        widget->content_rect->size.width = widget->screen_location.size.width - 2 * toplevel->border_width;
+        widget->content_rect->size.height = widget->screen_location.size.height - text_size.height - 2 * toplevel->border_width;
 }
