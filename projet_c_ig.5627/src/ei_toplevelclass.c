@@ -109,12 +109,14 @@ void ei_toplevel_drawfunc (struct ei_widget_t* widget,
         ei_size_t text_size;
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
+        widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
+        widget->screen_location.size.height = widget->requested_size.height + text_size.height + 2 * toplevel->border_width;
+
         //Clipping de la toplevel en fonction du parent
         toplevel->widget.content_rect->size.width = toplevel->widget.screen_location.size.width - 2 * toplevel->border_width;
         toplevel->widget.content_rect->size.height = toplevel->widget.screen_location.size.height - text_size.height - 2 * border_width;
         ei_rect_t intersection = {toplevel->widget.screen_location.top_left, toplevel->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(toplevel->widget.screen_location), &intersection);
-
 
         toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + border_width;
         toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + border_width;

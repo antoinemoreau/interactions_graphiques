@@ -324,8 +324,8 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 	int texte_width;
 	int texte_height;
 	hw_text_compute_size(*title, ei_default_font, &texte_width, &texte_height);
-	widget->content_rect->top_left.x = widget->screen_location.top_left.x + toplevel->border_width;
-	widget->content_rect->top_left.y = widget->screen_location.top_left.y + texte_height + toplevel->border_width;
+	toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + toplevel->border_width;
+        toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + texte_height + toplevel->border_width;
 	if (title != NULL) {
 		toplevel->title = realloc(toplevel->title, strlen(*title)+1);
 		strcpy(toplevel->title, *title);
@@ -348,12 +348,12 @@ void			ei_toplevel_configure		(ei_widget_t*		widget,
 		(*(toplevel->min_size)).height = 120;
 	}
 
-	if (widget->screen_location.size.width < widget->requested_size.width){
-		widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
+	if (widget->content_rect->size.width < widget->requested_size.width){
+		//widget->screen_location.size.width = widget->requested_size.width + 2 * toplevel->border_width;
 		widget->content_rect->size.width = widget->requested_size.width;
 	}
-	if (widget->screen_location.size.height < widget->requested_size.height){
-		widget->screen_location.size.height = widget->requested_size.height + texte_height + 2 * toplevel->border_width;
+	if (widget->content_rect->size.height < widget->requested_size.height){
+		//widget->screen_location.size.height = widget->requested_size.height + texte_height + 2 * toplevel->border_width;
 		widget->content_rect->size.height = widget->requested_size.height;
 	}
 
