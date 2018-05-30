@@ -10,9 +10,8 @@ void *ei_button_allocfunc()
         return calloc(1, sizeof(ei_button_t));
 }
 
-void ei_button_releasefunc(ei_widget_t *widget)
-{
-        //ei_button_t* button = (ei_button_t*)widget;
+void            ei_button_releasefunc           (ei_widget_t* widget) {
+        // ei_button_t* button = (ei_button_t*)widget;
         // if (button->text)
         //         free(button->text);
         // if (button->text_font)
