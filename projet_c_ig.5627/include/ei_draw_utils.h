@@ -7,9 +7,10 @@ A new structure to help us getting the head and the tail point of a linked list 
 (Namely used when calling \ref rounded_frame in order to gather the arcs)
 */
 
-typedef struct {
-	ei_linked_point_t*			head_point;
-	ei_linked_point_t*			tail_point;
+typedef struct
+{
+	ei_linked_point_t *head_point;
+	ei_linked_point_t *tail_point;
 } ei_extreme_linked_points_t;
 
 /**
@@ -24,7 +25,7 @@ typedef struct {
  * @param	res			The new color (usually for the border).
  */
 
-void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation);
+void ei_compute_color(ei_color_t initiale, ei_color_t *res, float variation);
 
 /**
  * \brief	Computes the location of the point linked to the anchor (ex: northeast will give the position of
@@ -40,7 +41,7 @@ void ei_compute_color(ei_color_t initiale, ei_color_t* res, float variation);
  * @param	anchor_position			The position of the anchor.
  */
 
-void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* size, ei_rect_t* rectangle, ei_point_t* anchor_position);
+void ei_anchor_spot(ei_anchor_t anchor, ei_size_t *size, ei_rect_t *rectangle, ei_point_t *anchor_position);
 
 /**
  * \brief	Computes the intersection between two rectangles
@@ -52,7 +53,7 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_size_t* size, ei_rect_t* rectangle, e
  * @param	dest			The new rectangle (intersection of the fist two).
  */
 
-void ei_intersection_rectangle(ei_rect_t* first_rect, ei_rect_t* sec_rect, ei_rect_t* dest);
+void ei_intersection_rectangle(ei_rect_t *first_rect, ei_rect_t *sec_rect, ei_rect_t *dest);
 
 /**
  * \brief	This function will compute a given number of points to draw an arc with \ref rounded_frame.
@@ -70,6 +71,6 @@ void ei_intersection_rectangle(ei_rect_t* first_rect, ei_rect_t* sec_rect, ei_re
  * @return	The head and the tail of the linked points.
  */
 
-ei_extreme_linked_points_t* arc(ei_point_t center, int radius, float starting_angle, float ending_angle, int nb_points);
+ei_extreme_linked_points_t *arc(ei_point_t center, int radius, float starting_angle, float ending_angle, int nb_points);
 
-void ei_free_polygon(ei_linked_point_t** poly);
+void ei_free_polygon(ei_linked_point_t **poly);

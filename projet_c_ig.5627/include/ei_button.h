@@ -7,11 +7,11 @@
 #include "ei_widgetclass.h"
 
 /**
- *
- *
- *
+ * @brief 
+ * 
  */
-typedef struct ei_button_t {
+typedef struct ei_button_t
+{
 	ei_widget_t		widget;
         ei_color_t      	color;
         int			border_width;
