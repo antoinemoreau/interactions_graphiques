@@ -7,8 +7,7 @@
 #include "ei_widgetclass.h"
 
 /**
- * @brief 
- * 
+ * @brief       A structure which describes a button widget.
  */
 typedef struct ei_button_t
 {
