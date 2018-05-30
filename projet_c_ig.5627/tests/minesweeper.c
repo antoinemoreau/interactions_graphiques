@@ -40,7 +40,7 @@ typedef struct map_pos_t {
 	int			nb_mines_around;
 	struct map_t*		map_ptr;
 	ei_widget_t*		frame_w;
-
+	
 } map_pos_t;
 
 typedef struct map_t {
@@ -159,7 +159,7 @@ void reveal_position_no_check(map_pos_t* map_pos)
 	char		nb_txt[2] = " ";
 	char*		nb_txt_ptr	= (char*) nb_txt;
 	ei_relief_t	relief		= ei_relief_none;
-
+	
 	map_pos->is_revealed = EI_TRUE;
 	map_pos->map_ptr->nb_revealed++;
 	ei_frame_configure(map_pos->frame_w, NULL, NULL, NULL, &relief, NULL, NULL, NULL, NULL,
@@ -188,7 +188,7 @@ void defeat(map_t* map)
 	for (int i = 0; i < map->width * map->height; i++)
 		if (map->map_pos[i].has_mine)
 			reveal_position_no_check(&map->map_pos[i]);
-
+	
 	ei_frame_configure(map->victory_text_widget, NULL, &defeat_back, NULL, NULL, &defeat_text, NULL, &defeat_color,
 			NULL, NULL, NULL, NULL);
 }
@@ -295,7 +295,7 @@ void reset_game(map_t* map)
 void create_mine_map(map_t* map, int width, int height, int nb_mines)
 {
 	int i;
-
+	
 	map->width = width;
 	map->height = height;
 	map->nb_mines = nb_mines;
@@ -504,7 +504,7 @@ int ei_main(int argc, char* argv[])
 
 	create_mine_map(&map, size_w, size_h, nb_mines);
 	create_game_window(&map);
-
+	
 	ei_bind(ei_ev_keydown, NULL, "all", handle_keydown, NULL);
 
 	ei_app_run();

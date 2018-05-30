@@ -11,12 +11,12 @@ INCFLAGS	:= -I${INCLUDES}
 OPTFLAGS	:= -g
 CCFLAGS		:= -c ${OPTFLAGS} -Wall -std=c99
 SRC = ./src
-#erreur est ici bande de connard ligne 15
-CCVER := $(shell gcc --version | grep -e '^gcc' | sed -r -e 's/^.*([[:digit:]])\..*$/\1/p')
-VFLAGS :=
-ifneq "${CCVER}" "4"
-	  VFLAGS := -no-pie
-endif
+
+# CCVER := $(shell gcc --version | grep -e '^gcc' | sed -r -e 's/^.*([[:digit:]])\..*$/\1/p')
+# VFLAGS :=
+# ifneq "${CCVER}" "4"
+# 	  VFLAGS := -no-pie
+# endif
 
 
 # The list of objects to include in the library
@@ -88,7 +88,7 @@ endif
 
 TARGETS		=	${LIBEI} \
 			minimal frame button hello_world \
-			puzzle minesweeper two048 parsing
+			puzzle minesweeper two048 #parsing
 all : ${TARGETS}
 
 
@@ -109,9 +109,6 @@ ${OBJDIR}/minimal.o : ${TESTS}/minimal.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/minimal.c -o ${OBJDIR}/minimal.o
 
 # frame
-
-#frame : ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${OBJDIR}/ei_frameclass.o ${OBJDIR}/ei_widgetclass.o ${LIBEIBASE} ${LIBEI}
-#	${LINK} -o frame ${OBJDIR}/frame.o ${OBJDIR}/ei_application.o ${OBJDIR}/ei_geometrymanager.o ${OBJDIR}/ei_widget.o ${OBJDIR}/ei_frameclass.o ${OBJDIR}/ei_widgetclass.o ${LIBEI} ${LIBS}
 
 frame : ${OBJDIR}/frame.o ${LIBEIBASE} ${LIBEI}
 	${LINK} -o frame ${OBJDIR}/frame.o ${LIBEI} ${LIBS}
@@ -137,12 +134,12 @@ ${OBJDIR}/hello_world.o : ${TESTS}/hello_world.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/hello_world.c -o ${OBJDIR}/hello_world.o
 
 # parsing
-
-parsing : ${OBJDIR}/parsing.o ${LIBEIBASE} ${LIBEI}
-	${LINK} -o parsing ${LDFLAGS} ${OBJDIR}/parsing.o ${LIBEI} ${LIBS}
-
-${OBJDIR}/parsing.o : ${TESTS}/parsing.c
-	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/parsing.c -o ${OBJDIR}/parsing.o
+#
+# parsing : ${OBJDIR}/parsing.o ${LIBEIBASE} ${LIBEI}
+# 	${LINK} -o parsing ${LDFLAGS} ${OBJDIR}/parsing.o ${LIBEI} ${LIBS}
+#
+# ${OBJDIR}/parsing.o : ${TESTS}/parsing.c
+# 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/parsing.c -o ${OBJDIR}/parsing.o
 
 # puzzle
 
@@ -183,6 +180,16 @@ toplevel_fils_de_toplevel : ${OBJDIR}/toplevel_fils_de_toplevel.o ${LIBEIBASE} $
 
 ${OBJDIR}/toplevel_fils_de_toplevel.o : ${TESTS}/toplevel_fils_de_toplevel.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/toplevel_fils_de_toplevel.c -o ${OBJDIR}/toplevel_fils_de_toplevel.o
+
+#Toplevel avec un frere toplevel
+
+toplevel_sibling : ${OBJDIR}/toplevel_sibling.o ${LIBEIBASE} ${LIBEI}
+	${LINK} -o toplevel_sibling ${OBJDIR}/toplevel_sibling.o ${LIBEI} ${LIBS}
+
+${OBJDIR}/toplevel_sibling.o : ${TESTS}/toplevel_sibling.c
+	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/toplevel_sibling.c -o ${OBJDIR}/toplevel_sibling.o
+
+
 
 # Building of the library libei
 

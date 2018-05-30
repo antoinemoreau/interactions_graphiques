@@ -31,7 +31,7 @@ ei_bool_t process_key(ei_widget_t* widget, ei_event_t* event, void* user_param)
 		ei_app_quit_request();
 		return EI_TRUE;
 	}
-
+	
 	return EI_FALSE;
 }
 
@@ -50,19 +50,11 @@ int ei_main(int argc, char** argv)
 	int		button_x		= 150;
 	int		button_y		= 200;
 	ei_color_t	button_color		= {0x88, 0x88, 0x88, 0xff};
-
-	ei_widget_t*	button2;
-	ei_size_t	button_size2		= {400,100};
-	int		button_x2		= 100;
-	int		button_y2		= 250;
-	ei_color_t	button_color2		= {0x0, 0x88, 0x88, 0xff};
-
-	ei_anchor_t	text_anchor 		= ei_anc_center;
-	char*		button_title		= "Mon premier Bouton qui sort des deux cotés";
+	char*		button_title		= "Mon premier Bouton !";
 	ei_color_t	button_text_color	= {0x00, 0x00, 0x00, 0xff};
 	int		button_corner_radius	= 20;
 	ei_relief_t	button_relief		= ei_relief_raised;
-	int		button_border_width	= 2;
+	int		button_border_width	= 6;
 	ei_callback_t	button_callback 	= button_press;
 
 	/* Create the application and change the color of the background. */
@@ -72,18 +64,13 @@ int ei_main(int argc, char** argv)
 	/* Create, configure and place the button on screen. */
 	button = ei_widget_create("button", ei_app_root_widget());
 	ei_button_configure	(button, &button_size, &button_color,
-				 &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, &text_anchor,
+				 &button_border_width, &button_corner_radius, &button_relief, &button_title, NULL, &button_text_color, NULL,
 				 NULL, NULL, NULL, &button_callback, NULL);
 	ei_place(button, NULL, &button_x, &button_y, NULL, NULL, NULL, NULL, NULL, NULL );
 
-	button2 = ei_widget_create("button", button);
-	// ei_button_configure	(button2, &button_size2, &button_color2,
-	// 			 &button_border_width, &button_corner_radius, &button_relief, NULL, NULL, &button_text_color, &text_anchor,
-	// 			 NULL, NULL, NULL, NULL, NULL);
-	// ei_place(button2, NULL, &button_x2, &button_y2, NULL, NULL, NULL, NULL, NULL, NULL );
-
 	/* Hook the keypress callback to the event. */
 	ei_bind(ei_ev_keydown,		NULL, "all", process_key, NULL);
+
 	/* Run the application's main loop. */
 	ei_app_run();
 
