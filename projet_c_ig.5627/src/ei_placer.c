@@ -31,9 +31,7 @@ void ei_placer_runfunc(ei_widget_t *widget)
         ei_widget_t *parent = widget->parent;
 
         ei_placer_t *placer = (ei_placer_t *)widget->geom_params;
-        fprintf(stdout, "AVANT size : width = %d, height = %d (pick_id = %d)\n", widget->screen_location.size.width, widget->screen_location.size.height, widget->pick_id);
         compute_size(widget, parent);
-        fprintf(stdout, "APRES size : width = %d, height = %d (pick_id = %d)\n", widget->screen_location.size.width, widget->screen_location.size.height, widget->pick_id);
         int x, y;
         ei_anchor_t anchor = placer->anchor;
         switch (anchor)
