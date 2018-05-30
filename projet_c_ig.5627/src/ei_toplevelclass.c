@@ -172,7 +172,7 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
                 toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t *)toplevel->close_button)->requested_size.width;
                 toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t *)toplevel->close_button)->requested_size.height;
                 ei_widget_t *button_widget = (ei_widget_t *)toplevel->close_button;
-                ei_button_drawfunc(button_widget, surface, pick_surface, &(widget->screen_location));
+                ei_button_drawfunc(button_widget, surface, pick_surface, &intersection);
         }
 
         if (toplevel->title && strcmp(toplevel->title, "") != 0)
@@ -180,7 +180,7 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
                 ei_rect_t title_rect = {text_spot, text_size};
                 ei_point_t aqui;
                 ei_anchor_spot(ei_anc_none, &text_size, &title_rect, &aqui);
-                ei_draw_text(surface, &aqui, toplevel->title, ei_default_font, ei_font_default_color, &(widget->screen_location));
+                ei_draw_text(surface, &aqui, toplevel->title, ei_default_font, ei_font_default_color, &intersection);
         }
 
         //Libération des polygones

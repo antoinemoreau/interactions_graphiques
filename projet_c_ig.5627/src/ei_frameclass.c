@@ -187,5 +187,5 @@ void ei_frame_setdefaultsfunc(ei_widget_t *widget)
 
 void ei_frame_geomnotifyfunc(struct ei_widget_t *widget, ei_rect_t rect)
 {
-        return;
+        *widget->content_rect = rect;
 }

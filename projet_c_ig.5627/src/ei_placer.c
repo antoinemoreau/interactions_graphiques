@@ -22,8 +22,8 @@ static void compute_size(ei_widget_t *widget, ei_widget_t *parent)
         ei_placer_t *placer_widget = (ei_placer_t *)widget->geom_params;
         if (parent != NULL)
         {
-                widget->screen_location.size.width = placer_widget->rel_width * parent->content_rect->size.width + placer_widget->width;
-                widget->screen_location.size.height = placer_widget->rel_height * parent->content_rect->size.height + placer_widget->height;
+                widget->screen_location.size.width = placer_widget->rel_width * parent->screen_location.size.width + placer_widget->width;
+                widget->screen_location.size.height = placer_widget->rel_height * parent->screen_location.size.height + placer_widget->height;
         }
 }
 
@@ -35,9 +35,9 @@ void ei_placer_runfunc(ei_widget_t *widget)
         ei_widget_t *parent = widget->parent;
 
         ei_placer_t *placer = (ei_placer_t *)widget->geom_params;
-        fprintf(stdout, "AVANT size : width = %d, height = %d\n", widget->screen_location.size.width, widget->screen_location.size.height);
+        fprintf(stdout, "AVANT size : width = %d, height = %d (pick_id = %d)\n", widget->screen_location.size.width, widget->screen_location.size.height, widget->pick_id);
         compute_size(widget, parent);
-        fprintf(stdout, "APRES size : width = %d, height = %d\n", widget->screen_location.size.width, widget->screen_location.size.height);
+        fprintf(stdout, "APRES size : width = %d, height = %d (pick_id = %d)\n", widget->screen_location.size.width, widget->screen_location.size.height, widget->pick_id);
         int x, y;
         ei_anchor_t anchor = placer->anchor;
         switch (anchor)

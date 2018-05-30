@@ -162,7 +162,7 @@ ei_bool_t move_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *use
                 int new_x = placer->x + shift_position.x;
                 int new_y = placer->y + shift_position.y;
                 moving_widget->screen_location.top_left = ei_point_add(moving_widget->screen_location.top_left, shift_position);
-                ei_place(moving_widget, NULL, &new_x, &new_y, NULL, NULL, NULL, NULL, NULL, NULL);
+                ei_place(moving_widget, &placer->anchor, &new_x, &new_y, &placer->width, &placer->height, &placer->rel_x, &placer->rel_y, &placer->rel_width, &placer->rel_height);
                 mouse_pos = event->param.mouse.where;
                 ei_widget_t *current = moving_widget->children_head;
                 while (current)
@@ -199,7 +199,10 @@ ei_bool_t click_resize_toplevel(ei_widget_t *widget, struct ei_event_t *event, v
              4 * ((ei_toplevel_t *)widget)->border_width) < event->param.mouse.where.y &&
             event->param.mouse.where.y < (widget->screen_location.top_left.y +
                                           widget->screen_location.size.height) &&
-            (widget->screen_location.top_left.x + widget->screen_location.size.width - 4 * ((ei_toplevel_t *)widget)->border_width) < event->param.mouse.where.x && event->param.mouse.where.x < (widget->screen_location.top_left.x + widget->screen_location.size.width) && event->param.mouse.button_number == 1)
+            (widget->screen_location.top_left.x + widget->screen_location.size.width -
+                4 * ((ei_toplevel_t *)widget)->border_width) < event->param.mouse.where.x &&
+                event->param.mouse.where.x < (widget->screen_location.top_left.x + widget->screen_location.size.width)
+                && event->param.mouse.button_number == 1)
         {
                 mouse_resize = event->param.mouse.where;
                 resized_toplevel = (ei_toplevel_t *)widget;
@@ -219,12 +222,9 @@ ei_bool_t resizing_toplevel(ei_widget_t *widget, struct ei_event_t *event, void 
                 // Computation the size of the toplevel according to the new and old mouse position
                 int width_loss = mouse_resize.x - event->param.mouse.where.x;
                 int height_loss = mouse_resize.y - event->param.mouse.where.y;
-                fprintf(stdout, "screen location du resized_widget :  width = %d, height = %d \n", resized_widget->screen_location.size.width, resized_widget->screen_location.size.height);
-                fprintf(stdout, "width loss = %d, height loss = %d \n", width_loss, height_loss);
                 int diff_x = resized_widget->screen_location.size.width - width_loss;
                 int diff_y = resized_widget->screen_location.size.height - height_loss;
                 // Checking if the new size if bigger than the minimum size specified in the documentation
-                fprintf(stdout, "diff x = %d, diff y = %d \n", diff_x, diff_y);
                 if (diff_x > resized_toplevel->min_size->width && diff_y > resized_toplevel->min_size->height)
                 {
                         // Resizing according differents axis
@@ -248,7 +248,7 @@ ei_bool_t resizing_toplevel(ei_widget_t *widget, struct ei_event_t *event, void 
                         ei_placer_t *placer = (ei_placer_t *)resized_widget->geom_params;
                         int width_abs = placer->width - width_loss;
                         int height_abs = placer->height - height_loss;
-                        ei_place(resized_widget, NULL, NULL, NULL, &width_abs, &height_abs, NULL, NULL, NULL, NULL);
+                        ei_place(resized_widget, &placer->anchor, &placer->x, &placer->y, &width_abs, &height_abs, &placer->rel_x, &placer->rel_y, &placer->rel_width, &placer->rel_height);
                         ei_rect_t intersection2;
                         ei_intersection_rectangle(resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);

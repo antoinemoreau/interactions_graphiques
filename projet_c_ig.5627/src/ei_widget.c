@@ -348,6 +348,12 @@ void ei_button_configure(ei_widget_t *widget,
 			button->user_param = *user_param;
 		ei_bind(ei_ev_mouse_buttondown, (ei_widget_t *)button, NULL, *callback, button->user_param);
 	}
+
+	if (widget->content_rect->size.width < widget->requested_size.width)
+		widget->content_rect->size.width = widget->requested_size.width;
+
+	if (widget->content_rect->size.height < widget->requested_size.height)
+		widget->content_rect->size.height = widget->requested_size.height;
 }
 
 void ei_toplevel_configure(ei_widget_t *widget,

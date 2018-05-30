@@ -254,4 +254,5 @@ void ei_button_setdefaultsfunc(ei_widget_t *widget)
 
 void ei_button_geomnotifyfunc(ei_widget_t *widget, ei_rect_t rect)
 {
+        *widget->content_rect = rect;
 }

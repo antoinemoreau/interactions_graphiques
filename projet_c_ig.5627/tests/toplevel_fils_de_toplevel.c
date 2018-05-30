@@ -53,6 +53,8 @@ int ei_main(int argc, char** argv)
         ei_bool_t       closable        = EI_TRUE;
         ei_axis_set_t   window_resizable = ei_axis_both;
         ei_point_t	window_position	 = {30, 10};
+        float           window_rel_width = 0.5;
+        float           window_rel_height= 0.6;
 
 
         ei_widget_t*    toplevel2;
