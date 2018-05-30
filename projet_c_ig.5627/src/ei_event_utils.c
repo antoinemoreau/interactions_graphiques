@@ -194,13 +194,13 @@ ei_bool_t unclick_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *
 
 ei_bool_t click_resize_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *user_param)
 {
+        // Checking if the mouse is in the right location on the toplevel
         if ((widget->screen_location.top_left.y + widget->screen_location.size.height -
              4 * ((ei_toplevel_t *)widget)->border_width) < event->param.mouse.where.y &&
             event->param.mouse.where.y < (widget->screen_location.top_left.y +
                                           widget->screen_location.size.height) &&
             (widget->screen_location.top_left.x + widget->screen_location.size.width - 4 * ((ei_toplevel_t *)widget)->border_width) < event->param.mouse.where.x && event->param.mouse.where.x < (widget->screen_location.top_left.x + widget->screen_location.size.width) && event->param.mouse.button_number == 1)
         {
-
                 mouse_resize = event->param.mouse.where;
                 resized_toplevel = (ei_toplevel_t *)widget;
         }
@@ -216,24 +216,29 @@ ei_bool_t resizing_toplevel(ei_widget_t *widget, struct ei_event_t *event, void 
                 ei_rect_t intersection1;
                 ei_intersection_rectangle(resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
+                // Computation the size of the toplevel according to the new and old mouse position
                 int width_loss = mouse_resize.x - event->param.mouse.where.x;
                 int height_loss = mouse_resize.y - event->param.mouse.where.y;
                 fprintf(stdout, "screen location du resized_widget :  width = %d, height = %d \n", resized_widget->screen_location.size.width, resized_widget->screen_location.size.height);
                 fprintf(stdout, "width loss = %d, height loss = %d \n", width_loss, height_loss);
                 int diff_x = resized_widget->screen_location.size.width - width_loss;
                 int diff_y = resized_widget->screen_location.size.height - height_loss;
+                // Checking if the new size if bigger than the minimum size specified in the documentation
                 fprintf(stdout, "diff x = %d, diff y = %d \n", diff_x, diff_y);
                 if (diff_x > resized_toplevel->min_size->width && diff_y > resized_toplevel->min_size->height)
                 {
+                        // Resizing according differents axis
                         if (ei_axis_none)
                         {
                                 resized_toplevel = NULL;
                                 return EI_FALSE;
                         }
+                        // Resizing on the y-axis only
                         else if (ei_axis_y)
                         {
                                 diff_x = 0;
                         }
+                        // Resizing on the x-axis only
                         else if (ei_axis_x)
                         {
                                 diff_y = 0;
@@ -247,6 +252,7 @@ ei_bool_t resizing_toplevel(ei_widget_t *widget, struct ei_event_t *event, void 
                         ei_rect_t intersection2;
                         ei_intersection_rectangle(resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);
+                        // Replacing the children and their next_sibling according to the parent new size
                         ei_widget_t *current = resized_widget->children_head;
                         while (current)
                         {
