@@ -25,7 +25,7 @@ void            ei_button_releasefunc           (ei_widget_t* widget) {
 
 ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, int partie){
         if (partie != 0 && partie != 1 && partie != 2){
-                fprintf(stderr, "La partie sélectionnée n'existe pas : \n --> 0 = partie basse \n --> 1 = partie haute \n --> 2 = totalité \n" );
+                fprintf(stderr, "Selected part does not exist : \n --> 0 = low part \n --> 1 = high part \n --> 2 = all \n" );
                 exit(1);
         }
         // Collecting the four points forming the rectangle
