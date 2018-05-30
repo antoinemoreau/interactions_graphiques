@@ -40,13 +40,13 @@ void ei_app_create(ei_size_t *main_window_size, ei_bool_t fullscreen)
 
 void ei_app_free()
 {
-        // Destruction de l'arborescence de widgets
+        // Free the widget tree
         ei_widget_destroy(root);
 
-        // Destruction de la liste d'événements
+        // Free the binded events list
         free_list_events();
 
-        // Libération des surfaces
+        // Free the surfaces
         hw_surface_free(root_surface);
         hw_surface_free(pick_surface);
 }
@@ -60,26 +60,34 @@ void ei_app_run()
         hw_surface_lock(root_surface);
         main_clipper = hw_surface_get_rect(root_surface);
         hw_surface_lock(pick_surface);
-        //on dessine tout les widgets en premier lieu
+
+        // First drawing of the whole widget tree
         draw_all_widgets(root, root_surface, pick_surface, &main_clipper);
+
         hw_surface_unlock(pick_surface);
         hw_surface_unlock(root_surface);
+
+        // Updating screen
         hw_surface_update_rects(root_surface, NULL);
 
-        //boucle des evenements
 
+        // Events handling loop. Stops when the program asks for exit.
         while (!quit_app)
         {
                 ei_widget_t *widget;
                 ei_widget_t *parent;
+
+                // Waiting next event
                 hw_event_wait_next(event);
 
                 ei_point_t mouse_where = event->param.mouse.where;
+
                 switch (event->type)
                 {
                 case ei_ev_app:
                         break;
 
+                // Keydown events
                 case ei_ev_keydown:
                 case ei_ev_keyup:
                         widget = NULL;
@@ -87,6 +95,7 @@ void ei_app_run()
                         drawing = EI_FALSE;
                         break;
 
+                // Mouse events
                 case ei_ev_mouse_buttondown:
                 case ei_ev_mouse_buttonup:
                 case ei_ev_mouse_move:
@@ -102,7 +111,10 @@ void ei_app_run()
                 default:
                         break;
                 }
+
                 ei_linked_rect_t **rect_list = get_rect_list();
+
+                // If the surfaces need to be redrawn
                 if (drawing)
                 {
                         ei_rect_t new_rect;
@@ -119,13 +131,12 @@ void ei_app_run()
 
                         ei_intersection_rectangle(clipper, &(widget->screen_location), &new_rect);
                         rect_list_add(rect_list, new_rect);
-                        //printf("coucou le redraw\n");
+
                         redraw(root_surface, pick_surface, widget, *rect_list);
                         drawing = EI_FALSE;
                 }
                 release_rect_list(rect_list);
         }
-        //hw_surface_free(pick_surface);
         free(event);
 }
 

@@ -9,10 +9,7 @@ static ei_geometrymanager_t *geometrymanager_list = NULL;
 static ei_geometrymanager_t *create_placer_manager()
 {
 	/*
-	On crée un geometrymanager de type placer en lui affectant
-	le nom et les fonctions associées à cette classe
-
-	Appelé dans register
+	Creating a placer and setting the associated functions
 	*/
 	ei_geometrymanager_t *geometrymanager = calloc(1, sizeof(ei_geometrymanager_t));
 	strncpy(geometrymanager->name, "placer", 20);
@@ -42,25 +39,21 @@ void ei_place(ei_widget_t *widget,
 {
 
 	ei_placer_t *placer = NULL;
-	/*
-	 On vérifie que le placer manager est bien dans la bibliothèque
-	 */
+
+	// If the placer class exists in the library
 	if (ei_geometrymanager_from_name("placer") == NULL)
 	{
 		fprintf(stderr, "Placer manager doesn't exist in \"geometrymanager_list\" ");
 		exit(1);
 	}
-	/*
-	 Si aucun  geometry manager n'est affecté,
-	 on donne au widget un placer
-	 */
+
+	// If the widget does not have any geaometry manager, adding a new placer to it
 	if (widget->geom_params == NULL)
 	{
 		add_placer_manager(widget);
 	}
-	/*
-	Si le geometry manager n'est pas le bon, on unmap et on réaffecte
-	*/
+
+	// If the widget have a geometry manager which is not a placer
 	else if (strcmp(widget->geom_params->manager->name, "placer") != 0)
 	{
 		ei_geometrymanager_unmap(widget);
@@ -98,7 +91,7 @@ void ei_place(ei_widget_t *widget,
 	}
 	else if (!placer->width)
 	{
-		//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
+		// Minimal size if the size is not given
 		if (rel_width == NULL)
 		{
 			placer->width = (widget->requested_size).width;
@@ -114,7 +107,7 @@ void ei_place(ei_widget_t *widget,
 	}
 	else if (!placer->height)
 	{
-		//Si on a aucune taille (absolue ou relative) de fournie, on prend la taille minimale
+		// Minimal size if the size is not given
 		if (rel_height == NULL)
 		{
 			placer->height = (widget->requested_size).height;
@@ -162,10 +155,6 @@ void ei_place(ei_widget_t *widget,
 
 void ei_register_placer_manager()
 {
-	/*
-	On vérifie si le placer est dans la bibliothèque
-	S'il n'y est pas, on l'y ajoute
-	*/
 	if (geometrymanager_list != NULL)
 	{
 		for (ei_geometrymanager_t *current = geometrymanager_list; current != NULL; current = current->next)
@@ -181,10 +170,6 @@ void ei_register_placer_manager()
 
 void ei_geometrymanager_unmap(ei_widget_t *widget)
 {
-	/*
-	On free le geom_params du widget mais pas le manager du placer
-	après l'avoir enlevé de l'écran
-	*/
 	if (widget->geom_params)
 	{
 		widget->geom_params->manager->releasefunc(widget);
@@ -194,10 +179,6 @@ void ei_geometrymanager_unmap(ei_widget_t *widget)
 
 ei_geometrymanager_t *ei_geometrymanager_from_name(ei_geometrymanager_name_t name)
 {
-	/*
-	Retourne un pointeur sur une classe de geometry manager ayant le nom porté en entrée
-	NULL sinon
-	*/
 	for (ei_geometrymanager_t *current = geometrymanager_list; current != NULL; current = current->next)
 	{
 		if (strcmp(current->name, name) == 0)
