@@ -9,6 +9,9 @@
 #include "ei_widgetclass.h"
 #include "ei_geometrymanager.h"
 
+/**
+ * @brief         Close and destroy the toplevel.
+ */
 ei_bool_t closing(ei_widget_t *widget, ei_event_t *event, void *user_param);
 
 void *ei_toplevel_allocfunc();
