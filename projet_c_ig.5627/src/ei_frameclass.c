@@ -4,6 +4,7 @@
 #include "ei_draw_utils.h"
 #include "ei_draw.h"
 #include "hw_interface.h"
+#include "ei_application.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -17,10 +18,6 @@ void ei_frame_releasefunc(struct ei_widget_t *widget)
         ei_frame_t *frame = (ei_frame_t *)widget;
         if (frame->text)
                 free(frame->text);
-        if (frame->text_font)
-                hw_text_font_free(frame->text_font);
-        if (frame->img)
-                hw_surface_free(frame->img);
         if (frame->img_rect)
                 free(frame->img_rect);
 }
@@ -58,7 +55,7 @@ void ei_frame_drawfunc(ei_widget_t *widget,
                 ei_point_t last = {low_first.x, bot_last.y - frame->border_width};
                 ei_point_t bot_bot = {top_first.x + inter.size.width, top_first.y + inter.size.height};
                 ei_point_t bot_in = {bot_bot.x - frame->border_width, bot_bot.y - frame->border_width};
-                
+
                 // Creating top polygon
                 ei_linked_point_t top_poly_last = {last, NULL};
                 ei_linked_point_t top_poly_bot = {bot_last, &top_poly_last};
@@ -126,7 +123,7 @@ void ei_frame_drawfunc(ei_widget_t *widget,
                 ei_linked_point_t left_exter = {bot_last, &bot_exter};
                 ei_draw_polygon(pick_surface, &left_exter, *(frame->widget.pick_color), &inter);
         }
-        
+
         if (frame->text && strcmp(frame->text, "") != 0)
         {
                 ei_point_t aqui;

@@ -279,7 +279,15 @@ ei_bool_t stop_resize(ei_widget_t *widget, struct ei_event_t *event, void *user_
         return EI_FALSE;
 }
 
-static move_elt_to_end(ei_widget_t *widget, ei_widget_t *previous)
+/**
+ * @brief       Move a widget to the tail of its siblings list.
+ *
+ * @param widget        The widget to move.
+ *
+ * @param previous      The previous widget in the list.
+ *                      May be NULL is widget is the head of the list
+ */
+static void move_elt_to_end(ei_widget_t *widget, ei_widget_t *previous)
 {
         if (widget && widget->parent)
         {

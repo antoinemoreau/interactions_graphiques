@@ -80,6 +80,8 @@ void ei_toplevel_releasefunc(ei_widget_t *widget)
         // No need to release the close button because it is the next sibling of the toplevel.
         if (toplevel->title)
                 free(toplevel->title);
+        if (toplevel->min_size)
+                free(toplevel->min_size);
 }
 
 void ei_toplevel_drawfunc(struct ei_widget_t *widget,
@@ -137,6 +139,7 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
 
         ei_draw_polygon(surface, exter_first_point, color, &intersection);
 
+
         ei_color_t inter_color = {0xff, 0xff, 0xff, 0x60};
 
         // Creating the inner polygon (represents the content rectangle)
@@ -182,6 +185,8 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
         }
 
         // Free polygons
+        free(arc_top_right);
+        free(arc_top_left);
         free(exter_first_point);
         free(inter_first_point);
 }
