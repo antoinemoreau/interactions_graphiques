@@ -47,7 +47,6 @@ void ei_app_free()
         free_list_events();
 
         // Free the surfaces
-        //hw_surface_free(root_surface);
         hw_surface_free(pick_surface);
 }
 

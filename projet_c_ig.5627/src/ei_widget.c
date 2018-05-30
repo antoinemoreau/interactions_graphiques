@@ -15,7 +15,7 @@ static ei_color_t pick_color = {0x00, 0x00, 0x00, 0xff};
 
 /**
  * @brief 		Compute a unique picking color.
- * 
+ *
  * @return ei_color_t* 		The color.
  */
 static ei_color_t *inc_pick_color()
@@ -115,7 +115,6 @@ static void ei_widget_destroy_recurs(ei_widget_t *widget)
 {
 	if (widget != NULL)
 	{
-		widget->wclass->releasefunc(widget);
 		ei_widget_destroy_recurs(widget->children_head);
 		if (widget->next_sibling != NULL)
 		{
@@ -124,6 +123,7 @@ static void ei_widget_destroy_recurs(ei_widget_t *widget)
 		ei_geometrymanager_unmap(widget);
 		free(widget->pick_color);
 		free(widget->content_rect);
+		widget->wclass->releasefunc(widget);
 		free(widget);
 	}
 }
@@ -132,7 +132,7 @@ void ei_widget_destroy(ei_widget_t *widget)
 {
 	if (widget != NULL)
 	{
-		// If the widget have a parent we have to find his previous sibling to update the links
+		// If the widget has a parent we have to find his previous sibling to update the links
 		if (widget->parent != NULL)
 		{
 			ei_widget_t *parent = widget->parent;
@@ -262,6 +262,12 @@ void ei_frame_configure(ei_widget_t *widget,
 		frame->img_anchor = *img_anchor;
 	else if (!frame->img_anchor)
 		frame->img_anchor = ei_anc_center;
+
+	if (widget->content_rect->size.width < widget->requested_size.width)
+		widget->content_rect->size.width = widget->requested_size.width;
+
+	if (widget->content_rect->size.height < widget->requested_size.height)
+		widget->content_rect->size.height = widget->requested_size.height;
 }
 
 void ei_button_configure(ei_widget_t *widget,
@@ -420,11 +426,16 @@ void ei_toplevel_configure(ei_widget_t *widget,
 		toplevel->resizable = ei_axis_both;
 
 	if (min_size != NULL)
-		toplevel->min_size = *min_size;
+	{
+		toplevel->min_size = calloc(1, sizeof(ei_size_t));
+		toplevel->min_size->width = (*min_size)->width;
+		toplevel->min_size->height = (*min_size)->height;
+	}
 	else if (!toplevel->min_size)
 	{
-		(*(toplevel->min_size)).width = 160;
-		(*(toplevel->min_size)).height = 120;
+		toplevel->min_size = calloc(1, sizeof(ei_size_t));
+		toplevel->min_size->width = 160;
+		toplevel->min_size->height = 120;
 	}
 
 	if (widget->content_rect->size.width < widget->requested_size.width)

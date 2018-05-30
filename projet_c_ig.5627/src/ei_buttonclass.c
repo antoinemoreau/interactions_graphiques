@@ -114,14 +114,14 @@ void ei_button_drawfunc(ei_widget_t *widget,
 
         ei_rect_t inter = {button->widget.screen_location.top_left, button->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
-        button->widget.screen_location.size.width = inter.size.width;
-        button->widget.screen_location.size.height = inter.size.height;
-        button->widget.screen_location.top_left.x = inter.top_left.x;
-        button->widget.screen_location.top_left.y = inter.top_left.y;
-        button->widget.content_rect->size.width = inter.size.width;
-        button->widget.content_rect->size.height = inter.size.height;
-        button->widget.content_rect->top_left.x = inter.top_left.x;
-        button->widget.content_rect->top_left.y = inter.top_left.y;
+        // button->widget.screen_location.size.width = inter.size.width;
+        // button->widget.screen_location.size.height = inter.size.height;
+        // button->widget.screen_location.top_left.x = inter.top_left.x;
+        // button->widget.screen_location.top_left.y = inter.top_left.y;
+        // button->widget.content_rect->size.width = inter.size.width;
+        // button->widget.content_rect->size.height = inter.size.height;
+        // button->widget.content_rect->top_left.x = inter.top_left.x;
+        // button->widget.content_rect->top_left.y = inter.top_left.y;
 
         int border = button->border_width;
 
@@ -132,10 +132,10 @@ void ei_button_drawfunc(ei_widget_t *widget,
         ei_compute_color(button->color, &light_color, 1.2);
         ei_compute_color(button->color, &dark_color, 0.5);
 
-        ei_point_t point_top_right_big_square = {inter.top_left.x + inter.size.width - inter.size.height / 2,
-                                                 inter.top_left.y + inter.size.height / 2};
-        ei_point_t point_bot_left_big_square = {inter.top_left.x + inter.size.height / 2,
-                                                inter.top_left.y + inter.size.height / 2};
+        ei_point_t point_top_right_big_square = {button->widget.screen_location.top_left.x + button->widget.screen_location.size.width - button->widget.screen_location.size.height / 2,
+                                                 button->widget.screen_location.top_left.y + button->widget.screen_location.size.height / 2};
+        ei_point_t point_bot_left_big_square = {button->widget.screen_location.top_left.x + button->widget.screen_location.size.height / 2,
+                                                button->widget.screen_location.top_left.y + button->widget.screen_location.size.height / 2};
 
         ei_linked_point_t *bot_left_big_square = calloc(1, sizeof(ei_linked_point_t));
         ei_linked_point_t *top_right_big_square = calloc(1, sizeof(ei_linked_point_t));
@@ -144,13 +144,13 @@ void ei_button_drawfunc(ei_widget_t *widget,
         bot_left_big_square->point = point_bot_left_big_square;
 
         // Computing the polygon of the low that have to be colored
-        ei_linked_point_t* low_part = rounded_frame(inter, button->corner_radius, nb_points, 0);
+        ei_linked_point_t* low_part = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 0);
         top_right_big_square->next = bot_left_big_square;
         bot_left_big_square->next = low_part;
 
 
         // Computing the polygon of the high that have to be colored
-        ei_linked_point_t* high_part = rounded_frame(inter, button->corner_radius, nb_points, 1);
+        ei_linked_point_t* high_part = rounded_frame(button->widget.screen_location, button->corner_radius, nb_points, 1);
         bot_left_big_square->next = top_right_big_square;
         top_right_big_square->next = high_part;
 

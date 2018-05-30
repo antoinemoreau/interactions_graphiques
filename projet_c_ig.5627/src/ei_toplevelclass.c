@@ -80,8 +80,10 @@ void ei_toplevel_releasefunc(ei_widget_t *widget)
         // No need to release the close button because it is the next sibling of the toplevel.
         if (toplevel->title)
                 free(toplevel->title);
-        if (toplevel->min_size)
+        if(toplevel->min_size){
                 free(toplevel->min_size);
+        }
+
 }
 
 void ei_toplevel_drawfunc(struct ei_widget_t *widget,
@@ -203,9 +205,7 @@ void ei_toplevel_setdefaultsfunc(struct ei_widget_t *widget)
         strcpy(toplevel->title, "Toplevel");
         toplevel->closable = EI_TRUE;
         toplevel->resizable = ei_axis_both;
-        toplevel->min_size = calloc(1, sizeof(ei_size_t));
-        toplevel->min_size->width = 160;
-        toplevel->min_size->height = 120;
+        toplevel->min_size = NULL;
         toplevel->close_button = closing_button(toplevel);
 }
 
