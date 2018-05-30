@@ -201,7 +201,6 @@ ei_bool_t click_resize_toplevel(ei_widget_t *widget, struct ei_event_t *event, v
                                           widget->screen_location.size.height) &&
             (widget->screen_location.top_left.x + widget->screen_location.size.width - 4 * ((ei_toplevel_t *)widget)->border_width) < event->param.mouse.where.x && event->param.mouse.where.x < (widget->screen_location.top_left.x + widget->screen_location.size.width) && event->param.mouse.button_number == 1)
         {
-
                 mouse_resize = event->param.mouse.where;
                 resized_toplevel = (ei_toplevel_t *)widget;
         }
