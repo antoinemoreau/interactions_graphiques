@@ -11,7 +11,7 @@
 typedef struct ei_toplevel_t {
 	ei_widget_t		widget;
 	ei_button_t*		close_button;
-        ei_color_t             color;
+        ei_color_t              color;
         int                     border_width;
         char*                   title;
         ei_bool_t              	closable;
