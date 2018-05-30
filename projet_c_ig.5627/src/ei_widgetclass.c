@@ -6,11 +6,14 @@
 #include <string.h>
 #include <stdio.h>
 
-/*On crée un pointeur widgetclass_list qui nous permet de savoir quelle(s)
-classe(s) de widget(s) existe(nt)
-*/
+// The list of known widgetclasses
 static ei_widgetclass_t *widgetclass_list = NULL;
 
+/**
+ * @brief Create a frame widget object.
+ * 
+ * @return ei_widgetclass_t* 
+ */
 static ei_widgetclass_t *create_frame_widget()
 {
         ei_widgetclass_t *frame_widget = calloc(1, sizeof(ei_widgetclass_t));
@@ -24,6 +27,11 @@ static ei_widgetclass_t *create_frame_widget()
         return frame_widget;
 }
 
+/**
+ * @brief Create a button widget object.
+ * 
+ * @return ei_widgetclass_t* 
+ */
 static ei_widgetclass_t *create_button_widget()
 {
         ei_widgetclass_t *button_widget = calloc(1, sizeof(ei_widgetclass_t));
@@ -36,7 +44,11 @@ static ei_widgetclass_t *create_button_widget()
         button_widget->next = NULL;
         return button_widget;
 }
-
+/**
+ * @brief Create a toplevel widget object.
+ * 
+ * @return ei_widgetclass_t* 
+ */
 static ei_widgetclass_t *create_toplevel_widget()
 {
         ei_widgetclass_t *toplevel_widget = calloc(1, sizeof(ei_widgetclass_t));
@@ -76,7 +88,7 @@ void ei_frame_register_class()
                         current = current->next;
                 }
         }
-        /*On crée le widget frame s'il n'est pas déjà dans la bibliothèque*/
+        // Register the frameclass if it is not yet in the lib
         ei_widgetclass_register(create_frame_widget());
 }
 
@@ -94,7 +106,7 @@ void ei_button_register_class()
                         current = current->next;
                 }
         }
-        /*On crée le widget button s'il n'est pas déjà dans la blibliothèque*/
+        // Register the buttonclass if it is not yet in the lib
         ei_widgetclass_register(create_button_widget());
 }
 
@@ -112,7 +124,7 @@ void ei_toplevel_register_class()
                         current = current->next;
                 }
         }
-        /*On crée le widget toplevel s'il n'est pas déjà dans la blibliothèque*/
+        // Register the toplevelclass if it is not yet in the lib
         ei_widgetclass_register(create_toplevel_widget());
 }
 
