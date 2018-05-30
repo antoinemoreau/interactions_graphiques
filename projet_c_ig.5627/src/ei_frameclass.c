@@ -3,6 +3,7 @@
 #include "ei_frame.h"
 #include "ei_draw_utils.h"
 #include "ei_draw.h"
+#include "hw_interface.h"
 #include <stdlib.h>
 #include <stdio.h>
 
