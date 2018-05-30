@@ -47,7 +47,7 @@ void ei_app_free()
         free_list_events();
 
         // Free the surfaces
-        hw_surface_free(root_surface);
+        //hw_surface_free(root_surface);
         hw_surface_free(pick_surface);
 }
 
@@ -138,6 +138,7 @@ void ei_app_run()
                 release_rect_list(rect_list);
         }
         free(event);
+        hw_quit();
 }
 
 void ei_app_invalidate_rect(ei_rect_t *rect)
