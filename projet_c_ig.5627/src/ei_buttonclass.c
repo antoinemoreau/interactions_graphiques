@@ -5,11 +5,13 @@
 #include "ei_draw.h"
 #include <stdlib.h>
 #include <stdio.h>
-void*           ei_button_allocfunc             () {
+void *ei_button_allocfunc()
+{
         return calloc(1, sizeof(ei_button_t));
 }
 
-void            ei_button_releasefunc           (ei_widget_t* widget) {
+void ei_button_releasefunc(ei_widget_t *widget)
+{
         //ei_button_t* button = (ei_button_t*)widget;
         // if (button->text)
         //         free(button->text);
@@ -61,12 +63,16 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
                 extreme_points_top_right_low->tail_point->next = extreme_points_top_right_high->head_point;
                 extreme_points_top_right_high->tail_point->next = NULL;
                 first_point = extreme_points_top_left->head_point;
-        } else if (partie == 0) {
+        }
+        else if (partie == 0)
+        {
                 extreme_points_bot_left_low->tail_point->next = extreme_points_bot_right->head_point;
                 extreme_points_bot_right->tail_point->next = extreme_points_top_right_low->head_point;
                 extreme_points_top_right_low->tail_point->next = NULL;
                 first_point = extreme_points_bot_left_low->head_point;
-        } else {
+        }
+        else
+        {
                 extreme_points_top_right_high->tail_point->next = extreme_points_top_left->head_point;
                 extreme_points_top_left->tail_point->next = extreme_points_bot_left_high->head_point;
                 extreme_points_bot_left_high->tail_point->next = NULL;
@@ -82,10 +88,11 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
         return first_point;
 }
 
-void            ei_button_drawfunc              (ei_widget_t*           widget,
-                                                ei_surface_t		surface,
-                                                ei_surface_t		pick_surface,
-                                                ei_rect_t*		clipper) {
+void ei_button_drawfunc(ei_widget_t *widget,
+                        ei_surface_t surface,
+                        ei_surface_t pick_surface,
+                        ei_rect_t *clipper)
+{
 
         ei_button_t* button = (ei_button_t*) widget;
         if (widget->screen_location.size.height == 0 && widget->screen_location.size.width == 0) {
@@ -99,7 +106,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 }
         }
 
-        ei_rect_t inter = {button->widget.screen_location.top_left,button->widget.screen_location.size};
+        ei_rect_t inter = {button->widget.screen_location.top_left, button->widget.screen_location.size};
         ei_intersection_rectangle(clipper, &(button->widget.screen_location), &inter);
         button->widget.screen_location.size.width = inter.size.width;
         button->widget.screen_location.size.height = inter.size.height;
@@ -119,13 +126,13 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         ei_compute_color(button->color, &light_color, 1.2);
         ei_compute_color(button->color, &dark_color, 0.5);
 
-        ei_point_t point_top_right_big_square = {inter.top_left.x + inter.size.width - inter.size.height/2, \
-                                        inter.top_left.y + inter.size.height/2};
-        ei_point_t point_bot_left_big_square = {inter.top_left.x + inter.size.height/2, \
-                                        inter.top_left.y + inter.size.height/2};
+        ei_point_t point_top_right_big_square = {inter.top_left.x + inter.size.width - inter.size.height / 2,
+                                                 inter.top_left.y + inter.size.height / 2};
+        ei_point_t point_bot_left_big_square = {inter.top_left.x + inter.size.height / 2,
+                                                inter.top_left.y + inter.size.height / 2};
 
-        ei_linked_point_t* bot_left_big_square = calloc(1, sizeof(ei_linked_point_t));
-        ei_linked_point_t* top_right_big_square = calloc(1, sizeof(ei_linked_point_t));
+        ei_linked_point_t *bot_left_big_square = calloc(1, sizeof(ei_linked_point_t));
+        ei_linked_point_t *top_right_big_square = calloc(1, sizeof(ei_linked_point_t));
 
         top_right_big_square->point = point_top_right_big_square;
         bot_left_big_square->point = point_bot_left_big_square;
@@ -145,7 +152,6 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         if (button->relief == ei_relief_raised) {
                 ei_draw_polygon(surface, high_part, light_color, &inter);
                 ei_draw_polygon(surface, low_part, dark_color, &inter);
-
         }
         else if(button->relief == ei_relief_sunken){
                 ei_draw_polygon(surface, high_part, dark_color, &inter);
@@ -180,7 +186,7 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         if (button->text && strcmp(button->text, "") != 0) {
                 ei_point_t pos_texte;
                 ei_size_t size_texte;
-                hw_text_compute_size(button->text,button->text_font,&(size_texte.width),&(size_texte.height));
+                hw_text_compute_size(button->text, button->text_font, &(size_texte.width), &(size_texte.height));
                 ei_anchor_spot(button->text_anchor, &size_texte, &inter, &pos_texte);
                 // If the button is sunken we have to draw in the button according to the relief
                 if(button->relief == ei_relief_sunken) {
@@ -198,7 +204,9 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
                 if (button->img_rect) {
                         rect_surface_img = *(button->img_rect);
                         size_img = button->img_rect->size;
-                } else {
+                }
+                else
+                {
                         rect_surface_img = hw_surface_get_rect(button->img);
                         size_img = rect_surface_img.size;
                 }
@@ -225,8 +233,9 @@ void            ei_button_drawfunc              (ei_widget_t*           widget,
         }
 }
 
-void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {
-        ei_button_t* button = (ei_button_t*)widget;
+void ei_button_setdefaultsfunc(ei_widget_t *widget)
+{
+        ei_button_t *button = (ei_button_t *)widget;
         button->widget = *widget;
         button->color = ei_default_background_color;
         button->border_width = k_default_button_border_width;
@@ -243,6 +252,6 @@ void            ei_button_setdefaultsfunc        (ei_widget_t* widget) {
         button->user_param = NULL;
 }
 
-void            ei_button_geomnotifyfunc        (ei_widget_t* widget, ei_rect_t rect) {
-
+void ei_button_geomnotifyfunc(ei_widget_t *widget, ei_rect_t rect)
+{
 }
