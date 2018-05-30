@@ -155,7 +155,9 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
                 resize_rect.top_left.y = toplevel->widget.screen_location.top_left.y + toplevel->widget.screen_location.size.height - 4 * border_width;
                 resize_rect.size.width = 4 * border_width;
                 resize_rect.size.height = 4 * border_width;
-                ei_draw_polygon(surface, points_list(resize_rect), color, &intersection);
+                ei_linked_point_t *resize_rectangle = points_list(resize_rect);
+                ei_draw_polygon(surface, resize_rectangle, color, &intersection);
+                ei_free_polygon(&resize_rectangle);
         }
 
         if (pick_surface)

@@ -137,6 +137,7 @@ void ei_app_run()
                 release_rect_list(rect_list);
         }
         free(event);
+        hw_quit();
 }
 
 void ei_app_invalidate_rect(ei_rect_t *rect)
