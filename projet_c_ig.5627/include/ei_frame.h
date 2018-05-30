@@ -7,9 +7,8 @@
 #include "ei_widgetclass.h"
 
 /**
- *
- *
- *
+ * @brief 	A structure which describes a frame widget.
+ * 
  */
 typedef struct ei_frame_t {
 	ei_widget_t		widget;
