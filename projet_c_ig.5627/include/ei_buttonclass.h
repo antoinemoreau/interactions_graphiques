@@ -6,15 +6,15 @@
 #include "ei_draw.h"
 #include "ei_button.h"
 
-void* ei_button_allocfunc ();
+void *ei_button_allocfunc();
 
-void ei_button_releasefunc (struct ei_widget_t* button);
+void ei_button_releasefunc(struct ei_widget_t *button);
 
-void ei_button_drawfunc (struct ei_widget_t* button, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t* clipper);
+void ei_button_drawfunc(struct ei_widget_t *button, ei_surface_t surface, ei_surface_t pick_surface, ei_rect_t *clipper);
 
-void ei_button_setdefaultsfunc (struct ei_widget_t* button);
+void ei_button_setdefaultsfunc(struct ei_widget_t *button);
 
-void ei_button_geomnotifyfunc (struct ei_widget_t* button, ei_rect_t rect);
+void ei_button_geomnotifyfunc(struct ei_widget_t *button, ei_rect_t rect);
 
 /**
  * \brief	Linkes points to draw the polygone built with the latter (according to the part chosen).
@@ -34,7 +34,6 @@ void ei_button_geomnotifyfunc (struct ei_widget_t* button, ei_rect_t rect);
  * @return
  */
 
-ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int radius, int nb_points, int part);
-
+ei_linked_point_t *rounded_frame(ei_rect_t rectangle, int radius, int nb_points, int part);
 
 #endif
