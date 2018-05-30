@@ -5,6 +5,10 @@
 #include "ei_widget.h"
 #include "ei_geometrymanager.h"
 
+/**
+ * @brief       A structure which describes a placer geometry manager.
+ * 
+ */
 typedef struct ei_placer_t
 {
         ei_geometrymanager_t *manager;

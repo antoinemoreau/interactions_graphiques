@@ -81,7 +81,10 @@ void *ei_toplevel_allocfunc()
 
 void ei_toplevel_releasefunc(ei_widget_t *widget)
 {
-        //ei_toplevel_t* toplevel = (ei_toplevel_t*) widget;
+        ei_toplevel_t* toplevel = (ei_toplevel_t*)widget;
+        // No need to release the close button because it is the next sibling of the toplevel.
+        if (toplevel->title)
+                free(toplevel->title);
 }
 
 void ei_toplevel_drawfunc(struct ei_widget_t *widget,
@@ -111,13 +114,8 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
         toplevel->widget.content_rect->top_left.x = toplevel->widget.screen_location.top_left.x + border_width;
         toplevel->widget.content_rect->top_left.y = toplevel->widget.screen_location.top_left.y + text_size.height + border_width;
 
-        //frame_rect.size = toplevel->widget.content_rect->size;
         ei_rect_t interieur;
-        ei_intersection_rectangle(clipper, toplevel->widget.content_rect, &interieur); // Peut etre changer clipper avec intersection
-
-        //Calcul du clipper de la toplevel
-        //toplevel->widget.content_rect->top_left = interieur.top_left;
-        //toplevel->widget.content_rect->size = interieur.size;
+        ei_intersection_rectangle(clipper, toplevel->widget.content_rect, &interieur);
 
         //Création du polygone exterieur en arrondissant le haut
         int nb_points = 10;
@@ -143,7 +141,7 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
         //Chainage : arc_top_right->arc_top_left->bot_left->bot_right
         ei_draw_polygon(surface, exter_first_point, color, &intersection);
 
-        ei_color_t inter_color = {0xff, 0xff, 0xff, 0xff};
+        ei_color_t inter_color = {0xff, 0xff, 0xff, 0x60};
 
         //Création du polygone interieur (sous le titre)
         ei_linked_point_t *inter_first_point = points_list(*(widget->content_rect));

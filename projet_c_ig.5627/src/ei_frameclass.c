@@ -17,7 +17,7 @@ void ei_frame_releasefunc(struct ei_widget_t *widget)
         if (frame->text)
                 free(frame->text);
         if (frame->text_font)
-                //hw_text_font_free(frame->text_font);
+                hw_text_font_free(frame->text_font);
                 if (frame->img)
                         hw_surface_free(frame->img);
         if (frame->img_rect)
