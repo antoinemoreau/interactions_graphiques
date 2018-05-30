@@ -19,8 +19,8 @@ void            ei_button_releasefunc           (ei_widget_t* widget) {
                 //hw_text_font_free(button->text_font);
         if (button->img_rect)
                 free(button->img_rect);
-        if (button->img)
-                hw_surface_free(button->img);
+        //if (button->img)
+                //hw_surface_free(button->img);
 }
 
 ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, int partie){
@@ -48,7 +48,7 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
         ei_extreme_linked_points_t* extreme_points_bot_right = arc(center_bot_right, rayon, 270.0, 360.0, nb_points);
 
         // Declaration of the first point of the linked point list
-        ei_linked_point_t* first_point = calloc(1, sizeof(ei_linked_point_t));
+        ei_linked_point_t* first_point = NULL;
 
         /* We link the differents points of the section:
                 2 : The all part
@@ -70,6 +70,9 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
                 extreme_points_bot_right->tail_point->next = extreme_points_top_right_low->head_point;
                 extreme_points_top_right_low->tail_point->next = NULL;
                 first_point = extreme_points_bot_left_low->head_point;
+                ei_free_polygon(&extreme_points_top_left->head_point);
+                ei_free_polygon(&extreme_points_bot_left_high->head_point);
+                ei_free_polygon(&extreme_points_top_right_high->head_point);
         }
         else
         {
@@ -77,6 +80,9 @@ ei_linked_point_t* rounded_frame(ei_rect_t rectangle, int rayon, int nb_points, 
                 extreme_points_top_left->tail_point->next = extreme_points_bot_left_high->head_point;
                 extreme_points_bot_left_high->tail_point->next = NULL;
                 first_point = extreme_points_top_right_high->head_point;
+                ei_free_polygon(&extreme_points_bot_left_low->head_point);
+                ei_free_polygon(&extreme_points_bot_right->head_point);
+                ei_free_polygon(&extreme_points_top_right_low->head_point);
         }
         free(extreme_points_top_left);
         free(extreme_points_top_right_low);

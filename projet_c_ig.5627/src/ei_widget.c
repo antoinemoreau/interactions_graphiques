@@ -114,6 +114,8 @@ static void ei_widget_destroy_recurs(ei_widget_t *widget)
 			ei_widget_destroy_recurs(widget->next_sibling);
 		}
 		ei_geometrymanager_unmap(widget);
+		free(widget->pick_color);
+		free(widget->content_rect);
 		free(widget);
 	}
 }
