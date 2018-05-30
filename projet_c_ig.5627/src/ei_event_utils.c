@@ -20,14 +20,14 @@ ei_linked_event_t *get_list_events()
         return listed_events;
 }
 
-// Button animation
+// Animation bouton
 ei_button_t *sunken_button;
 
-// Toplevel move
+// Déplacement toplevel
 ei_toplevel_t *moving_toplevel;
 ei_point_t mouse_pos;
 
-// toplevel resize
+//resize toplevel
 ei_toplevel_t *resized_toplevel;
 ei_point_t mouse_resize;
 
@@ -50,22 +50,22 @@ void free_list_events()
 void ei_init_list_events()
 {
 
-        // Button animations
+        // Animation de pression sur bouton
         ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&getoutofbutton_animation, NULL);
         ei_bind(ei_ev_mouse_buttondown, NULL, "button", (ei_callback_t)&pressbutton_animation, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "button", (ei_callback_t)&unpressbutton_animation, NULL);
 
-        // Toplevel move
+        // Déplacement toplevel
         ei_bind(ei_ev_mouse_buttondown, NULL, "toplevel", (ei_callback_t)&click_toplevel_header, NULL);
         ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&move_toplevel, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "toplevel", (ei_callback_t)&unclick_toplevel, NULL);
 
-        // Toplevel resize
+        // resize_toplevel
         ei_bind(ei_ev_mouse_buttondown, NULL, "toplevel", (ei_callback_t)&click_resize_toplevel, NULL);
         ei_bind(ei_ev_mouse_move, NULL, "all", (ei_callback_t)&resizing_toplevel, NULL);
         ei_bind(ei_ev_mouse_buttonup, NULL, "toplevel", (ei_callback_t)&stop_resize, NULL);
 
-        // Move widget to foreground
+        // Faire passer un widget au premier plan
         ei_bind(ei_ev_mouse_buttondown, NULL, "all", (ei_callback_t)&move_foreground, NULL);
 }
 
@@ -83,7 +83,7 @@ ei_linked_event_t *find_event(ei_widget_t *widget, ei_eventtype_t eventtype, ei_
                         current = current->next;
                 }
         }
-        fprintf(stderr, "This event is not binded.\n");
+        fprintf(stderr, "cet evenement n'est pas encore traité \n");
         exit(1);
 }
 
@@ -105,8 +105,7 @@ ei_widget_t *ei_find_widget(uint32_t pick_id, ei_widget_t *widget)
         }
         return NULL;
 }
-
-// Button callback functions
+//fonctions de callbacks des boutons
 ei_bool_t unpressbutton_animation(ei_widget_t *widget, struct ei_event_t *event, void *user_param)
 {
         if (sunken_button && event->param.mouse.button_number == 1)
@@ -137,7 +136,7 @@ ei_bool_t getoutofbutton_animation(ei_widget_t *widget, struct ei_event_t *event
         return EI_FALSE;
 }
 
-// Toplevel callback functions
+//fonctions de callback des toplevels
 ei_bool_t click_toplevel_header(ei_widget_t *widget, struct ei_event_t *event, void *user_param)
 {
         if (event->param.mouse.where.y < widget->content_rect->top_left.y && event->param.mouse.button_number == 1)
@@ -150,7 +149,6 @@ ei_bool_t click_toplevel_header(ei_widget_t *widget, struct ei_event_t *event, v
 
 ei_bool_t move_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *user_param)
 {
-        // If a toplevel title bar is currently clicked
         if (moving_toplevel)
         {
                 ei_widget_t *moving_widget = (ei_widget_t *)moving_toplevel;
@@ -158,17 +156,14 @@ ei_bool_t move_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *use
                 ei_rect_t intersection1;
                 ei_intersection_rectangle(moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection1);
                 rect_list_add(rect_list, intersection1);
-
-                // Updating the placer parameters
+                //Changement des paramètres du placer
                 ei_placer_t *placer = (ei_placer_t *)moving_widget->geom_params;
                 ei_point_t shift_position = ei_point_sub(event->param.mouse.where, mouse_pos);
                 int new_x = placer->x + shift_position.x;
                 int new_y = placer->y + shift_position.y;
                 moving_widget->screen_location.top_left = ei_point_add(moving_widget->screen_location.top_left, shift_position);
-                ei_place(moving_widget, &placer->anchor, &new_x, &new_y, &placer->width, &placer->height, &placer->rel_x, &placer->rel_y, &placer->rel_width, &placer->rel_height);
+                ei_place(moving_widget, NULL, &new_x, &new_y, NULL, NULL, NULL, NULL, NULL, NULL);
                 mouse_pos = event->param.mouse.where;
-
-                // Updating the geometry of the toplevel children
                 ei_widget_t *current = moving_widget->children_head;
                 while (current)
                 {
@@ -181,7 +176,6 @@ ei_bool_t move_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *use
                         }
                         current = current->children_head;
                 }
-
                 ei_rect_t intersection2;
                 ei_intersection_rectangle(moving_widget->parent->content_rect, &moving_widget->screen_location, &intersection2);
                 rect_list_add(rect_list, intersection2);
@@ -254,7 +248,7 @@ ei_bool_t resizing_toplevel(ei_widget_t *widget, struct ei_event_t *event, void 
                         ei_placer_t *placer = (ei_placer_t *)resized_widget->geom_params;
                         int width_abs = placer->width - width_loss;
                         int height_abs = placer->height - height_loss;
-                        ei_place(resized_widget, &placer->anchor, &placer->x, &placer->y, &width_abs, &height_abs, &placer->rel_x, &placer->rel_y, &placer->rel_width, &placer->rel_height);
+                        ei_place(resized_widget, NULL, NULL, NULL, &width_abs, &height_abs, NULL, NULL, NULL, NULL);
                         ei_rect_t intersection2;
                         ei_intersection_rectangle(resized_widget->parent->content_rect, &resized_widget->screen_location, &intersection2);
                         rect_list_add(rect_list, intersection2);
@@ -285,14 +279,6 @@ ei_bool_t stop_resize(ei_widget_t *widget, struct ei_event_t *event, void *user_
         return EI_FALSE;
 }
 
-/**
- * @brief       Move a widget to the tail of its siblings list.
- * 
- * @param widget        The widget to move.
- * 
- * @param previous      The previous widget in the list.
- *                      May be NULL is widget is the head of the list
- */
 static move_elt_to_end(ei_widget_t *widget, ei_widget_t *previous)
 {
         if (widget && widget->parent)
@@ -318,7 +304,8 @@ static move_elt_to_end(ei_widget_t *widget, ei_widget_t *previous)
 
 ei_bool_t move_foreground(ei_widget_t *widget, struct ei_event_t *event, void *user_param)
 {
-        // Moving te widget and all his ancestors to the tail of their respective siblings lists.
+        // On fait passer le widget et tous ses ancêtres à la fin de leur
+        // listes de frères respectives
 
         ei_widget_t *previous = NULL;
         ei_widget_t *second_widget = NULL;
@@ -327,11 +314,11 @@ ei_bool_t move_foreground(ei_widget_t *widget, struct ei_event_t *event, void *u
         if (!widget->parent)
                 return EI_FALSE;
 
-        // If the widget is already the tail, jump to parent
+        // Si il est déjà en queue on passe directement au père
         if (!widget->next_sibling || (is_toplevel && !widget->next_sibling->next_sibling))
                 return move_foreground(widget->parent, event, user_param);
 
-        // Moving the widget to tail (May have to move 2 widgets if widget is a toplevel)
+        // On décale le widget (ou les deux widgets dans le cas de la toplevel) à la fin de la liste
         if (is_toplevel)
         {
                 second_widget = widget->next_sibling;

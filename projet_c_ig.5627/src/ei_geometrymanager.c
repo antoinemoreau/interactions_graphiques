@@ -59,13 +59,28 @@ void ei_place(ei_widget_t *widget,
 		ei_geometrymanager_unmap(widget);
 		add_placer_manager(widget);
 	}
+	else if (strcmp(widget->geom_params->manager->name, "placer") == 0)
+	{
+		placer = (ei_placer_t *)(widget->geom_params);
+		if (anchor != NULL){placer->anchor = *anchor;}
+		if (x != NULL){placer->x = *x;}
+		if (y != NULL){placer->y = *y;}
+		if (width != NULL){placer->width = *width;}
+		if (height != NULL){placer->height = *height;}
+		if (rel_x != NULL){placer->rel_x = *rel_x;}
+		if (rel_y != NULL){placer->rel_y = *rel_y;}
+		if (rel_width != NULL){placer->rel_width = *rel_width;}
+		if (rel_height != NULL){placer->rel_height = *rel_height;}
+		widget->geom_params->manager->runfunc(widget);
+		return;
+	}
 
 	placer = (ei_placer_t *)(widget->geom_params);
 	if (anchor != NULL)
 	{
 		placer->anchor = *anchor;
 	}
-	else if (!placer->anchor)
+	else
 	{
 		placer->anchor = ei_anc_northwest;
 	}
@@ -73,7 +88,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->x = *x;
 	}
-	else if (!placer->x)
+	else
 	{
 		placer->x = 0;
 	}
@@ -81,7 +96,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->y = *y;
 	}
-	else if (!placer->y)
+	else
 	{
 		placer->y = 0;
 	}
@@ -89,7 +104,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->width = *width;
 	}
-	else if (!placer->width)
+	else
 	{
 		// Minimal size if the size is not given
 		if (rel_width == NULL)
@@ -105,7 +120,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->height = *height;
 	}
-	else if (!placer->height)
+	else
 	{
 		// Minimal size if the size is not given
 		if (rel_height == NULL)
@@ -121,7 +136,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->rel_x = *rel_x;
 	}
-	else if (!placer->rel_x)
+	else
 	{
 		placer->rel_x = 0.0;
 	}
@@ -129,7 +144,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->rel_y = *rel_y;
 	}
-	else if (!placer->rel_y)
+	else
 	{
 		placer->rel_y = 0.0;
 	}
@@ -137,7 +152,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->rel_width = *rel_width;
 	}
-	else if (!placer->rel_width)
+	else
 	{
 		placer->rel_width = 0.0;
 	}
@@ -145,7 +160,7 @@ void ei_place(ei_widget_t *widget,
 	{
 		placer->rel_height = *rel_height;
 	}
-	else if (placer->rel_height)
+	else
 	{
 		placer->rel_height = 0.0;
 	}

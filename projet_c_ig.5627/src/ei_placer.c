@@ -7,7 +7,7 @@ static void compute_spot(ei_widget_t *widget, ei_widget_t *parent, int x, int y)
         ei_placer_t *placer_widget = (ei_placer_t *)widget->geom_params;
         if (parent != NULL)
         {
-                // Computing the position of a pixel in the given widget in the absolute coordinate system 
+                // Computing the position of a pixel in the given widget in the absolute coordinate system
                 // The pixel is determined by the anchor parameter
                 widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * parent->content_rect->size.width + placer_widget->x - x;
                 widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
@@ -31,9 +31,7 @@ void ei_placer_runfunc(ei_widget_t *widget)
         ei_widget_t *parent = widget->parent;
 
         ei_placer_t *placer = (ei_placer_t *)widget->geom_params;
-        fprintf(stdout, "AVANT size : width = %d, height = %d (pick_id = %d)\n", widget->screen_location.size.width, widget->screen_location.size.height, widget->pick_id);
         compute_size(widget, parent);
-        fprintf(stdout, "APRES size : width = %d, height = %d (pick_id = %d)\n", widget->screen_location.size.width, widget->screen_location.size.height, widget->pick_id);
         int x, y;
         ei_anchor_t anchor = placer->anchor;
         switch (anchor)
