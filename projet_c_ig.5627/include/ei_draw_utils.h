@@ -73,4 +73,9 @@ void ei_intersection_rectangle(ei_rect_t *first_rect, ei_rect_t *sec_rect, ei_re
 
 ei_extreme_linked_points_t *arc(ei_point_t center, int radius, float starting_angle, float ending_angle, int nb_points);
 
+/**
+ * @brief 	Free a given polygon.
+ * 
+ * @param poly 		The polygon to free.
+ */
 void ei_free_polygon(ei_linked_point_t **poly);

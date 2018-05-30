@@ -10,8 +10,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// First picking color
 static ei_color_t pick_color = {0x00, 0x00, 0x00, 0xff};
 
+/**
+ * @brief 		Compute a unique picking color.
+ * 
+ * @return ei_color_t* 		The color.
+ */
 static ei_color_t *inc_pick_color()
 {
 	if (pick_color.blue < 0xff)
@@ -51,17 +57,18 @@ ei_widget_t *ei_widget_create(ei_widgetclass_name_t class_name,
 			      ei_widget_t *parent)
 {
 	ei_widgetclass_t *widgetclass = ei_widgetclass_from_name(class_name);
-	//On vérifie si la classe de ce widget existe
+
+	// If the class given in parameter exists in lib.
 	if (widgetclass)
 	{
 		ei_widget_t *widget = widgetclass->allocfunc();
 		widget->wclass = widgetclass;
 
-		//id incremente a chaque instanciation de widget
+		// The picking id is incremented each time we instanciate a new widget
 		widget->pick_color = inc_pick_color();
 		widget->pick_id = ei_map_rgba(ei_app_pick_surface(), widget->pick_color);
 
-		//affectation du widget parent
+		// Set the parent widget
 		widget->parent = parent;
 		if (parent)
 		{
@@ -87,6 +94,7 @@ ei_widget_t *ei_widget_create(ei_widgetclass_name_t class_name,
 		widget->children_tail = NULL;
 		widget->next_sibling = NULL;
 
+		// Set the defaults parameters
 		widget->geom_params = NULL;
 		widget->requested_size.width = 0;
 		widget->requested_size.height = 0;
@@ -122,6 +130,7 @@ void ei_widget_destroy(ei_widget_t *widget)
 {
 	if (widget != NULL)
 	{
+		// If the widget have a parent we have to find his previous sibling to update the links
 		if (widget->parent != NULL)
 		{
 			ei_widget_t *parent = widget->parent;

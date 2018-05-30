@@ -7,10 +7,8 @@ static void compute_spot(ei_widget_t *widget, ei_widget_t *parent, int x, int y)
         ei_placer_t *placer_widget = (ei_placer_t *)widget->geom_params;
         if (parent != NULL)
         {
-                /*
-                On calcule la place d'un des pixels du widget dans le référentiel absolu
-                Le pixel est est déterminé par anchor (qui est donné par l'utilisateur)
-                */
+                // Computing the position of a pixel in the given widget in the absolute coordinate system 
+                // The pixel is determined by the anchor parameter
                 widget->screen_location.top_left.x = parent->content_rect->top_left.x + placer_widget->rel_x * parent->content_rect->size.width + placer_widget->x - x;
                 widget->screen_location.top_left.y = parent->content_rect->top_left.y + placer_widget->rel_y * parent->content_rect->size.height + placer_widget->y - y;
                 widget->wclass->geomnotifyfunc(widget, widget->screen_location);
@@ -29,9 +27,7 @@ static void compute_size(ei_widget_t *widget, ei_widget_t *parent)
 
 void ei_placer_runfunc(ei_widget_t *widget)
 {
-        /*
-        On trouve le parent et on calcule la position de son enfant
-        */
+       // Finding the parent and computing his children position
         ei_widget_t *parent = widget->parent;
 
         ei_placer_t *placer = (ei_placer_t *)widget->geom_params;
@@ -89,6 +85,6 @@ void ei_placer_runfunc(ei_widget_t *widget)
 
 void ei_placer_releasefunc(struct ei_widget_t *widget)
 {
-        // Pas de fonction release pour le placer
+        // No need for a release function in the placer
         return;
 }

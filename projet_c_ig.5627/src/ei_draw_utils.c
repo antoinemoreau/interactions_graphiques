@@ -87,7 +87,8 @@ void ei_intersection_rectangle(ei_rect_t *clipper, ei_rect_t *sec_rect, ei_rect_
         {
                 bot_rect = clipper;
         }
-        //points du rectangle de destination
+
+        // Destination rectangle
         ei_point_t top_dest;
         ei_size_t dest_size;
 
@@ -128,12 +129,6 @@ void ei_intersection_rectangle(ei_rect_t *clipper, ei_rect_t *sec_rect, ei_rect_
 
 void ei_anchor_spot(ei_anchor_t anchor, ei_size_t *size, ei_rect_t *rectangle, ei_point_t *anchor_position)
 {
-
-        /*
-        Renvoi la position du point choisi avec anchor_position
-
-        Condition : le widget a un geometry manager et anchor différents de none
-        */
         switch (anchor)
         {
         case ei_anc_center:
@@ -176,10 +171,6 @@ void ei_anchor_spot(ei_anchor_t anchor, ei_size_t *size, ei_rect_t *rectangle, e
 
 ei_extreme_linked_points_t *arc(ei_point_t center, int rayon, float angle_depart, float angle_fin, int nb_points)
 {
-        /*
-        Retourne une chaine de points calculés pour former un arc de cercle
-        compris entre angle_depart et angle_fin (on exprime en radiant)
-        */
         ei_point_t point = {center.x + rayon * cos(angle_depart * PI / 180), center.y - rayon * sin(angle_depart * PI / 180)};
         ei_linked_point_t *first_point = calloc(1, sizeof(ei_linked_point_t));
         float angle;

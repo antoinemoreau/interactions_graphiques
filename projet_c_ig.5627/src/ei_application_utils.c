@@ -29,12 +29,19 @@ void redraw(ei_surface_t root_surface,
         {
                 hw_surface_lock(root_surface);
                 hw_surface_lock(pick_surface);
-                if (widget->parent && (screen_loc_before_event.top_left.x != widget->screen_location.top_left.x || screen_loc_before_event.top_left.y != widget->screen_location.top_left.y || screen_loc_before_event.size.width != widget->screen_location.size.width || screen_loc_before_event.size.height != widget->screen_location.size.height))
+
+                // If the screen_location has been modifed, we refresh the parent rectangle
+                if (widget->parent && (screen_loc_before_event.top_left.x != widget->screen_location.top_left.x || \
+                        screen_loc_before_event.top_left.y != widget->screen_location.top_left.y || \
+                        screen_loc_before_event.size.width != widget->screen_location.size.width || \
+                        screen_loc_before_event.size.height != widget->screen_location.size.height))
                 {
 
                         widget = widget->parent;
                         rect_list_add(&rect_list, widget->screen_location);
                 }
+
+                // Redrawing the sub-tree which root is the given widget
                 draw_all_widgets(widget, root_surface, pick_surface, &(widget->screen_location));
                 hw_surface_unlock(pick_surface);
                 hw_surface_unlock(root_surface);
@@ -52,6 +59,7 @@ void handle_event(ei_linked_event_t *event_list,
         if (widget)
                 screen_loc_before_event = widget->screen_location;
 
+        // Loop over binded events. Stops when there is no more callback to call.
         while (!no_callback && current_event)
         {
                 if (current_event->eventtype == event->type)

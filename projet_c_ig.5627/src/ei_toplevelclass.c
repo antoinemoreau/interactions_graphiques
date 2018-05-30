@@ -11,8 +11,6 @@
 
 ei_bool_t closing(ei_widget_t *widget, ei_event_t *event, void *user_param)
 {
-        //on peut faire l'inverse et l'appeller dans pressbutton
-        //pressbutton_animation(widget, event, user_param);
         ei_widget_destroy(ei_find_widget(widget->pick_id - 1, widget->parent));
         ei_widget_destroy(widget);
         destroy = EI_TRUE;
@@ -21,7 +19,6 @@ ei_bool_t closing(ei_widget_t *widget, ei_event_t *event, void *user_param)
 
 static ei_linked_point_t *points_list(ei_rect_t rectangle)
 {
-
         ei_linked_point_t *bot_left = calloc(1, sizeof(ei_linked_point_t));
         bot_left->point.x = rectangle.top_left.x;
         bot_left->point.y = rectangle.top_left.y + rectangle.size.height;
@@ -40,28 +37,26 @@ static ei_linked_point_t *points_list(ei_rect_t rectangle)
         top_left->point = rectangle.top_left;
         top_left->next = top_right;
 
-        //Chainage = top_left->top_right->bot_right->bot_left
         return top_left;
 }
 
 static ei_button_t *closing_button(ei_toplevel_t *toplevel)
 {
-
-        //Définition des paramètres du bouton
+        // Define the button parameters
         int radius = 8;
         int diameter = 2 * radius;
 
         int button_border_width = 1;
         ei_color_t button_color = {0xa9, 0x11, 0x01, 0xff};
         ei_relief_t relief = ei_relief_raised;
-        ei_size_t requested_size = {diameter, diameter}; // On les défini en dur mais faut changer
+        ei_size_t requested_size = {diameter, diameter};
         ei_callback_t button_closing = closing;
         int button_x = toplevel->border_width + 5 * button_border_width;
         int button_y = 2 * toplevel->border_width + 5 * button_border_width;
         int button_width = diameter;
         int button_height = diameter;
 
-        //Création et configuration du bouton suivant les paramètres
+        // Creates the close button and sets its parameters
         ei_widget_t *button_widget = ei_widget_create("button", toplevel->widget.parent);
         ei_button_t *button = (ei_button_t *)button_widget;
 
@@ -100,12 +95,14 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
         ei_color_t color = toplevel->color;
         int border_width = toplevel->border_width;
 
-        //titre
-        ei_point_t text_spot = {toplevel->widget.screen_location.top_left.x + toplevel->border_width + 2 * (toplevel->close_button->widget.requested_size.width), toplevel->widget.screen_location.top_left.y + toplevel->border_width};
+        // Title
+        ei_point_t text_spot = {toplevel->widget.screen_location.top_left.x + toplevel->border_width + \
+                                2 * (toplevel->close_button->widget.requested_size.width), \
+                                toplevel->widget.screen_location.top_left.y + toplevel->border_width};
         ei_size_t text_size;
         hw_text_compute_size(toplevel->title, ei_default_font, &(text_size.width), &(text_size.height));
 
-        //Clipping de la toplevel en fonction du parent
+        // Clipping the toplevel with the content rectangle of his parent
         toplevel->widget.content_rect->size.width = toplevel->widget.screen_location.size.width - 2 * toplevel->border_width;
         toplevel->widget.content_rect->size.height = toplevel->widget.screen_location.size.height - text_size.height - 2 * border_width;
         ei_rect_t intersection = {toplevel->widget.screen_location.top_left, toplevel->widget.screen_location.size};
@@ -117,7 +114,7 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
         ei_rect_t interieur;
         ei_intersection_rectangle(clipper, toplevel->widget.content_rect, &interieur);
 
-        //Création du polygone exterieur en arrondissant le haut
+        // Creating the outer polygon and round its top corners
         int nb_points = 10;
         int rayon = 20;
         ei_point_t center_top_left = {toplevel->widget.screen_location.top_left.x + rayon, toplevel->widget.screen_location.top_left.y + rayon};
@@ -138,19 +135,18 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
         arc_top_right->tail_point->next = arc_top_left->head_point;
         arc_top_left->tail_point->next = bot_left;
 
-        //Chainage : arc_top_right->arc_top_left->bot_left->bot_right
         ei_draw_polygon(surface, exter_first_point, color, &intersection);
 
         ei_color_t inter_color = {0xff, 0xff, 0xff, 0x60};
 
-        //Création du polygone interieur (sous le titre)
+        // Creating the inner polygon (represents the content rectangle)
         ei_linked_point_t *inter_first_point = points_list(*(widget->content_rect));
         ei_draw_polygon(surface, inter_first_point, inter_color, &interieur);
         ei_free_polygon(&inter_first_point);
 
         if (resizable != ei_axis_none)
         {
-                //Création du polygone pour resize
+                // Creating the clickable square on bottom-right (toplevel resizer)
                 ei_rect_t resize_rect;
                 resize_rect.top_left.x = toplevel->widget.screen_location.top_left.x + toplevel->widget.screen_location.size.width - 4 * border_width;
                 resize_rect.top_left.y = toplevel->widget.screen_location.top_left.y + toplevel->widget.screen_location.size.height - 4 * border_width;
@@ -166,9 +162,11 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
         }
         if (closable == EI_TRUE)
         {
-                //Dessin du bouton en haut à gauche du toplevel
-                toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + toplevel->border_width + toplevel->close_button->border_width * 5;
-                toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + toplevel->border_width * 2 + toplevel->close_button->border_width * 5;
+                // Drawing the close button on top left
+                toplevel->close_button->widget.screen_location.top_left.x = widget->screen_location.top_left.x + toplevel->border_width + \
+                                                                                toplevel->close_button->border_width * 5;
+                toplevel->close_button->widget.screen_location.top_left.y = widget->screen_location.top_left.y + toplevel->border_width * 2 + \
+                                                                                toplevel->close_button->border_width * 5;
                 toplevel->close_button->widget.screen_location.size.width = ((ei_widget_t *)toplevel->close_button)->requested_size.width;
                 toplevel->close_button->widget.screen_location.size.height = ((ei_widget_t *)toplevel->close_button)->requested_size.height;
                 ei_widget_t *button_widget = (ei_widget_t *)toplevel->close_button;
@@ -183,7 +181,7 @@ void ei_toplevel_drawfunc(struct ei_widget_t *widget,
                 ei_draw_text(surface, &aqui, toplevel->title, ei_default_font, ei_font_default_color, &(widget->screen_location));
         }
 
-        //Libération des polygones
+        // Free polygons
         free(exter_first_point);
         free(inter_first_point);
 }

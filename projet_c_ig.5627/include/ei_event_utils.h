@@ -2,6 +2,10 @@
 #define EI_EVENT_UTILS_H
 #include "ei_event.h"
 
+/**
+ * @brief 	A structure which describes a list of events.
+ * 
+ */
 typedef struct ei_linked_event_t
 {
 	ei_widget_t *widget;

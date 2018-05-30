@@ -34,7 +34,7 @@ void ei_unbind(ei_eventtype_t eventtype,
 {
 	ei_linked_event_t *prec = get_list_events();
 	ei_linked_event_t *del = NULL;
-	//Si la liste d'events est vide.
+	// If the events list is empty
 	if (prec == NULL)
 	{
 		fprintf(stderr, "Can't unbind event. Event list is empty.\n");
@@ -42,7 +42,7 @@ void ei_unbind(ei_eventtype_t eventtype,
 	}
 	else
 	{
-		//On trouve l'event a supprimer.
+		// Looping over events to find the event to delete
 		while (prec->next != NULL)
 		{
 			if (prec->next->eventtype == eventtype && prec->next->widget == widget && strcmp(prec->next->tag, tag) == 0 && prec->next->user_param == user_param)
@@ -56,7 +56,7 @@ void ei_unbind(ei_eventtype_t eventtype,
 			}
 		}
 
-		// On supprime l'event s'il existe.
+		// Deleting event if it exists
 		if (del == NULL)
 		{
 			fprintf(stderr, "Event does not exist.\n");
