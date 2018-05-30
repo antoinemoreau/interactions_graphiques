@@ -3,6 +3,7 @@
 #include "ei_button.h"
 #include "ei_draw_utils.h"
 #include "ei_draw.h"
+#include "ei_application.h"
 #include <stdlib.h>
 #include <stdio.h>
 void *ei_button_allocfunc()

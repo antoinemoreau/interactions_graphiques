@@ -218,8 +218,11 @@ ei_bool_t resizing_toplevel(ei_widget_t *widget, struct ei_event_t *event, void 
                 rect_list_add(rect_list, intersection1);
                 int width_loss = mouse_resize.x - event->param.mouse.where.x;
                 int height_loss = mouse_resize.y - event->param.mouse.where.y;
+                fprintf(stdout, "screen location du resized_widget :  width = %d, height = %d \n", resized_widget->screen_location.size.width, resized_widget->screen_location.size.height);
+                fprintf(stdout, "width loss = %d, height loss = %d \n", width_loss, height_loss);
                 int diff_x = resized_widget->screen_location.size.width - width_loss;
                 int diff_y = resized_widget->screen_location.size.height - height_loss;
+                fprintf(stdout, "diff x = %d, diff y = %d \n", diff_x, diff_y);
                 if (diff_x > resized_toplevel->min_size->width && diff_y > resized_toplevel->min_size->height)
                 {
                         if (ei_axis_none)
