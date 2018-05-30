@@ -94,49 +94,29 @@ ei_bool_t move_toplevel(ei_widget_t *widget,
 			void *user_param);
 
 /**
- * @brief 	
+ * @brief 	Stop moving the toplevel when the mouse button is released.	
  */
 ei_bool_t unclick_toplevel(ei_widget_t *widget,
 			   struct ei_event_t *event,
 			   void *user_param);
 
 /**
- * @brief 
- * 
- * @param widget 
- * @param event 
- * @param user_param 
- * @return ei_bool_t 
+ * @brief 	Handle the clic on the resizing zone of a toplevel widget in order to resize it.
  */
 ei_bool_t click_resize_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *user_param);
 
 /**
- * @brief 
- * 
- * @param widget 
- * @param event 
- * @param user_param 
- * @return ei_bool_t 
+ * @brief 	Resize the toplevel widget.
  */
 ei_bool_t resizing_toplevel(ei_widget_t *widget, struct ei_event_t *event, void *user_param);
 
 /**
- * @brief 
- * 
- * @param widget 
- * @param event 
- * @param user_param 
- * @return ei_bool_t 
+ * @brief 	Stop resizing the toplevel when the mouse button is released.
  */
 ei_bool_t stop_resize(ei_widget_t *widget, struct ei_event_t *event, void *user_param);
 
 /**
- * @brief 
- * 
- * @param widget 
- * @param event 
- * @param user_param 
- * @return ei_bool_t 
+ * @brief 	Move a widget to foreground when clicking on it.
  */
 ei_bool_t move_foreground(ei_widget_t *widget, struct ei_event_t *event, void *user_param);
 
