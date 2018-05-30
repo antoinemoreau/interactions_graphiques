@@ -88,7 +88,8 @@ endif
 
 TARGETS		=	${LIBEI} \
 			minimal frame button hello_world \
-			puzzle minesweeper two048 #parsing
+			puzzle minesweeper two048 toplevel_sibling \
+			toplevel_fils_de_toplevel #parsing
 all : ${TARGETS}
 
 
