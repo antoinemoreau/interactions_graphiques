@@ -89,7 +89,8 @@ endif
 TARGETS		=	${LIBEI} \
 			minimal frame button hello_world \
 			puzzle minesweeper two048 toplevel_sibling \
-			toplevel_fils_de_toplevel #parsing
+			toplevel_fils_de_toplevel \
+			button_in_frame_in_toplevel #parsing
 all : ${TARGETS}
 
 
@@ -189,6 +190,14 @@ toplevel_sibling : ${OBJDIR}/toplevel_sibling.o ${LIBEIBASE} ${LIBEI}
 
 ${OBJDIR}/toplevel_sibling.o : ${TESTS}/toplevel_sibling.c
 	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/toplevel_sibling.c -o ${OBJDIR}/toplevel_sibling.o
+
+#Toplevel contenant un frame contenant un bouton
+
+button_in_frame_in_toplevel : ${OBJDIR}/button_in_frame_in_toplevel.o ${LIBEIBASE} ${LIBEI}
+	${LINK} -o button_in_frame_in_toplevel ${OBJDIR}/button_in_frame_in_toplevel.o ${LIBEI} ${LIBS}
+
+${OBJDIR}/button_in_frame_in_toplevel.o : ${TESTS}/button_in_frame_in_toplevel.c
+	${CC} ${CCFLAGS} ${INCFLAGS} ${TESTS}/button_in_frame_in_toplevel.c -o ${OBJDIR}/button_in_frame_in_toplevel.o
 
 
 
